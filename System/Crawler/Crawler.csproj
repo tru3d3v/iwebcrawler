@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <ProjectGuid>{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crawler</RootNamespace>
+    <RootNamespace>CrawlerNamespace</RootNamespace>
     <AssemblyName>Crawler</AssemblyName>
     <StartupObject>
     </StartupObject>
@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Dump\Crawler\Debug\bin\</OutputPath>
-    <IntermediateOutputPath>..\Dump\Crawler\Debug\obj\</IntermediateOutputPath> 
+    <IntermediateOutputPath>..\Dump\Crawler\Debug\obj\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Dump\Crawler\Release\bin\</OutputPath>
-    <IntermediateOutputPath>..\Dump\Crawler\Release\obj\</IntermediateOutputPath> 
+    <IntermediateOutputPath>..\Dump\Crawler\Release\obj\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,6 +42,7 @@
   -->
   <ItemGroup>
     <Compile Include="Crawler.cs" />
+    <Compile Include="ResourceContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
