@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Crawler.cs" />
     <Compile Include="ResourceContent.cs" />
+    <Compile Include="ResourceProcessor.cs" />
+    <Compile Include="ResourceProcessorManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

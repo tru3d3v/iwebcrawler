@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrawlerNamespace
+namespace CrawlerNameSpace
 {
-    enum Resource {HtmlResource};
+    enum ResourceType { HtmlResource };
 
     /**
      * This class represents the resource type that the crawler will process later on, 
@@ -12,23 +12,21 @@ namespace CrawlerNamespace
      */
     class ResourceContent
     {
-        //Attributes of the resource Class
        /**
         * ValidCode must be decided and initialized by the one who calls the constructor, 
         * if returnCode equals to the value that this variable contains then we can 
         * say that the resource is valid.
         */
-       private int validCode;
-       private String url;
-       private Resource resourceType;
-       private String resourceContent;
-       private int returnCode;
+       private int          validCode;
+       private String       url;
+       private ResourceType resourceType;
+       private String       resourceContent;
+       private int          returnCode;
 
-        //Methods of the ResourceContent Class
         /**
          * Constructor:
-         */ 
-        public ResourceContent(int rsrcValidCode,String rsrcurl, Resource rsrcType, String rsrcContent, int rtrnCode) 
+         */
+        public ResourceContent(int rsrcValidCode, String rsrcurl, ResourceType rsrcType, String rsrcContent, int rtrnCode) 
         {
             validCode =rsrcValidCode;
             url = rsrcurl;
@@ -40,22 +38,34 @@ namespace CrawlerNamespace
         /**
          * returns the url of the resource
          */
-        public String getResourceUrl() { return url; }
+        public String getResourceUrl() 
+        { 
+            return url; 
+        }
         
         /**
          * returns the type of the resource
          */
-        public Resource getResourceType() { return resourceType; }
+        public ResourceType getResourceType() 
+        { 
+            return resourceType; 
+        }
 
         /**
          * Returns the content of the resource
          */
-        public String getResourceContent() { return resourceContent; }
+        public String getResourceContent() 
+        { 
+            return resourceContent; 
+        }
 
         /**
          * Returns the return code of the resource
          */
-        public int getReturnCode() { return returnCode; }
+        public int getReturnCode() 
+        { 
+            return returnCode; 
+        }
 
         /**
          * Returns true if the resource holds a valid data and false otherwise
@@ -70,11 +80,15 @@ namespace CrawlerNamespace
          */
         public override String ToString() 
         {
-            String resourceString;
+            String resourceString = "=| Resource Content Details |================================================\n";
             if (isValid())
-                resourceString = "url of the resource: " + url + "\nresourceType: " + resourceType + "\nresourceContent: " + resourceContent;
+                resourceString += "URL:              " + url + "\n" + 
+                                  "Resource Type:    " + resourceType + "\n" + 
+                                  "Resource Content: " + resourceContent;
             else
-                resourceString = "url of the resource: " + url + "\nresourceType: " + resourceType + "\nresourceContent: " + "Content is invalid";
+                resourceString += "URL:              " + url + "\n" + 
+                                  "Resource Type:    " + resourceType + "\n" + 
+                                  "Resource Content: " + "Content is invalid";
 
             return resourceString;
         }
@@ -86,7 +100,7 @@ namespace CrawlerNamespace
         {
            int rsrcValidCode = 0;
            String rsrcurl = "www.adamsearch.com";
-           Resource rsrcType = Resource.HtmlResource;
+           ResourceType rsrcType = ResourceType.HtmlResource;
            String rsrcContent = "Please click the next buttom to start crawling !!";
            int rtrnCode = 0;
            ResourceContent htmlResource1 = new ResourceContent(rsrcValidCode, rsrcurl, rsrcType, rsrcContent, rtrnCode);
@@ -97,6 +111,5 @@ namespace CrawlerNamespace
            Console.WriteLine("to string:\n" + htmlResource1);
            
         }
-
     }
 }
