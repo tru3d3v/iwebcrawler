@@ -8,14 +8,16 @@ using System.Text;
  * This application will get all the task configuration has been stored by the user and
  * start downloading urls from the web. all the results will be saved in the Storage System.
  */
-namespace CrawlerNamespace
+namespace CrawlerNameSpace
 {
     class Crawler
     {
         static void Main(String[] args)
         {
-            System.Console.WriteLine("Hello World");
+            System.Console.WriteLine("[1] Resource Content Test");
             ResourceContent.Test();
+            System.Console.WriteLine("[2] Resource Processor Manager Test");
+            ResourceProcessorManager.Test();
         }
     }
 }
