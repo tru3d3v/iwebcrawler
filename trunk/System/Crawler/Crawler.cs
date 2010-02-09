@@ -18,6 +18,9 @@ namespace CrawlerNameSpace
             ResourceContent.Test();
             System.Console.WriteLine("[2] Resource Processor Manager Test");
             ResourceProcessorManager.Test();
+            System.Console.WriteLine("[3] HttpResourceFetcher Test");
+            HttpResourceFetcher.Test();
+
         }
     }
 }

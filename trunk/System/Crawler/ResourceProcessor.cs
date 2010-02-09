@@ -18,7 +18,7 @@ namespace CrawlerNameSpace
         /**
          * This method tries to process the given content assuming that the given content
          * can be processed via this processor
-         */
+         */ 
         void process(ResourceContent resource);
     }
 }
