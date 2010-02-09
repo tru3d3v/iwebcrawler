@@ -12,12 +12,12 @@ namespace CrawlerNameSpace
      */
     class ResourceContent
     {
+       private const int VALID_CODE = 200;
        /**
         * ValidCode must be decided and initialized by the one who calls the constructor, 
         * if returnCode equals to the value that this variable contains then we can 
         * say that the resource is valid.
         */
-       private int          validCode;
        private String       url;
        private ResourceType resourceType;
        private String       resourceContent;
@@ -26,9 +26,8 @@ namespace CrawlerNameSpace
         /**
          * Constructor:
          */
-        public ResourceContent(int rsrcValidCode, String rsrcurl, ResourceType rsrcType, String rsrcContent, int rtrnCode) 
+        public ResourceContent( String rsrcurl, ResourceType rsrcType, String rsrcContent, int rtrnCode) 
         {
-            validCode =rsrcValidCode;
             url = rsrcurl;
             resourceType=rsrcType;
             resourceContent = rsrcContent;
@@ -72,7 +71,7 @@ namespace CrawlerNameSpace
          */
         public bool isValid() 
         {
-            return (returnCode==validCode);
+            return (returnCode==VALID_CODE);
         }
         
         /**
@@ -98,12 +97,11 @@ namespace CrawlerNameSpace
          */
         public static void Test()
         {
-           int rsrcValidCode = 0;
            String rsrcurl = "www.adamsearch.com";
            ResourceType rsrcType = ResourceType.HtmlResource;
            String rsrcContent = "Please click the next buttom to start crawling !!";
-           int rtrnCode = 0;
-           ResourceContent htmlResource1 = new ResourceContent(rsrcValidCode, rsrcurl, rsrcType, rsrcContent, rtrnCode);
+           int rtrnCode = 200;
+           ResourceContent htmlResource1 = new ResourceContent(rsrcurl, rsrcType, rsrcContent, rtrnCode);
            Console.WriteLine("The resource is : " + htmlResource1.isValid());
            Console.WriteLine("Get url: " + htmlResource1.getResourceUrl());
            Console.WriteLine("Get resourceType: " + htmlResource1.getResourceType());
