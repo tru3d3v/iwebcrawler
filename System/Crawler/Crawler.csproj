@@ -44,6 +44,7 @@
     <Compile Include="HttpResourceFetcher.cs" />
     <Compile Include="ResourceFetcher.cs" />
     <Compile Include="Crawler.cs" />
+    <Compile Include="Extractor.cs" />
     <Compile Include="ResourceContent.cs" />
     <Compile Include="ResourceProcessor.cs" />
     <Compile Include="ResourceProcessorManager.cs" />
