@@ -11,10 +11,10 @@ namespace CrawlerNameSpace.Utilities
 {
     // This enumuration is used to specify which task you want to retrieve from the saved
     // tasks, so you may specify 'idle', 'waiting', 'active', 'all'
-    enum QueryOption { IdleTasks, WaitingTasks, ActiveTasks, AllTasks };
+    public enum QueryOption { IdleTasks, WaitingTasks, ActiveTasks, AllTasks };
 
     // This enumuration represents the status of the task
-    enum Status { Idle, Waiting, Active };
+    public enum Status { Idle, Waiting, Active };
 
     /**
      * This class represents a task which have an id and name, it also contain some metadata
@@ -25,16 +25,76 @@ namespace CrawlerNameSpace.Utilities
         // taskID represents the taskID which is a unique identifier for the task
         // taskName represents the name of the task
         private string taskID, taskName;
+        
         // taskStatus represents the task status which can be : idle, active, waiting
         private Status taskStatus;
+
         // couter for the task which represent how many counts has been passed while this
         // task has been working
         private long elapsedTime;
 
-
-        public void Try()
+        /**
+         * constructs a new task with the specified identity
+         */ 
+        public TaskStatus(string identity)
         {
-            System.Console.WriteLine("Hello World");
+            taskID = identity;
+        }
+
+        /**
+         * This method returns the identity of the represented task
+         */ 
+        public string getTaskID()
+        {
+            return taskID;
+        }
+
+        /**
+         * returns the name of the represented task
+         */ 
+        public string getTaskName()
+        {
+            return taskName;
+        }
+
+        /**
+         * returns the status of the represented task
+         */ 
+        public Status getTaskStatus()
+        {
+            return taskStatus;
+        }
+
+        /**
+         * returns the elapsed time of the represneted task
+         */ 
+        public long getTaskElapsedTime()
+        {
+            return elapsedTime;
+        }
+
+        /**
+         * sets the task name to the specified name
+         */ 
+        public void setTaskName(string name)
+        {
+            taskName = name;
+        }
+
+        /**
+         * sets the task status to the specified status
+         */ 
+        public void setTaskStatus(Status status)
+        {
+            taskStatus = status;
+        }
+
+        /**
+         * sets the task elapsed tiem to the specified value
+         */ 
+        public void setTaskElapsedTime(long time)
+        {
+            elapsedTime = time;
         }
     }
 }

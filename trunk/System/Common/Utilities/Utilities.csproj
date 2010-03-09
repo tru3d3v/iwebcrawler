@@ -35,6 +35,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Category.cs" />
+    <Compile Include="Source\Constraints.cs" />
     <Compile Include="Source\TaskStatus.cs" />
   </ItemGroup>
   <ItemGroup>
