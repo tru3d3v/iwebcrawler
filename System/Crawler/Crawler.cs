@@ -24,8 +24,12 @@ namespace CrawlerNameSpace
             System.Console.WriteLine("[4] Extractor Test");
             Extractor.Test();*/
 
-            TaskStatus temp = new TaskStatus();
-            temp.Try();
+            TaskStatus temp = new TaskStatus("");
+            temp.getTaskID();
+
+            Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
+            System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
+
         }
     }
 }
