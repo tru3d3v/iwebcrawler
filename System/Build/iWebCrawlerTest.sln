@@ -6,6 +6,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "..\Crawler\Crawl
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{0F5042C6-6DE0-4C85-B116-863F069DC858} = {0F5042C6-6DE0-4C85-B116-863F069DC858}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "..\StorageSystem\StorageSystem.csproj", "{39B7CF49-9FD7-4915-9A0D-6881901D710C}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -14,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "..\Storage
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iWebCrawler", "..\WebGUI\iWebCrawler.csproj", "{B765AF62-D3B1-4D57-972C-DCE841F4BFA3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "..\Common\Utilities\Utilities.csproj", "{0F5042C6-6DE0-4C85-B116-863F069DC858}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -37,6 +46,10 @@ Global
 		{B765AF62-D3B1-4D57-972C-DCE841F4BFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B765AF62-D3B1-4D57-972C-DCE841F4BFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B765AF62-D3B1-4D57-972C-DCE841F4BFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F5042C6-6DE0-4C85-B116-863F069DC858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F5042C6-6DE0-4C85-B116-863F069DC858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F5042C6-6DE0-4C85-B116-863F069DC858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5042C6-6DE0-4C85-B116-863F069DC858}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
