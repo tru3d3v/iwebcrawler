@@ -41,6 +41,8 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="Category.cs" />
+    <Compile Include="Constraints.cs" />
     <Compile Include="HttpResourceFetcher.cs" />
     <Compile Include="ResourceFetcher.cs" />
     <Compile Include="Crawler.cs" />

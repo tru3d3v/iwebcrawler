@@ -20,7 +20,6 @@ namespace CrawlerNameSpace
             ResourceProcessorManager.Test();
             System.Console.WriteLine("[3] HttpResourceFetcher Test");
             HttpResourceFetcher.Test();
-
             System.Console.WriteLine("[4] Extractor Test");
             Extractor.Test();
         }
