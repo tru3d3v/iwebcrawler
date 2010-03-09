@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CrawlerNameSpace.Utilities;
 
 /**
  * This is the main class for crawler system. this system defines a crawler application
@@ -14,14 +15,17 @@ namespace CrawlerNameSpace
     {
         static void Main(String[] args)
         {
-            System.Console.WriteLine("[1] Resource Content Test");
+            /*System.Console.WriteLine("[1] Resource Content Test");
             ResourceContent.Test();
             System.Console.WriteLine("[2] Resource Processor Manager Test");
             ResourceProcessorManager.Test();
             System.Console.WriteLine("[3] HttpResourceFetcher Test");
             HttpResourceFetcher.Test();
             System.Console.WriteLine("[4] Extractor Test");
-            Extractor.Test();
+            Extractor.Test();*/
+
+            TaskStatus temp = new TaskStatus();
+            temp.Try();
         }
     }
 }

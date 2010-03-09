@@ -8,7 +8,7 @@
     <ProjectGuid>{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CrawlerNamespace</RootNamespace>
+    <RootNamespace>CrawlerNameSpace</RootNamespace>
     <AssemblyName>Crawler</AssemblyName>
     <StartupObject>
     </StartupObject>
@@ -27,6 +27,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,6 +60,12 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
+      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />
