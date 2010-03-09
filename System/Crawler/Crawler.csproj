@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,11 @@
     <AssemblyName>Crawler</AssemblyName>
     <StartupObject>
     </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,19 +46,20 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="Category.cs" />
-    <Compile Include="Constraints.cs" />
-    <Compile Include="HttpResourceFetcher.cs" />
-    <Compile Include="ResourceFetcher.cs" />
     <Compile Include="Crawler.cs" />
-    <Compile Include="Extractor.cs" />
-    <Compile Include="ResourceContent.cs" />
-    <Compile Include="ResourceProcessor.cs" />
-    <Compile Include="ResourceProcessorManager.cs" />
+    <Compile Include="Source\Extractor.cs" />
+    <Compile Include="Source\HttpResourceFetcher.cs" />
+    <Compile Include="Source\ResourceContent.cs" />
+    <Compile Include="Source\ResourceFetcher.cs" />
+    <Compile Include="Source\ResourceProcessor.cs" />
+    <Compile Include="Source\ResourceProcessorManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests\" />
   </ItemGroup>
 </Project>
