@@ -37,11 +37,13 @@
   <ItemGroup>
     <Compile Include="Source\Category.cs" />
     <Compile Include="Source\Constraints.cs" />
+    <Compile Include="Source\Record.cs" />
+    <Compile Include="Source\RegeneratableRecord.cs" />
     <Compile Include="Source\TaskStatus.cs" />
+    <Compile Include="Tests\RecordTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
