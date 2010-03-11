@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
+using CrawlerNameSpace.Utilities.Tests;
 
 /**
  * This is the main class for crawler system. this system defines a crawler application
@@ -26,10 +27,12 @@ namespace CrawlerNameSpace
 
             TaskStatus temp = new TaskStatus("");
             temp.getTaskID();
-
+            
             Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
             System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
 
+            RecordTest.MainTest();
+                        
         }
     }
 }

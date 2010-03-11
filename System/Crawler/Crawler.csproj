@@ -55,6 +55,7 @@
     <Compile Include="Source\ResourceFetcher.cs" />
     <Compile Include="Source\ResourceProcessor.cs" />
     <Compile Include="Source\ResourceProcessorManager.cs" />
+    <Compile Include="Tests\HttpResourceFetcherTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -66,8 +67,5 @@
       <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tests\" />
   </ItemGroup>
 </Project>
