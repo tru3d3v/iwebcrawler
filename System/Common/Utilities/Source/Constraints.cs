@@ -16,6 +16,9 @@ namespace CrawlerNameSpace.Utilities
      */ 
     public class Constraints
     {
+        // This sign is the separator when representing network group
+        private const char SEPRATOR = ' ';
+
         // defines the allowed link depth (e.g. max limit)
         uint linkDepth;
         // saves whether url parameters allowed or not
@@ -36,13 +39,13 @@ namespace CrawlerNameSpace.Utilities
             restrictedNetworks = new List<string>();
             crawlNetworks = new List<string>();
 
-            string[] restrictedArray = restrict.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] restrictedArray = restrict.Split(new char[] { SEPRATOR }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string network in restrictedArray)
             {
                 restrictedNetworks.Add(network.ToLower());
             }
 
-            string[] allowedArray = crawl.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] allowedArray = crawl.Split(new char[] { SEPRATOR }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string network in allowedArray)
             {
                 crawlNetworks.Add(network.ToLower());
