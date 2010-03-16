@@ -18,7 +18,6 @@ namespace CrawlerNameSpace.Utilities.Tests
          */
         public void test1()
         {
-            Record testRecord = new Record("012", "testrecord");
             Console.WriteLine("Creating an instance of record(testRecord) with ID=012,name=testrecord");
             Console.WriteLine("Testing if correct ID and name of testrecord is returned:");
             Console.WriteLine("The ID is " + testRecord.getTaskID() + " and the name is " + testRecord.getRecordName());
@@ -45,7 +44,6 @@ namespace CrawlerNameSpace.Utilities.Tests
          */
         public void test2()
         {
-            Record testRecord = new Record("012", "testrecord");
             Console.WriteLine("Adding new property using the setProperty method");
             Console.WriteLine("Adding property:key=age,value=15");
             testRecord.setProperty("age", "15");
@@ -121,6 +119,30 @@ namespace CrawlerNameSpace.Utilities.Tests
             }
         }
 
+        /*
+         * This method is to test the clone() method.
+         */
+        public void test5()
+        {
+            Console.WriteLine("Creating new record named testrecord");
+            Record testRecord = new Record("012", "testrecord");
+            Console.WriteLine("Adding the following 3 new properties to the record using setProperty:");
+            Console.WriteLine("1.key=address,value=technion");
+            testRecord.setProperty("address", "technion");
+            Console.WriteLine("1.key=street,value=125");
+            testRecord.setProperty("street", "125");
+            Console.WriteLine("1.key=town,value=haifa");
+            testRecord.setProperty("town", "haifa");
+            Console.WriteLine("Using the Clone method to copy testrecord to new instance:");
+            Record copied=(Record)testRecord.Clone();
+            Console.WriteLine("The content of the copied instance is :");
+            List<String> returnlist = copied.getKeysSet();
+            foreach (String key in returnlist)
+            {
+                Console.WriteLine("Key= " + key + " Value= " + testRecord.getProperty(key));
+            }
+        }
+
         /**
          * This method is the main test that gathers all the tests.
          */
@@ -131,6 +153,7 @@ namespace CrawlerNameSpace.Utilities.Tests
             testingRecord.test2();
             testingRecord.test3();
             testingRecord.test4();
+            testingRecord.test5();
         }
     }
 }

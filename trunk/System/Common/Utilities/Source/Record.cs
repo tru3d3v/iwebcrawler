@@ -31,7 +31,14 @@ namespace CrawlerNameSpace.Utilities
          */
         public void setProperty(String key,String value)
         {
-            propertiesMap.Add(key, value);    
+            if (propertiesMap.ContainsKey(key))
+            {
+                propertiesMap[key] = value;
+            }
+            else
+            {
+                propertiesMap.Add(key, value);    
+            }
         }
 
         /**
@@ -42,7 +49,7 @@ namespace CrawlerNameSpace.Utilities
         {
             if (propertiesMap.ContainsKey(key))
             {
-                return propertiesMap[key];
+                return (String)propertiesMap[key].Clone();
             }
             else
             {
@@ -64,7 +71,7 @@ namespace CrawlerNameSpace.Utilities
          */
         public String getTaskID()
         {
-            return taskID;
+            return (String)taskID.Clone();
         }
 
         /**
@@ -72,7 +79,7 @@ namespace CrawlerNameSpace.Utilities
          */
         public String getRecordName()
         {
-            return recordName;
+            return (String)recordName.Clone();
         }
 
         /**
@@ -104,6 +111,22 @@ namespace CrawlerNameSpace.Utilities
                 String[] partsofpair = pair.Split(' ');
                 propertiesMap.Add(partsofpair[0], partsofpair[1]);
             }
+        }
+
+        /*
+         * This method overrides the defualt clone method.
+         */
+        public object Clone()
+        {
+            Record copiedRecord = new Record((String)this.taskID.Clone(),(String) this.recordName.Clone());
+            Dictionary<String, String> propertiesMapCopy = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<String, String> pair in propertiesMap)
+            {
+                propertiesMapCopy.Add((String)pair.Key.Clone(),(String) pair.Value.Clone());
+            }
+            copiedRecord.propertiesMap = propertiesMapCopy;
+            return copiedRecord;
         }
     }
 }

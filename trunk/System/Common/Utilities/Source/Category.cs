@@ -99,12 +99,15 @@ namespace CrawlerNameSpace.Utilities
 
             foreach (String word in wordListCopied)
             {
-                if (keywordListCopied.Contains(word))
+                foreach (String keyword in keywordListCopied)
                 {
-                    int index = keywordListCopied.IndexOf(word);
-                    if (histogram[index]<threshold)
+                    if (keyword.Contains(word))
                     {
-                        histogram[index]++;
+                        int index = keywordListCopied.IndexOf(keyword);
+                        if (histogram[index] < threshold)
+                        {
+                            histogram[index]++;
+                        }
                     }
                 }
             }
@@ -114,7 +117,7 @@ namespace CrawlerNameSpace.Utilities
                 sumOfhistogram += histogram[i];
             }
 
-            return (int)(sumOfhistogram * (1 / n) * (ALPHA));
+            return (int)((sumOfhistogram * (1.0 / n) * (ALPHA))*100);
             
         }
 
