@@ -39,8 +39,10 @@
     <Compile Include="Source\Constraints.cs" />
     <Compile Include="Source\Record.cs" />
     <Compile Include="Source\RegeneratableRecord.cs" />
+    <Compile Include="Source\Result.cs" />
     <Compile Include="Source\TaskStatus.cs" />
     <Compile Include="Tests\RecordTest.cs" />
+    <Compile Include="Tests\ResultTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
