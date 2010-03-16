@@ -8,7 +8,7 @@ namespace CrawlerNameSpace.Utilities
      * This interface defines the methods that every regeneratable record should have,
      * regeneratable record can turn itself to string and vice versa .
      */
-    interface RegeneratableRecord
+    interface RegeneratableRecord : ICloneable
     {
         /**
          * This method returns the TaskID to whom the record belongs.

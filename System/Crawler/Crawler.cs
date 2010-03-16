@@ -31,7 +31,9 @@ namespace CrawlerNameSpace
             Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
             System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
 
-            RecordTest.MainTest();
+            //RecordTest.MainTest();
+            //ConstraintsTest.MainTest();
+            CategoryTest.MainTest();
             ResultTest.MainTest();
             TaskStatusTest.MainTest();
         }
