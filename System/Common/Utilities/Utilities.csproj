@@ -43,6 +43,7 @@
     <Compile Include="Source\TaskStatus.cs" />
     <Compile Include="Tests\RecordTest.cs" />
     <Compile Include="Tests\ResultTest.cs" />
+    <Compile Include="Tests\TaskStatusTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
