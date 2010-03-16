@@ -32,7 +32,8 @@ namespace CrawlerNameSpace
             System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
 
             RecordTest.MainTest();
-            ResultTest.MainTest();    
+            ResultTest.MainTest();
+            TaskStatusTest.MainTest();
         }
     }
 }
