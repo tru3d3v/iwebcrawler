@@ -49,13 +49,16 @@
   -->
   <ItemGroup>
     <Compile Include="Crawler.cs" />
+    <Compile Include="Source\Categorizer.cs" />
     <Compile Include="Source\Extractor.cs" />
     <Compile Include="Source\HttpResourceFetcher.cs" />
+    <Compile Include="Source\Ranker.cs" />
     <Compile Include="Source\ResourceContent.cs" />
     <Compile Include="Source\ResourceFetcher.cs" />
     <Compile Include="Source\ResourceProcessor.cs" />
     <Compile Include="Source\ResourceProcessorManager.cs" />
     <Compile Include="Tests\HttpResourceFetcherTest.cs" />
+    <Compile Include="Tests\ResourceContentTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

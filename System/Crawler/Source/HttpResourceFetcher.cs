@@ -13,7 +13,8 @@ namespace CrawlerNameSpace
      */
     class HttpResourceFetcher : ResourceFetcher
     {
-        
+        private const int VALID_CODE = 200;
+        private const int ERROR_CODE = 400;
         /**
          * This method returns boolean value that indicates whether the given url can be fetched
          * or not,it will be abled to be fetched if it starts with "http".
@@ -43,7 +44,7 @@ namespace CrawlerNameSpace
             {
                 if (!(canFetch(url)))
                 {
-                    resource = new ResourceContent(url, ResourceType.HtmlResource, null, 400);
+                    resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE);
                     return resource;
                 }
 
@@ -80,13 +81,13 @@ namespace CrawlerNameSpace
                 while (count > 0); // any more data to read?
 
                 // print out page source
-                resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), 200);
+                resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), VALID_CODE);
                 return resource;
             }
             catch
             {
                 //200 is the success returnCode and 400 is failure returnCode
-                resource = new ResourceContent(url, ResourceType.HtmlResource, null, 400);
+                resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE);
                 return resource;
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CrawlerNameSpace.Tests;
 using CrawlerNameSpace.Utilities;
 using CrawlerNameSpace.Utilities.Tests;
 
@@ -33,9 +34,10 @@ namespace CrawlerNameSpace
 
             //RecordTest.MainTest();
             //ConstraintsTest.MainTest();
-            CategoryTest.MainTest();
-            ResultTest.MainTest();
-            TaskStatusTest.MainTest();
+            //CategoryTest.MainTest();
+            //ResultTest.MainTest();
+            //TaskStatusTest.MainTest();
+            ResourceContentTest.MainTest();
         }
     }
 }
