@@ -95,6 +95,7 @@ namespace CrawlerNameSpace.Utilities
             try
             {
                 if (linkDepth != 0 && getUrlDepth(url) > linkDepth) return false;
+                
                 if (allowUrlParameters != true && containsParameter(url) == true) return false;
 
                 string network = getUrlNetwork(url).ToLower();
