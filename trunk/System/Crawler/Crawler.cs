@@ -37,7 +37,8 @@ namespace CrawlerNameSpace
             //CategoryTest.MainTest();
             //ResultTest.MainTest();
             //TaskStatusTest.MainTest();
-            ResourceContentTest.MainTest();
+            //ResourceContentTest.MainTest();
+            CategorizerTest.MainTest();
         }
     }
 }
