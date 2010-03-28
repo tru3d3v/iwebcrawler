@@ -9,62 +9,50 @@ using System.Text.RegularExpressions;
  */ 
 namespace CrawlerNameSpace
 {
-    /**
-     * This struct represents a link on the page
-     */ 
-    public struct LinkItem
-    {
-        public string Href;
-        public string Text;
-
-        public override string ToString()
-        {
-            return Href;
-        }
-    }
-
     class Extractor
     {
+        private static int SEMETRIC_LINE = 2;
+
         public List<LinkItem> extractLinks(String url, String page)
         {
             List<LinkItem> list = new List<LinkItem>();
 
             // Find all matches in file.
-            MatchCollection m1 = Regex.Matches(page, @"(<a.*?>.*?</a>)",
+            MatchCollection reg = Regex.Matches(page, @"(<a.*?>.*?</a>)", 
                 RegexOptions.Singleline);
 
             // Loop over each match.
-            foreach (Match m in m1)
+            foreach (Match match in reg)
             {
-                string value = m.Groups[1].Value;
-                LinkItem i = new LinkItem();
-
-                // Get href attribute.
-                Match m2 = Regex.Match(value, @"href=\""(.*?)\""",
-                    RegexOptions.Singleline);
-                if (m2.Success)
-                {
-                    i.Href = m2.Groups[1].Value;
-                }
-
-                // Remove inner tags from text.
-                string t = Regex.Replace(value, @"\s*<.*?>\s*", "",
-                    RegexOptions.Singleline);
-                i.Text = t;
-
-                list.Add(i);
+                string tagValue = match.Groups[1].Value;
+                LinkItem item = new LinkItem(url);
+                item.setTag(tagValue);
+                list.Add(item);
             }
+            // gets the text near each link
+            getText(list, page);
+
             return list;
         }
 
-        public static void Test()
+        private void getText(List<LinkItem> links, String page)
         {
-            Extractor extractor = new Extractor();
-            List<LinkItem> links = extractor.extractLinks("", "<a href=\"www.example.com\"><b>Dot Net Perls</b></a>");
-
             foreach (LinkItem item in links)
             {
-                System.Console.WriteLine(item.ToString());
+                int index = page.IndexOf(item.getTag());
+
+                if (index != -1)
+                {
+                    int lower = Math.Max(index - SEMETRIC_LINE, 0);
+                    int higher = Math.Min(index + item.getTag().Length + SEMETRIC_LINE, page.Length - 1);
+
+                    String subString = page.Substring(lower, higher - lower);
+                    item.setText(subString);
+                }
+                else
+                {
+                    item.setText("");
+                }
             }
         }
     }
