@@ -15,11 +15,31 @@ namespace CrawlerNameSpace
         private String Parent, Tag, Link, Text;
 
         /**
-         * Constructs a new LinkItem with the parent-url
+         * Constructs a new LinkItem
          */ 
-        public LinkItem(String parentUrl)
+        public LinkItem()
         {
-            Parent = parentUrl;
+        }
+
+        /**
+         * sets the parent-url
+         */ 
+        public void setParent(String url)
+        {
+            String rootUrl = "";
+            string[] buffer = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            int depth = Math.Max(1, buffer.Length - 1);
+
+            bool firstToken = true;
+            for (int i = 0; i < depth; i++ )
+            {
+                if (firstToken == false) rootUrl += '/';
+                rootUrl += buffer[i];
+                firstToken = false;
+            }
+
+            if (rootUrl.EndsWith("/")) Parent = rootUrl;
+            else Parent = rootUrl + '/';
         }
 
         /**
@@ -44,6 +64,14 @@ namespace CrawlerNameSpace
         public void setLink(String link)
         {
             Link = link;
+        }
+
+        /**
+         * returns the parent url
+         */ 
+        public String getParentUrl()
+        {
+            return Parent;
         }
 
         /**
