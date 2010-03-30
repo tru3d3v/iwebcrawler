@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using CrawlerNameSpace.Utilities;
+
+namespace CrawlerNameSpace.Tests
+{
+    class RankerTest
+    {
+        private ResourceContent resource = new ResourceContent("www.ynet." +
+            "co.il", ResourceType.HtmlResource, "This is an example test content of this resource", 200);
+
+        private Ranker testRanker = new Ranker(new Categorizer(new List<Category>()));
+
+        public void Test1()
+        {
+            if (testRanker.rankUrl(0, resource.getResourceContent(), resource) == 0)
+            {
+                Console.WriteLine("rankUrl(int parentRank, String parentContent, ResourceContent resource) PASSED");
+            }
+            else
+            {
+                Console.WriteLine("rankUrl(int parentRank, String parentContent, ResourceContent resource) FAILED");
+                Console.WriteLine("Should have returned 0");
+            }
+        }
+
+        /**
+         * This method is the main test that gathers all the tests.
+         */
+        public static void MainTest()
+        {
+            RankerTest rankerTest = new RankerTest();
+            rankerTest.Test1();
+        }
+    }
+}
