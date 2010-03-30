@@ -19,9 +19,9 @@ namespace CrawlerNameSpace
         }
 
         /**
-         * This method calculates the rank of a given url and returns it.
+         * This method calculates the rank of a given resource and returns it.
          */
-        public int rankUrl(int parentRank, String parentContent, String url)
+        public int rankUrl(int parentRank, String parentContent, ResourceContent resource)
         {
             return defualtRank;
         }
