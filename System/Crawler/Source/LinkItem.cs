@@ -29,6 +29,7 @@ namespace CrawlerNameSpace
             String rootUrl = "";
             string[] buffer = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             int depth = Math.Max(1, buffer.Length - 1);
+            if (buffer.Length == 0) depth = 0;
 
             bool firstToken = true;
             for (int i = 0; i < depth; i++ )

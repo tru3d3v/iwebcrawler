@@ -26,11 +26,11 @@ namespace CrawlerNameSpace
             System.Console.WriteLine("[4] Extractor Test");
             Extractor.Test();*/
 
-            TaskStatus temp = new TaskStatus("");
-            temp.getTaskID();
+            //TaskStatus temp = new TaskStatus("");
+            //temp.getTaskID();
             
-            Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
-            System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
+            //Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
+            //System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
 
             //RecordTest.MainTest();
             //ConstraintsTest.MainTest();
@@ -38,8 +38,8 @@ namespace CrawlerNameSpace
             //ResultTest.MainTest();
             //TaskStatusTest.MainTest();
             //ResourceContentTest.MainTest();
-            CategorizerTest.MainTest();
-            RankerTest.MainTest();
+            //CategorizerTest.MainTest();
+            //RankerTest.MainTest();
             ExtractorTest.MainTest();
         }
     }
