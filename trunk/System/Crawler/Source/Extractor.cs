@@ -14,6 +14,9 @@ namespace CrawlerNameSpace
         private static int SEMETRIC_LINE = 2;
         private static String LINK_ATTR = "href";
 
+        /**
+         * returns the link items from the given page
+         */ 
         public List<LinkItem> extractLinks(String url, String page)
         {
             List<LinkItem> list = new List<LinkItem>();
@@ -39,6 +42,10 @@ namespace CrawlerNameSpace
             return list;
         }
 
+        /**
+         * modifies the link-items to contain the nearby content foreach item, it assumes that
+         * the link-items already has been assigned to tag
+         */ 
         private void getText(List<LinkItem> links, String page)
         {
             foreach (LinkItem item in links)
@@ -60,6 +67,9 @@ namespace CrawlerNameSpace
             }
         }
 
+        /**
+         * returns string which doesnot contain html tags
+         */ 
         private String removeTags(String content)
         {
             bool blockStream = false;
@@ -76,6 +86,10 @@ namespace CrawlerNameSpace
             return newContent;
         }
 
+        /**
+         * modifies the link-items to contain the links, it assumes that every link-item has been
+         * already assigned to specific tag
+         */ 
         private void getLinks(List<LinkItem> links)
         {
             foreach (LinkItem link in links)
@@ -86,6 +100,9 @@ namespace CrawlerNameSpace
             }
         }
 
+        /**
+         * returns the link from the html-link attribute which given in the tag
+         */ 
         private String getLink(String tag)
         {
             String lowerTag = tag.ToLower();
@@ -110,9 +127,27 @@ namespace CrawlerNameSpace
             return linkCut.Trim();
         }
 
+        /**
+         * returns whether the specified link is to be considered as relative link to the parent
+         * page or not
+         */ 
         private bool isRelative(String link)
         {
-            return false;
+            String protocolFixed = link.Replace("://",":");
+            string[] buffer = protocolFixed.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            if (buffer.Length == 0) return true;
+
+            string[] suffix = new string[] {".html", ".php", ".jsp", ".htm"};
+
+            if(buffer.Length == 1)
+            {
+                foreach(string end in suffix)
+                {
+                    if(buffer[0].EndsWith(end)) return true;
+                }
+            }
+
+            return !Regex.IsMatch(buffer[0], @"\.[a-zA-Z]");
         }
 
     }
