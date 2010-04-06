@@ -61,6 +61,7 @@
     <Compile Include="Source\ResourceProcessorManager.cs" />
     <Compile Include="Tests\CategorizerTest.cs" />
     <Compile Include="Tests\ExtractorTest.cs" />
+    <Compile Include="Tests\FilterTest.cs" />
     <Compile Include="Tests\HttpResourceFetcherTest.cs" />
     <Compile Include="Tests\RankerTest.cs" />
     <Compile Include="Tests\ResourceContentTest.cs" />

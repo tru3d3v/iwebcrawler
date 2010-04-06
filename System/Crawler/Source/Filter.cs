@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
+using System.Text.RegularExpressions;
 
 namespace CrawlerNameSpace
 {
@@ -37,8 +38,9 @@ namespace CrawlerNameSpace
             foreach(String link in links)
             {
                 String canonizedLink = canonize(link);
-                if(constraints.isUrlValid(canonizedLink) == true && filtedLinks.Contains(canonizedLink) == false)
-                    filtedLinks.Add(canonizedLink);
+                if (canonizedLink.StartsWith(prefix))
+                    if(constraints.isUrlValid(canonizedLink) == true && filtedLinks.Contains(canonizedLink) == false)
+                        filtedLinks.Add(canonizedLink);
             }
             return filtedLinks;
         }
@@ -50,8 +52,12 @@ namespace CrawlerNameSpace
         {
             String modifiedLink = link.ToLower();
 
-            if (modifiedLink.StartsWith(prefix) != true)
-                modifiedLink = prefix + modifiedLink;
+            String[] prefixOfLink = modifiedLink.Split(":// ".Split(' '),StringSplitOptions.RemoveEmptyEntries);
+
+            if (prefixOfLink.Length!=2)
+            {
+                modifiedLink = prefix + "://" + modifiedLink;
+            }
 
             return modifiedLink;
         }
