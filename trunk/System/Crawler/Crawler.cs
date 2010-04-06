@@ -40,8 +40,8 @@ namespace CrawlerNameSpace
             //ResourceContentTest.MainTest();
             //CategorizerTest.MainTest();
             //RankerTest.MainTest();
-            //ExtractorTest.MainTest();
-            FilterTest.MainTest();
+            ExtractorTest.MainTest();
+            //FilterTest.MainTest();
         }
     }
 }
