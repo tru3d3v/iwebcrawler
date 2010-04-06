@@ -11,7 +11,7 @@ namespace CrawlerNameSpace
 {
     class Extractor
     {
-        private static int SEMETRIC_LINE = 2;
+        private static int SEMETRIC_LINE = 40;
         private static String LINK_ATTR = "href";
 
         /**
@@ -22,7 +22,7 @@ namespace CrawlerNameSpace
             List<LinkItem> list = new List<LinkItem>();
 
             // Find all matches in file.
-            MatchCollection reg = Regex.Matches(page, @"(<a.*?>.*?</a>)", 
+            MatchCollection reg = Regex.Matches(page, @"(<a[ \t\n].*?>.*?</a>)", 
                 RegexOptions.Singleline);
 
             // Loop over each match.
