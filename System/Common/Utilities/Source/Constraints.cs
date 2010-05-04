@@ -94,7 +94,7 @@ namespace CrawlerNameSpace.Utilities
         {
             try
             {
-                if (url.Contains('#') == true) return false;
+                if (url.Contains("#") == true) return false;
                 if (linkDepth != 0 && getUrlDepth(url) > linkDepth) return false;
                 if (allowUrlParameters != true && containsParameter(url) == true) return false;
 
