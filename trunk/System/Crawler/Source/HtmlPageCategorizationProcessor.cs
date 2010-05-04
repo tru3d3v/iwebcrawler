@@ -53,7 +53,7 @@ namespace CrawlerNameSpace
             List<String> filteredLinks = filter.filterLinks(links);
 
             //save all the results to Frontier
-            foreach (String link in links)
+            foreach (String link in filteredLinks)
             {
                 Url url = new Url(link, hashUrl(link), ranker.rankUrl(resource.getRankOfUrl(),
                                   resource.getResourceContent(), resource.getResourceUrl()));
