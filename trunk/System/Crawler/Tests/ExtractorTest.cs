@@ -46,7 +46,7 @@ namespace CrawlerNameSpace.Tests
         public void test2()
         {
             String contentOfNetex = getFileContent(@"..\..\..\..\Test\WebPages\netex.txt");
-            List<LinkItem> links = extractor.extractLinks("www.netex.mako.co.il", contentOfNetex);
+            List<LinkItem> links = extractor.extractLinks("http://www.netex.mako.co.il", contentOfNetex);
             writeContentToFile(@"..\..\..\..\Test\outputs\netexlinks.txt", links);
 
             Console.WriteLine(@"Links from www.netex.mako.co.il have been successfuly" + 
@@ -60,7 +60,13 @@ namespace CrawlerNameSpace.Tests
         public void test3()
         {
             String contentOfSimple = getFileContent(@"..\..\..\..\Test\WebPages\simplehtml.txt");
-            List<LinkItem> links = extractor.extractLinks("www.simplehtml.com", contentOfSimple);
+            List<LinkItem> links = extractor.extractLinks("www.simplehtml.com/", contentOfSimple);
+
+            Console.WriteLine("Links Has been Extracted: ://");
+            foreach(LinkItem link in links)
+            {
+                Console.WriteLine(" [] " + link.getLink());
+            }
 
             writeContentToFile(@"..\..\..\..\Test\outputs\simplehtmllinks.txt",links);
             Console.WriteLine(@"Links from www.simplehtml.com have been successfuly" +
@@ -74,7 +80,7 @@ namespace CrawlerNameSpace.Tests
         public void test4()
         {
             String contentOfYahoo = getFileContent(@"..\..\..\..\Test\WebPages\Yahoo.txt");
-            List<LinkItem> links = extractor.extractLinks("www.Yahoo.com", contentOfYahoo);
+            List<LinkItem> links = extractor.extractLinks("http://www.java2s.com/Code/CSharp/Database-ADO.net/DataSet.htm", contentOfYahoo);
 
             writeContentToFile(@"..\..\..\..\Test\outputs\yahoolinks.txt", links);
             Console.WriteLine(@"Links from www.Yahoo.com have been successfuly" +
@@ -88,11 +94,20 @@ namespace CrawlerNameSpace.Tests
         public void test5()
         {
             String contentOfNana= getFileContent(@"..\..\..\..\Test\WebPages\nana10.txt");
-            List<LinkItem> links = extractor.extractLinks("www.Nana10.co.il", contentOfNana);
+            List<LinkItem> links = extractor.extractLinks("http://www.nana10.co.il", contentOfNana);
 
             writeContentToFile(@"..\..\..\..\Test\outputs\nanalinks.txt", links);
             Console.WriteLine(@"Links from www.Nana10.co.il have been successfuly" +
                 @" writen in ..\..\..\..\Test\outputs\nanalinks.txt");
+        }
+
+        public void test6()
+        {
+            List<LinkItem> links = extractor.extractLinks("", "<a name=\"label\">Any content</a> ");
+            foreach (LinkItem item in links)
+            {
+                Console.WriteLine(item.getLink());
+            }
         }
 
         /**
@@ -125,7 +140,7 @@ namespace CrawlerNameSpace.Tests
             // *** Write to file ***
 
             // Specify file, instructions, and privelegdes
-            FileStream file = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write);
+            FileStream file = new FileStream(filename, FileMode.Truncate, FileAccess.Write);
 
             // Create a new stream to write to the file
             StreamWriter sw = new StreamWriter(file);
@@ -154,6 +169,7 @@ namespace CrawlerNameSpace.Tests
             testExtractor.test3();
             testExtractor.test4();
             testExtractor.test5();
+            //testExtractor.test6();
         }
     }
 }

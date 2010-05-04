@@ -22,7 +22,7 @@ namespace CrawlerNameSpace
             List<LinkItem> list = new List<LinkItem>();
 
             // Find all matches in file.
-            MatchCollection reg = Regex.Matches(page, @"(<a[ \t\n].*?>.*?</a>)", 
+            MatchCollection reg = Regex.Matches(page, @"(<[aA][ \t\n].*?>.*?</[aA]>)", 
                 RegexOptions.Singleline);
 
             // Loop over each match.
@@ -32,7 +32,8 @@ namespace CrawlerNameSpace
                 LinkItem item = new LinkItem();
                 item.setParent(url);
                 item.setTag(tagValue);
-                list.Add(item);
+                if(tagValue.Contains(LINK_ATTR) == true)
+                    list.Add(item);
             }
             // gets the text near each link
             getText(list, page);
@@ -95,7 +96,11 @@ namespace CrawlerNameSpace
             foreach (LinkItem link in links)
             {
                 String pageLink = getLink(link.getTag());
-                if (isRelative(pageLink)) link.setLink(link.getParentUrl() + pageLink);
+                if (isRelative(pageLink))
+                {
+                    if (pageLink.StartsWith("/")) pageLink = pageLink.Substring(1);
+                    link.setLink(link.getParentUrl() + pageLink);
+                }
                 else link.setLink(pageLink);
             }
         }
@@ -121,7 +126,7 @@ namespace CrawlerNameSpace
             for (int i = startIndex; i < lowerTag.Length; i++)
             {
                 if (lowerTag[i] == ' ' || lowerTag[i] == '\t' || lowerTag[i] == '\n' || lowerTag[i] == '>') break;
-                if (lowerTag[i] != '\"') linkCut += lowerTag[i];
+                if (lowerTag[i] != '\"') linkCut += tag[i];
             }
 
             return linkCut.Trim();
@@ -137,8 +142,9 @@ namespace CrawlerNameSpace
             string[] buffer = protocolFixed.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (buffer.Length == 0) return true;
 
-            string[] suffix = new string[] {".html", ".php", ".jsp", ".htm"};
+            string[] suffix = new string[] {".html", ".php", ".jsp", ".htm", ".asp", ".aspx"};
 
+            if (link.StartsWith("/")) return true;
             if(buffer.Length == 1)
             {
                 foreach(string end in suffix)
