@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CrawlerNameSpace.Utilities
 {
-    /*
+    /**
      * This Class represents a logic components which saves all
      * the data relating to specific category
      */
@@ -19,7 +19,7 @@ namespace CrawlerNameSpace.Utilities
         private List<String> keywordList;
         private int          confidenceLevel;
 
-        /*
+        /**
          * Constructor
          */
         public Category(String id, String pname, String name, List<String> keywords, int cl)
@@ -31,7 +31,7 @@ namespace CrawlerNameSpace.Utilities
             confidenceLevel = cl;
         }
 
-        /*
+        /**
          * This method returns the categoryID of the category
          */
         public String getCategoryID()
@@ -39,7 +39,7 @@ namespace CrawlerNameSpace.Utilities
             return categoryID;
         }
 
-        /*
+        /**
          * This method returns the parent name of the category
          */
         public String getParentName()
@@ -47,7 +47,7 @@ namespace CrawlerNameSpace.Utilities
             return parentName;
         }
 
-        /*
+        /**
          * This method returns the name of the category
          */
         public String getCatrgoryName()
@@ -55,7 +55,7 @@ namespace CrawlerNameSpace.Utilities
             return categoryName;
         }
 
-        /*
+        /**
          * This method returns the confidence level of the category
          */
         public int getConfidenceLevel()
@@ -63,7 +63,7 @@ namespace CrawlerNameSpace.Utilities
             return confidenceLevel;
         }
 
-        /*
+        /**
          * This method returns a list of the keywords of the category
          */
         public List<String> getKeywordList()
@@ -71,12 +71,13 @@ namespace CrawlerNameSpace.Utilities
             return keywordList;
         }
 
-        /*
+        /**
          * This method returns the match level of the given wordlist according to a
          * certain formula.
          */
-        public int getMatchLevel(List<String> wordList) 
+        public int getMatchLevel(String wordList) 
         {
+           /*
             long n = wordList.Count;
             int  c = keywordList.Count;
             double   threshold = ((n * BETA) / c);
@@ -85,7 +86,7 @@ namespace CrawlerNameSpace.Utilities
 
             //keywordList and wordList are copied to a new arrays so that we won't change them(the originals)
             List<String> keywordListCopied = new List<string>(keywordList);
-            List<String> wordListCopied    = new List<string>(wordList);
+            List<String> wordListCopied    = new List<string>(wordList.);
 
             //Transforming the keywordListCopied and wordListCopied to canonical form
             keywordListCopied.ForEach(canonicForm);
@@ -118,10 +119,11 @@ namespace CrawlerNameSpace.Utilities
             }
 
             return (int)((sumOfhistogram * (1.0 / n) * (ALPHA))*100);
-            
+            */
+            return 100;
         }
 
-        /*
+        /**
          * This method returns the canonical form of the given string.
          * Canonical form means all letters are low cased
          */
@@ -130,7 +132,7 @@ namespace CrawlerNameSpace.Utilities
             text=text.ToLowerInvariant();
         }
 
-        /*
+        /**
          * This method returns all the synonymous words to the given word string,
          * the method returns them as a list of strings.
          */

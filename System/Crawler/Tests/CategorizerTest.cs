@@ -7,8 +7,7 @@ namespace CrawlerNameSpace.Tests
 {
     public class CategorizerTest
     {
-        private ResourceContent resource = new ResourceContent("www.ynet." +
-            "co.il", ResourceType.HtmlResource, "This is an example test content of this resource", 200);
+        private String resource = "This is an example test content of this resource";
 
         private Categorizer testCategorizer= new Categorizer(new List<Category>());
 
@@ -17,14 +16,14 @@ namespace CrawlerNameSpace.Tests
          */
         public void Test1()
         {
-            testCategorizer.classifyContent(resource);
+            testCategorizer.classifyContent(resource,"www.test.com");
             if (testCategorizer.getSuitableCategoryName(resource).Contains( "webpage"))
             {
-                Console.WriteLine("getSuitableCategoryName(resource) PASSED");
+                Console.WriteLine("getSuitableCategoryName(String resource) PASSED");
             }
             else
             {
-                Console.WriteLine("getSuitableCategoryName(resource) FAILED");
+                Console.WriteLine("getSuitableCategoryName(String resource) FAILED");
             }
         }
 
@@ -36,11 +35,11 @@ namespace CrawlerNameSpace.Tests
             List<String> categoryName = testCategorizer.getSuitableCategoryName(resource);
             if (testCategorizer.getMatchLevel(resource, categoryName[0]) == 100)
             {
-                Console.WriteLine("getMatchLevel(ResourceContent resource,String categoryName) PASSED");
+                Console.WriteLine("getMatchLevel(String resource, String categoryName) PASSED");
             }
             else
             {
-                Console.WriteLine("getMatchLevel(ResourceContent resource,String categoryName) FAILED");
+                Console.WriteLine("getMatchLevel(String resource, String categoryName) FAILED");
             }
         }
 

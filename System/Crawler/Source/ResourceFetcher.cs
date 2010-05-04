@@ -21,7 +21,7 @@ namespace CrawlerNameSpace
          * This method tries to fetch the given url from the web and returns the resourceContent 
          * of the url.
          */
-         ResourceContent fetch(String url, int timeOut);
+         ResourceContent fetch(String url, int timeOut, int rankOfUrl);
 
     }
 }

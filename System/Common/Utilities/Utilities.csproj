@@ -37,10 +37,12 @@
   <ItemGroup>
     <Compile Include="Source\Category.cs" />
     <Compile Include="Source\Constraints.cs" />
+    <Compile Include="Source\Initializer.cs" />
     <Compile Include="Source\Record.cs" />
     <Compile Include="Source\RegeneratableRecord.cs" />
     <Compile Include="Source\Result.cs" />
     <Compile Include="Source\TaskStatus.cs" />
+    <Compile Include="Source\Url.cs" />
     <Compile Include="Tests\ConstraintsTest.cs" />
     <Compile Include="Tests\CategoryTest.cs" />
     <Compile Include="Tests\RecordTest.cs" />

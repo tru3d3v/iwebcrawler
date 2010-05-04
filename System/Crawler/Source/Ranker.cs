@@ -11,7 +11,7 @@ namespace CrawlerNameSpace
     class Ranker
     {
         private Categorizer categorizer;
-        private int defualtRank = 0;
+        private  const int defualtRank = 0;
 
         public Ranker(Categorizer categorizer)
         {
@@ -19,9 +19,9 @@ namespace CrawlerNameSpace
         }
 
         /**
-         * This method calculates the rank of a given resource and returns it.
+         * This method calculates the rank of a given url and returns it.
          */
-        public int rankUrl(int parentRank, String parentContent, ResourceContent resource)
+        public int rankUrl(int parentRank, String parentContent, String url)
         {
             return defualtRank;
         }
