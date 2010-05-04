@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
+using System.IO;
 
 namespace CrawlerNameSpace
 {
@@ -87,7 +88,9 @@ namespace CrawlerNameSpace
          */
         public void deployResourceToStorage(Result result)
         {
-            
+            StreamWriter sw = new StreamWriter("Storage.txt", true);
+            sw.WriteLine(result.ToString());
+            sw.Close();
         }
 
         /*
@@ -97,7 +100,9 @@ namespace CrawlerNameSpace
          */
         public void deployLinksToFrontier(Url urlProcessed)
         {
-            
+            StreamWriter sw = new StreamWriter("Frontier.txt", true);
+            sw.WriteLine(urlProcessed.ToString());
+            sw.Close();
         }
 
         /*

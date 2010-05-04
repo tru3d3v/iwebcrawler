@@ -50,8 +50,7 @@ namespace CrawlerNameSpace
          */ 
         public String canonize(String link)
         {
-            String modifiedLink = new String(link);
-
+            String modifiedLink = (String)link.Clone();
             String[] prefixOfLink = modifiedLink.Split(":// ".Split(' '),StringSplitOptions.RemoveEmptyEntries);
 
             if (prefixOfLink.Length!=2)

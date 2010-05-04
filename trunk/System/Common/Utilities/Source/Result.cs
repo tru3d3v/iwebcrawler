@@ -77,5 +77,14 @@ namespace CrawlerNameSpace.Utilities
         {
             return trustMeter;
         }
+
+        /**
+         * This method overrides the ToString method.
+         */
+        public override string ToString()
+        {
+            return " Result ID = [" + resultID + "]\n URL: " + url + ", Rank: " + rank + "\n Trust: " + trustMeter 
+                + " Category ID : " + categoryID + "\n";
+        }
     }
 }
