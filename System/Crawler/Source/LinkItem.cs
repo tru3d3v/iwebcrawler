@@ -26,19 +26,14 @@ namespace CrawlerNameSpace
          */ 
         public void setParent(String url)
         {
-            String rootUrl = "";
-            string[] buffer = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            int depth = Math.Max(1, buffer.Length - 1);
-            if (buffer.Length == 0) depth = 0;
+            string rootUrl = "";
+            string lowerUrl = url.ToLower();
+            if (lowerUrl.StartsWith("http://")) url = url.Remove(0, 7);
 
-            bool firstToken = true;
-            for (int i = 0; i < depth; i++ )
-            {
-                if (firstToken == false) rootUrl += '/';
-                rootUrl += buffer[i];
-                firstToken = false;
-            }
+            if (url.LastIndexOf('/') != -1) rootUrl = url.Substring(0, url.LastIndexOf('/'));
+            else rootUrl = url;
 
+            rootUrl = "http://" + rootUrl;
             if (rootUrl.EndsWith("/")) Parent = rootUrl;
             else Parent = rootUrl + '/';
         }
