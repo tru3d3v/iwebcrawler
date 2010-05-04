@@ -7,7 +7,7 @@ namespace CrawlerNameSpace.Tests
     public class ResourceContentTest
     {
         ResourceContent resource = new ResourceContent("www.ynet.co.il", ResourceType.HtmlResource, "Please click the next"
-            + " buttom to start crawling !!", 200);
+            + " buttom to start crawling !!", 200, 0);
 
         /**
          * This method tests the getResourceUrl() method.

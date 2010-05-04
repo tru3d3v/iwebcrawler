@@ -8,19 +8,19 @@ namespace CrawlerNameSpace.Tests
     class RankerTest
     {
         private ResourceContent resource = new ResourceContent("www.ynet." +
-            "co.il", ResourceType.HtmlResource, "This is an example test content of this resource", 200);
+            "co.il", ResourceType.HtmlResource, "This is an example test content of this resource", 200, 0);
 
         private Ranker testRanker = new Ranker(new Categorizer(new List<Category>()));
 
         public void Test1()
         {
-            if (testRanker.rankUrl(0, resource.getResourceContent(), resource) == 0)
+            if (testRanker.rankUrl(0, resource.getResourceContent(), resource.getResourceUrl()) == 0)
             {
-                Console.WriteLine("rankUrl(int parentRank, String parentContent, ResourceContent resource) PASSED");
+                Console.WriteLine("rankUrl(int parentRank, String parentContent, String url) PASSED");
             }
             else
             {
-                Console.WriteLine("rankUrl(int parentRank, String parentContent, ResourceContent resource) FAILED");
+                Console.WriteLine("rankUrl(int parentRank, String parentContent, String url) FAILED");
                 Console.WriteLine("Should have returned 0");
             }
         }

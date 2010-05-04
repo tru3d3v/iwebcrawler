@@ -16,29 +16,29 @@ namespace CrawlerNameSpace
         
         //This is a dictionary map that contains the categoryName, as a key, and
         //its list of urls that belong to that category.
-        private Dictionary<String,List<ResourceContent>> urlsMap;
+        private Dictionary<String,List<String>> urlsMap;
 
         public Categorizer(List<Category> list)
         {
             categoryList = list;
-            urlsMap = new Dictionary<string,List<ResourceContent>>();
-            urlsMap.Add("webpage",new List<ResourceContent>());
+            urlsMap = new Dictionary<string,List<String>>();
+            urlsMap.Add("webpage",new List<String>());
         }
 
         /**
          * This method recieves a word list which contains the content of the 
          * resource(html page) and then classifies it to the suitable category.
          */
-        public void classifyContent(ResourceContent resource)
+        public void classifyContent(String resource,String url)
         {
-            urlsMap["webpage"].Add(resource);
+            urlsMap["webpage"].Add(url);
         }
 
         /**
          * This method finds and returns the names of the categories to whom
          * the given resource is belonged.
          */
-        public List<String> getSuitableCategoryName(ResourceContent resource)
+        public List<String> getSuitableCategoryName(String resource)
         {
             List<String> suitableCategories = new List<string>();
             suitableCategories.Add("webpage");
@@ -48,7 +48,7 @@ namespace CrawlerNameSpace
         /**
          * This method returns the match level of the given resource to the given category.
          */
-        public int getMatchLevel(ResourceContent resource, String categoryName)
+        public int getMatchLevel(String resource, String categoryName)
         {
             if (urlsMap.ContainsKey(categoryName.ToLower()))
             {
@@ -58,7 +58,6 @@ namespace CrawlerNameSpace
             {
                 return 0;
             }
-           
         }
     }
 }

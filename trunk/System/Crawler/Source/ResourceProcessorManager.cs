@@ -16,7 +16,7 @@ namespace CrawlerNameSpace
         int failure, success;
 
         /**
-         * Constracts a new ResourceProcessorManager with an empty processors
+         * Constructs a new ResourceProcessorManager with an empty processors
          */
         public ResourceProcessorManager()
         {

@@ -7,7 +7,7 @@ using System.Net;
 
 namespace CrawlerNameSpace
 {
-    /*
+    /**
      * This class responsible to fetch pages.
      * It fetches only by http.
      */
@@ -30,7 +30,7 @@ namespace CrawlerNameSpace
          * if it does not succeed in fetching a page for some reason it creates a resourceContent
          * with a null content
          */
-        public ResourceContent fetch(String url, int timeOut)
+        public ResourceContent fetch(String url, int timeOut, int rankOfUrl)
         {
             ResourceContent resource;
             // used to build entire input
@@ -44,7 +44,7 @@ namespace CrawlerNameSpace
             {
                 if (!(canFetch(url)))
                 {
-                    resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE);
+                    resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE, rankOfUrl);
                     return resource;
                 }
 
@@ -81,13 +81,13 @@ namespace CrawlerNameSpace
                 while (count > 0); // any more data to read?
 
                 // print out page source
-                resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), VALID_CODE);
+                resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), VALID_CODE, rankOfUrl);
                 return resource;
             }
             catch
             {
                 //200 is the success returnCode and 400 is failure returnCode
-                resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE);
+                resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE, rankOfUrl);
                 return resource;
             }
         }

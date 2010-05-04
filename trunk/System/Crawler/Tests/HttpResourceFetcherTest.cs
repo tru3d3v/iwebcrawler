@@ -16,7 +16,7 @@ namespace CrawlerNameSpace.Tests
         {
             Console.WriteLine("Testing correct url:");
             Console.WriteLine("Fetching the url: http://www.example-code.com/csharp/spider.asp");
-            ResourceContent resource = new HttpResourceFetcher().fetch("http://www.example-code.com/csharp/spider.asp", 10000);
+            ResourceContent resource = new HttpResourceFetcher().fetch("http://www.example-code.com/csharp/spider.asp", 10000, 0);
             System.Console.WriteLine("The returnCode of the request is:  " +  resource.getReturnCode());
             Console.WriteLine("Content of the fetched page:");
             Console.WriteLine(resource.getResourceContent());
@@ -38,7 +38,7 @@ namespace CrawlerNameSpace.Tests
         {
             Console.WriteLine("Trying to fetch using ftp:");
             Console.WriteLine("Fetching the url:ftp://ftp.site.com/dir1/dir2/file.ext.");
-            ResourceContent resource1 = new HttpResourceFetcher().fetch("ftp://ftp.site.com/dir1/dir2/file.ext.",10000);
+            ResourceContent resource1 = new HttpResourceFetcher().fetch("ftp://ftp.site.com/dir1/dir2/file.ext.",10000, 0);
             Console.WriteLine("The returnCode of the request is: {0} ", resource1.getReturnCode());
             Console.WriteLine("The content of the returned resource is:" + resource1.getResourceContent());
             if ((resource1.getReturnCode()==IN_VALID_CODE)&&(resource1.getResourceContent()==null))
@@ -58,7 +58,7 @@ namespace CrawlerNameSpace.Tests
         {
             Console.WriteLine("Trying to fetch corrupted url");
             Console.WriteLine("Fetching the url :http://www.adamshobash.com");
-            ResourceContent resource2 = new HttpResourceFetcher().fetch("http://www.adamshobash.com",10000);
+            ResourceContent resource2 = new HttpResourceFetcher().fetch("http://www.adamshobash.com",10000, 0);
             Console.WriteLine("The returnCode of the request is: " + resource2.getReturnCode());
             Console.WriteLine("The content of the returned resource is:", resource2.getResourceContent());
             if ((resource2.getReturnCode()==IN_VALID_CODE)&&(resource2.getResourceContent()==null))
@@ -78,7 +78,7 @@ namespace CrawlerNameSpace.Tests
         {
             Console.WriteLine("Trying to fetch using small timeout: ");
             Console.WriteLine("Fetching the url: http://www.example-code.com/csharp/spider.asp with timeout =1ms");
-            ResourceContent resource3 = new HttpResourceFetcher().fetch("http://www.example-code.com/csharp/spider.asp", 1);
+            ResourceContent resource3 = new HttpResourceFetcher().fetch("http://www.example-code.com/csharp/spider.asp", 1, 0);
             Console.WriteLine("The returnCode of the request is: " + resource3.getReturnCode());
             Console.WriteLine("The content of the returned resource is:", resource3.getResourceContent());
             if ((resource3.getReturnCode() == IN_VALID_CODE) && (resource3.getResourceContent() == null))

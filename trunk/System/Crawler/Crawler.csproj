@@ -52,6 +52,7 @@
     <Compile Include="Source\Categorizer.cs" />
     <Compile Include="Source\Extractor.cs" />
     <Compile Include="Source\Filter.cs" />
+    <Compile Include="Source\HtmlPageCategorizationProcessor.cs" />
     <Compile Include="Source\HttpResourceFetcher.cs" />
     <Compile Include="Source\LinkItem.cs" />
     <Compile Include="Source\Ranker.cs" />

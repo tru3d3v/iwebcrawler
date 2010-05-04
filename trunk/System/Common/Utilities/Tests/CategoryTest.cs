@@ -96,10 +96,10 @@ namespace CrawlerNameSpace.Utilities.Tests
             Console.WriteLine("Association football or soccer, is a team sport played between two " +
             "teams of eleven players ball. sport grass  a goal the ball goal. play,"+
             "the goalkeepers  players ");
-            List<String> checkWordList = new List<string>(("Association football or soccer, " + 
+            String checkWordList = "Association football or soccer, " + 
                 "is a team sport played between" +
                 "two teams of eleven players ball. sport grass  a goal the ball goal." + 
-                " play, the goalkeepers  players").Split(new char[] { ' ', '.', ',' }));
+                " play, the goalkeepers  players";
             Console.WriteLine("is: " + testCategory.getMatchLevel(checkWordList));
         }
 

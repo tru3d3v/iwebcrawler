@@ -17,7 +17,7 @@ namespace CrawlerNameSpace.Utilities
      * This class is immutable class which represents the result of crawled url, 
      * so it contains matching data between the url and it's suitable category and rank.
      */ 
-    class Result
+    public class Result
     {
         // private members which contains the url and it's suitable category, it also
         // conatins two metreics the rank which stands for the page rank (used actually for
