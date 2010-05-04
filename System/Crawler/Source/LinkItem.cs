@@ -12,7 +12,7 @@ namespace CrawlerNameSpace
     {
         // These attributes saves the link item status, it maintains the tag, link, 
         // parent-url and text.
-        private String Parent, Tag, Link, Text;
+        private String Parent, Tag, Link, Text, domainUrl;
 
         /**
          * Constructs a new LinkItem
@@ -32,6 +32,13 @@ namespace CrawlerNameSpace
 
             if (url.LastIndexOf('/') != -1) rootUrl = url.Substring(0, url.LastIndexOf('/'));
             else rootUrl = url;
+
+            //Console.WriteLine(" [-] Index Of " + url.IndexOf('/'));
+            //if (url.IndexOf('/') != -1)  Console.WriteLine(" [-] SubStr: " + url.Substring(0, url.IndexOf('/')));
+
+            if (url.IndexOf('/') != -1) domainUrl = url.Substring(0, url.IndexOf('/')) + '/';
+            else domainUrl = url + '/';
+            domainUrl = "http://" + domainUrl;
 
             rootUrl = "http://" + rootUrl;
             if (rootUrl.EndsWith("/")) Parent = rootUrl;
@@ -60,6 +67,14 @@ namespace CrawlerNameSpace
         public void setLink(String link)
         {
             Link = link;
+        }
+
+        /**
+         * returns the domain of the inserted url
+         */
+        public String getDomainUrl()
+        {
+            return domainUrl;
         }
 
         /**

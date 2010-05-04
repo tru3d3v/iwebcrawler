@@ -98,8 +98,17 @@ namespace CrawlerNameSpace
                 String pageLink = getLink(link.getTag());
                 if (isRelative(pageLink))
                 {
-                    if (pageLink.StartsWith("/")) pageLink = pageLink.Substring(1);
-                    link.setLink(link.getParentUrl() + pageLink);
+                    if (pageLink.StartsWith("/"))
+                    {
+                        pageLink = pageLink.Substring(1);
+                        LinkItem temp = new LinkItem();
+                        temp.setParent(link.getParentUrl());
+                        link.setLink(temp.getDomainUrl() + pageLink);
+                    }
+                    else
+                    {
+                        link.setLink(link.getParentUrl() + pageLink);
+                    }
                 }
                 else link.setLink(pageLink);
             }
