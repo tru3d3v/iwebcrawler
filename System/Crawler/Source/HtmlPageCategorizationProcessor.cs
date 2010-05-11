@@ -30,7 +30,7 @@ namespace CrawlerNameSpace
             extractor = new Extractor();
             categorizer = new Categorizer(initializer.getCategoryList());
             ranker = new Ranker(categorizer);
-            filter = new Filter("Http://",initializer.getContraints());
+            filter = new Filter("http://",initializer.getContraints());
         }
         /**
          * This method tries to process the given content assuming that the given content
@@ -44,25 +44,26 @@ namespace CrawlerNameSpace
 
             //transfer the list "listOfLinks" to list of strings
             List<String> links = new List<string>(); 
+            
             foreach(LinkItem item in listOfLinks )
             {
+                //Filter the links and return only links that can be crawled
+                links = new List<String>();
                 links.Add(item.getLink());
-            }
+                List<String> filteredLinks = filter.filterLinks(links);
 
-            //Filter the links and return only links that can be crawled
-            List<String> filteredLinks = filter.filterLinks(links);
-
-            //save all the results to Frontier
-            foreach (String link in filteredLinks)
-            {
-                Url url = new Url(link, hashUrl(link), ranker.rankUrl(resource.getRankOfUrl(),
-                                  resource.getResourceContent(), resource.getResourceUrl()));
-                deployLinksToFrontier(url);
+                //If filteredLinks is not empty 
+                if (filteredLinks.Count > 0)
+                {
+                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource.getRankOfUrl(),
+                      resource.getResourceContent(), filteredLinks[0]));
+                    deployLinksToFrontier(url);
+                }
             }
 
             //Ascribe the url to all the categories it is belonged to.
             categorizer.classifyContent(resource.getResourceContent(), resource.getResourceUrl());
-            List<String> categories = categorizer.getSuitableCategoryName(resource.getResourceContent());
+            List<String> categories = categorizer.getSuitableCategoryName(resource.getResourceContent(),resource.getResourceUrl());
 
             //Save all the results to Storage
             foreach (String category in categories)
