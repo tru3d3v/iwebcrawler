@@ -42,7 +42,8 @@ namespace CrawlerNameSpace
             //RankerTest.MainTest();
             //ExtractorTest.MainTest();
             //FilterTest.MainTest();
-            HttpPageCategorizationProcessorTest.MainTest();
+            //HttpPageCategorizationProcessorTest.MainTest();
+            WorkerTest.MainTest();
         }
     }
 }
