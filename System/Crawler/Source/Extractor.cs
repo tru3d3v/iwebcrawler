@@ -101,9 +101,13 @@ namespace CrawlerNameSpace
                     if (pageLink.StartsWith("/"))
                     {
                         pageLink = pageLink.Substring(1);
-                        LinkItem temp = new LinkItem();
-                        temp.setParent(link.getParentUrl());
-                        link.setLink(temp.getDomainUrl() + pageLink);
+                        string temp = "";
+                        if (link.getParentUrl().ToLower().StartsWith("http://")) temp = link.getParentUrl().Substring(7);
+                        string[] cuts = temp.Split('/');
+                        if (cuts.Length == 1) temp = temp + '/';
+                        else temp = cuts[0] + '/';
+                        temp = "http://" + temp;
+                        link.setLink(temp + pageLink);
                     }
                     else
                     {
@@ -135,7 +139,7 @@ namespace CrawlerNameSpace
             for (int i = startIndex; i < lowerTag.Length; i++)
             {
                 if (lowerTag[i] == ' ' || lowerTag[i] == '\t' || lowerTag[i] == '\n' || lowerTag[i] == '>') break;
-                if (lowerTag[i] != '\"') linkCut += tag[i];
+                if (lowerTag[i] != '\"' && lowerTag[i] != '\'') linkCut += tag[i];
             }
 
             return linkCut.Trim();

@@ -22,7 +22,7 @@ namespace CrawlerNameSpace
         public FetcherManager()
         {
             resourceFetchers = new Dictionary<string, ResourceFetcher>();
-            timeOut = 1000;
+            timeOut = 5000;
         }
 
         /**
@@ -49,8 +49,8 @@ namespace CrawlerNameSpace
          */ 
         public void removeProtocol(String protocolId)
         {
-            if (resourceFetchers.ContainsKey(procId) == true)
-                resourceFetchers.Remove(procId);
+            if (resourceFetchers.ContainsKey(protocolId) == true)
+                resourceFetchers.Remove(protocolId);
         }
 
         /**
@@ -65,7 +65,7 @@ namespace CrawlerNameSpace
             {
                 if (resourceFetchers[protcolId].canFetch(url) == true)
                 {
-                    return resourceFetchers[protocolId].fetch(url);
+                    return resourceFetchers[protcolId].fetch(url, timeOut, 0);
                 }
             }
             return null;

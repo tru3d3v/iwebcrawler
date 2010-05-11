@@ -84,8 +84,9 @@ namespace CrawlerNameSpace
                 resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), VALID_CODE, rankOfUrl);
                 return resource;
             }
-            catch
+            catch(Exception e)
             {
+                System.Console.WriteLine("[Fetch Error] " + e);
                 //200 is the success returnCode and 400 is failure returnCode
                 resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE, rankOfUrl);
                 return resource;

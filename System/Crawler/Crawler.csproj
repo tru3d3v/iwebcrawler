@@ -51,6 +51,7 @@
     <Compile Include="Crawler.cs" />
     <Compile Include="Source\Categorizer.cs" />
     <Compile Include="Source\Extractor.cs" />
+    <Compile Include="Source\FetcherManager.cs" />
     <Compile Include="Source\Filter.cs" />
     <Compile Include="Source\HtmlPageCategorizationProcessor.cs" />
     <Compile Include="Source\HttpResourceFetcher.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Tests\HttpResourceFetcherTest.cs" />
     <Compile Include="Tests\RankerTest.cs" />
     <Compile Include="Tests\ResourceContentTest.cs" />
+    <Compile Include="Tests\WorkerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
