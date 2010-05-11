@@ -16,33 +16,26 @@ namespace CrawlerNameSpace.Tests
          */
         public void Test1()
         {
-            testCategorizer.classifyContent(resource,"www.test.com");
-            if (testCategorizer.getSuitableCategoryName(resource).Contains( "webpage"))
+            List<Result> results = testCategorizer.classifyContent(resource,"www.test.com");
+            Boolean passed = false;
+
+            foreach (Result result in results)
             {
-                Console.WriteLine("getSuitableCategoryName(String resource) PASSED");
+                if (result.getCategoryID() == "0")
+                {
+                    passed = true;
+                }
+            }
+            
+            if (passed)
+            {
+                Console.WriteLine("classifyContent(String resource,String url) PASSED");
             }
             else
             {
-                Console.WriteLine("getSuitableCategoryName(String resource) FAILED");
+                Console.WriteLine("classifyContent(String resource,String url) FAILED");
             }
         }
-
-        /**
-         * This method tests getMatchLevel(ResourceContent resource,String categoryName) method.
-         */
-        public void Test2()
-        {
-            List<String> categoryName = testCategorizer.getSuitableCategoryName(resource);
-            if (testCategorizer.getMatchLevel(resource, categoryName[0]) == 100)
-            {
-                Console.WriteLine("getMatchLevel(String resource, String categoryName) PASSED");
-            }
-            else
-            {
-                Console.WriteLine("getMatchLevel(String resource, String categoryName) FAILED");
-            }
-        }
-
         /**
          * This method is the main test that gathers all the tests.
          */
@@ -50,7 +43,6 @@ namespace CrawlerNameSpace.Tests
         {
             CategorizerTest categorizerTest = new CategorizerTest();
             categorizerTest.Test1();
-            categorizerTest.Test2();
         }
 
 

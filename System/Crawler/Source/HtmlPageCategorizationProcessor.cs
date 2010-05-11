@@ -40,15 +40,12 @@ namespace CrawlerNameSpace
         {
             List<LinkItem> listOfLinks;
             //extract all the links in page
-            listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent());
-
-            //transfer the list "listOfLinks" to list of strings
-            List<String> links = new List<string>(); 
+            listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent()); 
             
             foreach(LinkItem item in listOfLinks )
             {
                 //Filter the links and return only links that can be crawled
-                links = new List<String>();
+                List<String>links = new List<String>();
                 links.Add(item.getLink());
                 List<String> filteredLinks = filter.filterLinks(links);
 
@@ -62,14 +59,14 @@ namespace CrawlerNameSpace
             }
 
             //Ascribe the url to all the categories it is belonged to.
-            categorizer.classifyContent(resource.getResourceContent(), resource.getResourceUrl());
-            List<String> categories = categorizer.getSuitableCategoryName(resource.getResourceContent());
+            List<Result> classifiedResults = categorizer.classifyContent(resource.getResourceContent(),
+                                                                            resource.getResourceUrl());
 
             //Save all the results to Storage
-            foreach (String category in categories)
+            foreach (Result classifiedResult in classifiedResults)
             {
-                Result result = new Result("0", resource.getResourceUrl(),"0",
-                            resource.getRankOfUrl(), categorizer.getMatchLevel(resource.getResourceContent(),category));
+                Result result = new Result("0", classifiedResult.getUrl(),classifiedResult.getCategoryID(),
+                            resource.getRankOfUrl(), classifiedResult.getTrustMeter());
                 deployResourceToStorage(result);
             }
         }
