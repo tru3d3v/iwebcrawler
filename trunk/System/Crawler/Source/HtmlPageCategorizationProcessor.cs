@@ -23,14 +23,16 @@ namespace CrawlerNameSpace
         private Categorizer categorizer;
         private Ranker ranker;
         private Filter filter;
+        private Queue<Url> queueFronier;
 
 
-        public HtmlPageCategorizationProcessor(Initializer initializer)
+        public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier)
         {
             extractor = new Extractor();
             categorizer = new Categorizer(initializer.getCategoryList());
             ranker = new Ranker(categorizer);
             filter = new Filter("http://",initializer.getContraints());
+            queueFronier = frontier;
         }
         /**
          * This method tries to process the given content assuming that the given content
@@ -98,10 +100,12 @@ namespace CrawlerNameSpace
          */
         public void deployLinksToFrontier(Url urlProcessed)
         {
-            StreamWriter sw = new StreamWriter("Frontier.txt", true);
+            /*StreamWriter sw = new StreamWriter("Frontier.txt", true);
             string temp = urlProcessed.ToString().Replace("[-]", " " + System.Environment.NewLine);
             sw.WriteLine(temp);
             sw.Close();
+            */
+            queueFronier.Enqueue(urlProcessed); 
         }
 
         /*
