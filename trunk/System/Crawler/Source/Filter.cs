@@ -38,7 +38,7 @@ namespace CrawlerNameSpace
             foreach(String link in links)
             {
                 String canonizedLink = canonize(link);
-                if (canonizedLink.StartsWith(prefix))
+                if (canonizedLink.ToLower().StartsWith(prefix.ToLower()))
                     if(constraints.isUrlValid(canonizedLink) == true && filtedLinks.Contains(canonizedLink) == false)
                         filtedLinks.Add(canonizedLink);
             }
@@ -53,11 +53,10 @@ namespace CrawlerNameSpace
             String modifiedLink = (String)link.Clone();
             String[] prefixOfLink = modifiedLink.Split(":// ".Split(' '),StringSplitOptions.RemoveEmptyEntries);
 
-            if (prefixOfLink.Length!=2)
+            if (prefixOfLink.Length != 2)
             {
                 modifiedLink = prefix + "://" + modifiedLink;
             }
-
             return modifiedLink;
         }
     }

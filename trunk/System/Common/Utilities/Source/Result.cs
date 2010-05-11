@@ -83,8 +83,8 @@ namespace CrawlerNameSpace.Utilities
          */
         public override string ToString()
         {
-            return " Result ID = [" + resultID + "]\n URL: " + url + ", Rank: " + rank + "\n Trust: " + trustMeter 
-                + " Category ID : " + categoryID + "\n";
+            return " Result ID = [" + resultID + "][-] URL: " + url + ", Rank: " + rank + "[-] Trust: " + trustMeter 
+                + " Category ID : " + categoryID + "[-]";
         }
     }
 }

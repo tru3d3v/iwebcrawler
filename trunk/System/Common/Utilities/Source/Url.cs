@@ -9,19 +9,21 @@ namespace CrawlerNameSpace.Utilities
      */
     public class Url
     {
-        private String url;
+        private String url, domain;
         
         //hashcode represents the hashcode of the url.
-        private int hashcode;
+        private int hashcode, domainHash;
 
         //rank contains the rank given to the url.
         private int rank;
 
-        public Url(String _url, int _hashcode, int _rank)
+        public Url(String _url, int _hashcode, int _rank, String _domain, int _domainHash)
         {
-            url = _url;
-            hashcode = _hashcode;
-            rank = _rank;
+            url        = _url;
+            hashcode   = _hashcode;
+            rank       = _rank;
+            domain     = _domain;
+            domainHash = _domainHash;
         }
 
         /**
@@ -33,12 +35,29 @@ namespace CrawlerNameSpace.Utilities
         }
 
         /**
+         * This method returns the url.
+         */
+        public String getDomain()
+        {
+            return domain;
+        }
+
+        /**
          * This method returns the hashcode of the url.
          */
-        public int getHashCode()
+        public int getUrlHashCode()
         {
             return hashcode;
         }
+
+        /**
+         * This method returns the hashcode of the url.
+         */
+        public int getDomainHashCode()
+        {
+            return domainHash;
+        }
+
 
         /**
          * This method returns the rank of the url.
@@ -54,8 +73,9 @@ namespace CrawlerNameSpace.Utilities
         public override string ToString()
         {
             String urlString;
-            urlString = "Url is : " + url + "|HashCode of the url is : " +
-                       hashcode + "|Rank of url is : " + rank;
+            urlString = "Url is : " + url + "[-]HashCode of the url is : " +
+                       hashcode + "[-]Rank of url is : " + rank + "[-]Domain Url : " + 
+                       domain + "[-]HashCode of the domain is : " + domainHash + "[-]";
             return urlString;
         }
 

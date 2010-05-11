@@ -56,21 +56,20 @@ namespace CrawlerNameSpace
                 if (filteredLinks.Count > 0)
                 {
                     Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource.getRankOfUrl(),
-                      resource.getResourceContent(), filteredLinks[0]));
+                      resource.getResourceContent(), filteredLinks[0]), item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
                 }
             }
 
             //Ascribe the url to all the categories it is belonged to.
             categorizer.classifyContent(resource.getResourceContent(), resource.getResourceUrl());
-            List<String> categories = categorizer.getSuitableCategoryName(resource.getResourceContent(),resource.getResourceUrl());
+            List<String> categories = categorizer.getSuitableCategoryName(resource.getResourceContent());
 
             //Save all the results to Storage
             foreach (String category in categories)
             {
                 Result result = new Result("0", resource.getResourceUrl(),"0",
-                            resource.getRankOfUrl(), 
-                            categorizer.getMatchLevel(resource.getResourceContent(),category));
+                            resource.getRankOfUrl(), categorizer.getMatchLevel(resource.getResourceContent(),category));
                 deployResourceToStorage(result);
             }
         }
@@ -90,7 +89,8 @@ namespace CrawlerNameSpace
         public void deployResourceToStorage(Result result)
         {
             StreamWriter sw = new StreamWriter("Storage.txt", true);
-            sw.WriteLine(result.ToString());
+            string temp = result.ToString().Replace("[-]", " " + System.Environment.NewLine);
+            sw.WriteLine(temp);
             sw.Close();
         }
 
@@ -102,7 +102,8 @@ namespace CrawlerNameSpace
         public void deployLinksToFrontier(Url urlProcessed)
         {
             StreamWriter sw = new StreamWriter("Frontier.txt", true);
-            sw.WriteLine(urlProcessed.ToString());
+            string temp = urlProcessed.ToString().Replace("[-]", " " + System.Environment.NewLine);
+            sw.WriteLine(temp);
             sw.Close();
         }
 
