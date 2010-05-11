@@ -60,6 +60,7 @@
     <Compile Include="Source\ResourceFetcher.cs" />
     <Compile Include="Source\ResourceProcessor.cs" />
     <Compile Include="Source\ResourceProcessorManager.cs" />
+    <Compile Include="Source\Worker.cs" />
     <Compile Include="Tests\CategorizerTest.cs" />
     <Compile Include="Tests\ExtractorTest.cs" />
     <Compile Include="Tests\FilterTest.cs" />

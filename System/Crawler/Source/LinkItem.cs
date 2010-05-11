@@ -36,10 +36,6 @@ namespace CrawlerNameSpace
             //Console.WriteLine(" [-] Index Of " + url.IndexOf('/'));
             //if (url.IndexOf('/') != -1)  Console.WriteLine(" [-] SubStr: " + url.Substring(0, url.IndexOf('/')));
 
-            if (url.IndexOf('/') != -1) domainUrl = url.Substring(0, url.IndexOf('/')) + '/';
-            else domainUrl = url + '/';
-            domainUrl = "http://" + domainUrl;
-
             rootUrl = "http://" + rootUrl;
             if (rootUrl.EndsWith("/")) Parent = rootUrl;
             else Parent = rootUrl + '/';
@@ -67,6 +63,13 @@ namespace CrawlerNameSpace
         public void setLink(String link)
         {
             Link = link;
+
+            string lowerLink = link.ToLower();
+            if (lowerLink.StartsWith("http://")) link = link.Remove(0, 7);
+
+            if (link.IndexOf('/') != -1) domainUrl = link.Substring(0, link.IndexOf('/')) + '/';
+            else domainUrl = link + '/';
+            domainUrl = "http://" + domainUrl;
         }
 
         /**
