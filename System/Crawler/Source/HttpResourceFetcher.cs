@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Net;
+using CrawlerNameSpace.Utilities;
 
 
 namespace CrawlerNameSpace
@@ -86,7 +87,8 @@ namespace CrawlerNameSpace
             }
             catch(Exception e)
             {
-                System.Console.WriteLine("[Fetch Error] " + e);
+                RuntimeStatistics.addToErrors(1);
+                //System.Console.WriteLine("[Fetch Error] " + e);
                 //200 is the success returnCode and 400 is failure returnCode
                 resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE, rankOfUrl);
                 return resource;

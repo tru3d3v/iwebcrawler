@@ -43,8 +43,9 @@ namespace CrawlerNameSpace
         {
             List<LinkItem> listOfLinks;
             //extract all the links in page
-            listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent()); 
-            
+            listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent());
+            RuntimeStatistics.addToExtractedUrls(listOfLinks.Count);
+
             foreach(LinkItem item in listOfLinks )
             {
                 //Filter the links and return only links that can be crawled
@@ -58,12 +59,14 @@ namespace CrawlerNameSpace
                     Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource.getRankOfUrl(),
                       resource.getResourceContent(), filteredLinks[0]), item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
+                    RuntimeStatistics.addToFeedUrls(1);
                 }
             }
 
             //Ascribe the url to all the categories it is belonged to.
             List<Result> classifiedResults = categorizer.classifyContent(resource.getResourceContent(),
                                                                             resource.getResourceUrl());
+            if (classifiedResults.Count != 0) RuntimeStatistics.addToCrawledUrls(1);
 
             //Save all the results to Storage
             foreach (Result classifiedResult in classifiedResults)

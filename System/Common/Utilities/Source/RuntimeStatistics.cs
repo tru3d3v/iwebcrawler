@@ -12,6 +12,7 @@ namespace CrawlerNameSpace.Utilities
     {
         // These variables contains the status of the crawler at each point of time
         private static Long crawledUrls = 0, totalErrors = 0, extractedUrls = 0, feedUrls = 0;
+        private static Long PagesCrawled = 0;
 
         /**
          * adds the specified amount to the crawled urls counter
@@ -21,6 +22,10 @@ namespace CrawlerNameSpace.Utilities
             lock (crawledUrls)
             {
                 crawledUrls = crawledUrls + amount;
+            }
+            lock (PagesCrawled)
+            {
+                PagesCrawled = PagesCrawled + amount;
             }
         }
 
@@ -32,6 +37,20 @@ namespace CrawlerNameSpace.Utilities
             lock (crawledUrls)
             {
                 return crawledUrls;
+            }
+        }
+
+        /**
+         * returns the number of pages has been crawled since the last time this 
+         * function has been called 
+         */
+        public static long getPagesCrawledNum()
+        {
+            lock (PagesCrawled)
+            {
+                long lastValue = PagesCrawled;
+                PagesCrawled = 0;
+                return lastValue;
             }
         }
 
