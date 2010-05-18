@@ -18,12 +18,12 @@ namespace CrawlerNameSpace
     {
         static void Main(String[] args)
         {
-            int numOfWorkers = 4;
+            int numOfWorkers = 12;
             while (true)
             {
                 // getting init data
                 List<Category> categories = new List<Category>();
-                Constraints constraints = new Constraints(5, true, "", ".com");
+                Constraints constraints = new Constraints(1, false, "", ".com");
                 Initializer initializer = new Initializer(constraints, categories);
 
                 // init queues
@@ -56,21 +56,8 @@ namespace CrawlerNameSpace
                 // polling to the user requests
                 while (true)
                 {
-                    Thread.Sleep(1000);
-                    System.Console.Clear();
-                    System.Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("--- SYSTEM STATUS -------------------------------------------------------------");
-                    lock (feedBackQueue)
-                    {
-                        System.Console.WriteLine(" Requests in the frontier ~ {0} ", feedBackQueue.Count);
-                    }
-                    for (int queueNum = 0; queueNum < numOfWorkers; queueNum++)
-                    {
-                        lock (serversQueues[queueNum])
-                        {
-                            System.Console.WriteLine(" Requests in the Thread[{0}] about ~ {1} ", queueNum, serversQueues[queueNum].Count);
-                        }
-                    }
+                    Thread.Sleep(5000);
+                    StatusDisplay.DisplayOnScreen(feedBackQueue, serversQueues);
                 }
             }
         }

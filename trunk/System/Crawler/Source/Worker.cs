@@ -76,6 +76,7 @@ namespace CrawlerNameSpace
                 catch (Exception e)
                 {
                     //System.Console.WriteLine("[Exception Happened] " + e);
+                    RuntimeStatistics.addToErrors(1);
                     continue;
                 }
             }

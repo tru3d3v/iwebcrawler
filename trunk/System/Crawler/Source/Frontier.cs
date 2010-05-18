@@ -50,6 +50,7 @@ namespace CrawlerNameSpace
                 }
                 catch (Exception e)
                 {
+                    RuntimeStatistics.addToErrors(1);
                 }
             }
         }

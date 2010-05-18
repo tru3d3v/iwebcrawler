@@ -43,6 +43,7 @@
     <Compile Include="Source\RegeneratableRecord.cs" />
     <Compile Include="Source\Result.cs" />
     <Compile Include="Source\RuntimeStatistics.cs" />
+    <Compile Include="Source\StatusDisplay.cs" />
     <Compile Include="Source\SyncAccessor.cs" />
     <Compile Include="Source\TaskStatus.cs" />
     <Compile Include="Source\Url.cs" />
