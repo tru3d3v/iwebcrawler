@@ -47,7 +47,7 @@ namespace CrawlerNameSpace
             HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
             _processors.attachProcessor("PageProc", htmlProcessor);
         }
-
+        
         /**
          * it will invoke the worker to start working on the tasks - never returns
          */ 
@@ -55,32 +55,27 @@ namespace CrawlerNameSpace
         {
             while (true)
             {
-                if (_tasks.Count == 0)
-                {
-                    Thread.Sleep(_timer);
-                    continue ;
-                }
                 try
                 {
-                    System.Console.WriteLine("-<>--------------------------------------------------------------------------");
-                    Url task = _tasks.Dequeue();
-                    System.Console.WriteLine(" Start Working on : " + task.getUrl() + " ...");
+                    //System.Console.WriteLine("-<>--------------------------------------------------------------------------");
+                    Url task = SyncAccessor.getFromQueue<Url>(_tasks, _timer);
+                    //System.Console.WriteLine(" Start Working on : " + task.getUrl() + " ...");
                     ResourceContent content = _fetchers.fetchResource(task.getUrl());
                     if (content.isValid() != true)
                     {
-                        System.Console.WriteLine(" Fetch Failed Ignoring ... ");
+                        //System.Console.WriteLine(" Fetch Failed Ignoring ... ");
                         continue;
                     }
-                    System.Console.WriteLine(" Fetched Successfully ... ");
-                    
+                    //System.Console.WriteLine(" Fetched Successfully ... ");
+
                     ResourceContent modifiedContent = new ResourceContent(content.getResourceUrl(), content.getResourceType()
                         , content.getResourceContent(), content.getReturnCode(), task.getRank());
                     _processors.processResource(modifiedContent);
-                    System.Console.WriteLine(" URL Processed Successfully ... ");
+                    //System.Console.WriteLine(" URL Processed Successfully ... ");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    System.Console.WriteLine("[Exception Happened] " + e);
+                    //System.Console.WriteLine("[Exception Happened] " + e);
                     continue;
                 }
             }
