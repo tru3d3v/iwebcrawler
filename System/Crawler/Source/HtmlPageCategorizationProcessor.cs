@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
 using System.IO;
+using System.Threading;
 
 namespace CrawlerNameSpace
 {
@@ -87,7 +88,9 @@ namespace CrawlerNameSpace
          */
         public void deployResourceToStorage(Result result)
         {
-            StreamWriter sw = new StreamWriter("Storage.txt", true);
+            //System.Console.WriteLine("[*] System.Threading.Thread.CurrentThread.ID is " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+
+            StreamWriter sw = new StreamWriter("Storage" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
             string temp = result.ToString().Replace("[-]", " " + System.Environment.NewLine);
             sw.WriteLine(temp);
             sw.Close();
@@ -105,7 +108,7 @@ namespace CrawlerNameSpace
             sw.WriteLine(temp);
             sw.Close();
             */
-            queueFronier.Enqueue(urlProcessed); 
+            SyncAccessor.putInQueue<Url>(queueFronier, urlProcessed);
         }
 
         /*

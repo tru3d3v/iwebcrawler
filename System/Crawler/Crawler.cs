@@ -4,6 +4,7 @@ using System.Text;
 using CrawlerNameSpace.Tests;
 using CrawlerNameSpace.Utilities;
 using CrawlerNameSpace.Utilities.Tests;
+using System.Threading;
 
 /**
  * This is the main class for crawler system. this system defines a crawler application
@@ -17,33 +18,61 @@ namespace CrawlerNameSpace
     {
         static void Main(String[] args)
         {
-            /*System.Console.WriteLine("[1] Resource Content Test");
-            ResourceContent.Test();
-            System.Console.WriteLine("[2] Resource Processor Manager Test");
-            ResourceProcessorManager.Test();
-            System.Console.WriteLine("[3] HttpResourceFetcher Test");
-            HttpResourceFetcher.Test();
-            System.Console.WriteLine("[4] Extractor Test");
-            Extractor.Test();*/
+            int numOfWorkers = 4;
+            while (true)
+            {
+                // getting init data
+                List<Category> categories = new List<Category>();
+                Constraints constraints = new Constraints(5, true, "", ".com");
+                Initializer initializer = new Initializer(constraints, categories);
 
-            //TaskStatus temp = new TaskStatus("");
-            //temp.getTaskID();
-            
-            //Constraints constraints = new Constraints(2, true, ".com", ".co.il .net");
-            //System.Console.WriteLine(constraints.isUrlValid("http://www.sun.com/342?38ifo"));
+                // init queues
+                List<Queue<Url>> serversQueues = new List<Queue<Url>>();
+                Queue<Url> feedBackQueue = new Queue<Url>();
 
-            //RecordTest.MainTest();
-            //ConstraintsTest.MainTest();
-            //CategoryTest.MainTest();
-            //ResultTest.MainTest();
-            //TaskStatusTest.MainTest();
-            //ResourceContentTest.MainTest();
-            //CategorizerTest.MainTest();
-            //RankerTest.MainTest();
-            //ExtractorTest.MainTest();
-            //FilterTest.MainTest();
-            //HttpPageCategorizationProcessorTest.MainTest();
-            WorkerTest.MainTest();
+                for (int serverNum = 0; serverNum < numOfWorkers; serverNum++)
+                {
+                    serversQueues.Add(new Queue<Url>());
+                }
+
+                // getting seeds
+                Url task1 = new Url("http://www.playboy.com/", 34243432, 35, "http://www.playboy.com/", 34243432);
+                //Url task2 = new Url("http://www.nana10.co.il/", 34223432, 35, "http://www.nana10.co.il/", 34223432);
+                feedBackQueue.Enqueue(task1);
+
+                // initing worker threads
+                for (int threadNum = 0; threadNum < numOfWorkers; threadNum++)
+                {
+                    Worker worker = new Worker(initializer, serversQueues[threadNum], feedBackQueue);
+                    Thread workerThread = new Thread(new ThreadStart(worker.run));
+                    workerThread.Start();
+                }
+
+                // init the Frontier thread
+                Frontier frontier = new Frontier(feedBackQueue, serversQueues);
+                Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
+                frontierThread.Start();
+
+                // polling to the user requests
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    System.Console.Clear();
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("--- SYSTEM STATUS -------------------------------------------------------------");
+                    lock (feedBackQueue)
+                    {
+                        System.Console.WriteLine(" Requests in the frontier ~ {0} ", feedBackQueue.Count);
+                    }
+                    for (int queueNum = 0; queueNum < numOfWorkers; queueNum++)
+                    {
+                        lock (serversQueues[queueNum])
+                        {
+                            System.Console.WriteLine(" Requests in the Thread[{0}] about ~ {1} ", queueNum, serversQueues[queueNum].Count);
+                        }
+                    }
+                }
+            }
         }
     }
 }

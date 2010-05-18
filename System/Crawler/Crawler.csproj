@@ -53,6 +53,7 @@
     <Compile Include="Source\Extractor.cs" />
     <Compile Include="Source\FetcherManager.cs" />
     <Compile Include="Source\Filter.cs" />
+    <Compile Include="Source\Frontier.cs" />
     <Compile Include="Source\HtmlPageCategorizationProcessor.cs" />
     <Compile Include="Source\HttpResourceFetcher.cs" />
     <Compile Include="Source\LinkItem.cs" />
