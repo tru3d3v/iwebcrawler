@@ -39,12 +39,17 @@ namespace CrawlerNameSpace
          */
         public void sceduleTasks()
         {
+            Dictionary<String, String> dictionary = new Dictionary<String, String>();
             int serverTurn = 0;
             while (true)
             {
                 try
                 {
                     Url request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
+
+                    if (dictionary.ContainsKey(request.getUrl())) continue;
+                    dictionary.Add(request.getUrl(), null);
+
                     SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
                     serverTurn = (serverTurn + 1) % _serversQueues.Count;
                 }

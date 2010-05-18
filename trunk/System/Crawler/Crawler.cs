@@ -18,7 +18,7 @@ namespace CrawlerNameSpace
     {
         static void Main(String[] args)
         {
-            int numOfWorkers = 12;
+            int numOfWorkers = 4;
             while (true)
             {
                 // getting init data

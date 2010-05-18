@@ -31,7 +31,7 @@ namespace CrawlerNameSpace.Utilities
             lock (feedBackQueue)
             {
                 totalRequests = totalRequests + feedBackQueue.Count;
-                System.Console.WriteLine("  Requests in the frontier ~ {0} ", feedBackQueue.Count);
+                System.Console.WriteLine("  Requests in the frontier\t about ~ {0} ", feedBackQueue.Count);
             }
             for (int queueNum = 0; queueNum < serversQueues.Count; queueNum++)
             {
