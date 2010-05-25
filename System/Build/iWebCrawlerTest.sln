@@ -1,32 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "..\Crawler\Crawler.csproj", "{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{0F5042C6-6DE0-4C85-B116-863F069DC858} = {0F5042C6-6DE0-4C85-B116-863F069DC858}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "..\StorageSystem\StorageSystem.csproj", "{39B7CF49-9FD7-4915-9A0D-6881901D710C}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iWebCrawler", "..\WebGUI\iWebCrawler.csproj", "{B765AF62-D3B1-4D57-972C-DCE841F4BFA3}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "..\Common\Utilities\Utilities.csproj", "{0F5042C6-6DE0-4C85-B116-863F069DC858}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
+EndProject
+Project("{4F174C21-8C12-11D0-8340-0000F80270F8}") = "CrawlerDataBase", "..\Common\CrawlerDataBase\CrawlerDataBase.dbp", "{8C378C37-74C6-4476-BBF7-BC7428305A86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
