@@ -7,13 +7,16 @@ using System.Text;
  * serves as database proxy so it can do some caching from the database. it also handles 
  * all the connections with the database, so every other system needs information stored
  * in the database should request it via this proxy system.
- */ 
-class StorageSystem
+ */
+namespace CrawlerNameSpace.StorageSystem
 {
-    static void Main(string[] args)
+    class StorageSystem
     {
-        System.Console.WriteLine("Proxy is running ... ");
-        while (true) ;
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Proxy is running ... ");
+            //while (true) ;
+            System.Console.WriteLine(SettingsReader.getConnectionString());
+        }
     }
 }
-
