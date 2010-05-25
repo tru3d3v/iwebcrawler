@@ -17,7 +17,6 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <StartupObject>
     </StartupObject>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,7 +46,7 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="SettingsReader.cs" />
+    <Compile Include="ConfigurationStorage.cs" />
     <Compile Include="StorageSystem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,10 +60,4 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
