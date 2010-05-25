@@ -97,7 +97,7 @@ namespace CrawlerNameSpace
             System.Console.WriteLine("-operationMode:[Auto/Manual] {Auto means that the crawler will run as service and will");
             System.Console.WriteLine("                              get it's options from the database, Manual is for manual");
             System.Console.WriteLine("                              usage for the crawler}");
-            System.Console.WriteLine("-refreshRate:<NUM>            {to specifiy the statistics refresh rate in sec - default is 5}");
+            System.Console.WriteLine("-refreshRate:<NUM>           {to specifiy the statistics refresh rate in sec - default is 5}");
         }
 
         /**
