@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -79,7 +79,6 @@
     <Compile Include="Source\ResourceProcessorManager.cs" />
     <Compile Include="Source\Worker.cs" />
     <Compile Include="Tests\CategorizerTest.cs" />
-    <Compile Include="Tests\DBTest.cs" />
     <Compile Include="Tests\ExtractorTest.cs" />
     <Compile Include="Tests\FilterTest.cs" />
     <Compile Include="Tests\HttpPageCategorizationProcessorTest.cs" />
