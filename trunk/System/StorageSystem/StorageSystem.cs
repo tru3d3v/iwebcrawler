@@ -17,12 +17,15 @@ namespace CrawlerNameSpace.StorageSystem
     class StorageSystem : ConfigurationStorage
     {
 
+       /*
+        * This function gets UserID and QueryOption and returns the TaskID,TaskName,
+        * Status,ElapsedTime of all the tasks that have the given UserID and that they are
+        * in the state of the given QueryOpiton.
+        */
         public List<TaskStatus> getWorkDetails(String userID, QueryOption option)
         {
             // 1. Instantiate the connection
-            SqlConnection conn = new SqlConnection(
-                @"Data Source=.\SQLEXPRESS;AttachDbFilename=C:\Users\netproject\Documents\CrawlerDB.mdf;" + 
-                       "Integrated Security=True;Connect Timeout=30;User Instance=True");
+            SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
 
             SqlDataReader rdr = null;
 
@@ -36,14 +39,33 @@ namespace CrawlerNameSpace.StorageSystem
                 SqlCommand cmd;
 
                 // 3. Pass the connection to a command object
+
+                String statusString="";
+
+                switch (option)
+                {
+                    case QueryOption.ActiveTasks:
+                        statusString = "Active";
+                        break;
+                    case QueryOption.IdleTasks:
+                        statusString = "Idle";
+                        break;
+                    case QueryOption.WaitingTasks:
+                        statusString = "Waiting";
+                        break;
+                    default:
+                        statusString = "";
+                        break;
+                }
+                
                 if (option == QueryOption.AllTasks)
                 {
-                    cmd = new SqlCommand("SELECT TaskID,TaskName,Status,ElapsedTime from Task WHERE UserID=" + userID, conn);
+                    cmd = new SqlCommand("SELECT TaskID,TaskName,Status,ElapsedTime from Task WHERE UserID=\'" + userID + "\'", conn);
                 }
                 else
                 {
-                    cmd = new SqlCommand("SELECT TaskID,TaskName,Status,ElapsedTime from Task" + 
-                            " WHERE UserID=\'" + userID + "\' AND Status=\'Idle\'" , conn);
+                    cmd = new SqlCommand("SELECT TaskID,TaskName,Status,ElapsedTime from Task" +
+                            " WHERE UserID=\'" + userID + "\' AND Status=\'" + statusString + "\'", conn);
                 }
 
                 // get query results
@@ -54,7 +76,8 @@ namespace CrawlerNameSpace.StorageSystem
                     TaskStatus taskDetails = new TaskStatus(rdr["TaskID"].ToString());
                     taskDetails.setTaskElapsedTime((long)rdr["ElapsedTime"]);
                     taskDetails.setTaskName((String)rdr["TaskName"]);
-                    taskDetails.setTaskStatus((Status)rdr["Status"]);
+                    Status statusOfTask = TaskStatus.convertToStatusObj((String)rdr["Status"]);
+                    taskDetails.setTaskStatus(statusOfTask);
                     taskDetailsList.Add(taskDetails);
                 }
             }
@@ -75,9 +98,72 @@ namespace CrawlerNameSpace.StorageSystem
             return taskDetailsList;
         }
 
-        public String createWorkResources(String userID)
+        public String createWorkResources(String userID,String taskName)
         {
-            return null;
+            SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
+            String taskid=null;
+            SqlDataReader rdr = null;
+            try
+            {
+                conn.Open();
+                //insert new row to Task 
+
+                String cmdtxt = "SELECT TaskName FROM Task WHERE UserID = \'" + userID +"\'";
+
+                SqlCommand cmd = new SqlCommand(cmdtxt, conn);
+
+                //Execute command
+                rdr = cmd.ExecuteReader();
+                
+                //check if the inserted userid has a task named taskName
+                while (rdr.Read())
+                {
+                    Console.WriteLine(rdr["TaskName"]);
+                    string nameExtacted = (string)rdr["TaskName"];
+                    nameExtacted = nameExtacted.TrimEnd(' ');
+                        if (nameExtacted == taskName)
+                        {
+                            throw new Exception("TaskName for the user allready exists");
+                        } 
+                }
+
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+                
+                //if the taskName does not exist in the table for the inserted userid 
+                //then insert it into the table.
+                cmdtxt = "INSERT INTO Task (UserID,TaskName) VALUES (\'" + userID + "\',\'" + taskName + "\')";
+
+                cmd.CommandText = cmdtxt;
+
+                cmd.ExecuteNonQuery();
+
+                //return the taskID of the new row created 
+                cmdtxt = "SELECT TaskID FROM Task WHERE UserID=\'" + userID + "\' AND TaskName=\'" + taskName + "\'";
+
+                cmd.CommandText = cmdtxt;
+
+                rdr = cmd.ExecuteReader();
+ 
+                while (rdr.Read())
+                   taskid= rdr["TaskID"].ToString();
+
+            }   
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return taskid;
         }
 
         public void releaseWorkResources(String userID)
@@ -212,7 +298,7 @@ namespace CrawlerNameSpace.StorageSystem
                 if (conn != null) conn.Close();
             }
         }
-
+        /*
         public static void Main(String[] args)
         {
             StorageSystem ss = new StorageSystem();
@@ -234,7 +320,7 @@ namespace CrawlerNameSpace.StorageSystem
                 System.Console.WriteLine(cat);
             }
             */
-        }
+       
     }
 }
 

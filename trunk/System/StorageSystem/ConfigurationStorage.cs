@@ -21,7 +21,7 @@ namespace CrawlerNameSpace.StorageSystem
          * This method is responsible for creating all the resources for new task and 
          * initialize them with default values.
          */
-        String createWorkResources(String userID);
+        String createWorkResources(String userID,String taskName);
 
         /**
          * This function is responsible for releasing the task
