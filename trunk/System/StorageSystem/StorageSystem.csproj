@@ -46,7 +46,9 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="CategoriesStorage.cs" />
     <Compile Include="ConfigurationStorage.cs" />
+    <Compile Include="SettingsReader.cs" />
     <Compile Include="StorageSystem.cs" />
   </ItemGroup>
   <ItemGroup>
