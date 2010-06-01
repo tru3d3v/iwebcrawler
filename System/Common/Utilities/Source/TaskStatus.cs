@@ -96,5 +96,32 @@ namespace CrawlerNameSpace.Utilities
         {
             elapsedTime = time;
         }
+
+        /**
+         * static method that converts string, that represents a status, to  Status enum
+         * In case that the given string is incorrect then the value "Idle" is returned. 
+         */
+        public static Status convertToStatusObj(String statusStr)
+        {
+            Status statusObj;
+            statusStr = statusStr.ToLower(System.Globalization.CultureInfo.InvariantCulture);
+            statusStr = statusStr.TrimEnd(' ');
+            switch (statusStr)
+            {
+                case "idle":
+                    statusObj = Status.Idle;
+                    break;
+                case "waiting":
+                    statusObj = Status.Waiting;
+                    break;
+                case "active":
+                    statusObj = Status.Active;
+                    break;
+                default:
+                    statusObj= Status.Idle;
+                    break;
+            }
+            return statusObj;
+        }
     }
 }

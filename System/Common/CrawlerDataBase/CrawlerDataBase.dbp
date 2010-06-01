@@ -14,5 +14,6 @@ Begin DataProject = "CrawlerDataBase"
       End
    End
    Begin Folder = "Queries"
+      Query = "Query1.dtq"
    End
 End
