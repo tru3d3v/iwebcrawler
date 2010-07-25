@@ -158,14 +158,70 @@ namespace CrawlerNameSpace.StorageSystem
             return taskid;
         }
 
-        public void releaseWorkResources(String userID)
+        public void releaseWorkResources(String taskId)
         {
+            SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
 
+            try
+            {
+                conn.Open();
+                String cmdtxt = "DELETE FROM TaskProperties WHERE TaskID = \'" + taskId + "\'";
+
+                SqlCommand cmd = new SqlCommand(cmdtxt, conn);
+
+                cmd.CommandText = cmdtxt;
+
+                cmd.ExecuteNonQuery();
+
+                cmdtxt = "DELETE FROM Results WHERE TaskID = \'" + taskId + "\'";
+
+                cmd.CommandText = cmdtxt;
+
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DELETE FROM Category WHERE TaskID = \'" + taskId + "\'";
+
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DELETE FROM Task WHERE TaskID = \'" + taskId + "\'";
+
+                cmd.ExecuteNonQuery();
+
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            
         }
 
         public void changeWorkDetails(TaskStatus status)
         {
+            SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
+            String myStatus=TaskStatus.convertToStatusString(status.getTaskStatus());
+            try
+            {
+                conn.Open();
+                String cmdtxt = "UPDATE Task SET TaskName=\'" + status.getTaskName() + "\' ,Status =\'" + myStatus + 
+                                "\' ,ElapsedTime =\'" + status.getTaskElapsedTime() + "\' WHERE TaskID = \'" + status.getTaskID() + "\'";
 
+                SqlCommand cmd = new SqlCommand(cmdtxt, conn);
+
+                cmd.CommandText = cmdtxt;
+
+                cmd.ExecuteNonQuery();
+
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            } 
         }
     }
 }
