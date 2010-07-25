@@ -123,5 +123,26 @@ namespace CrawlerNameSpace.Utilities
             }
             return statusObj;
         }
+
+        /**
+         * static method that converts status, from enum to string.
+         */
+        public static String convertToStatusString(Status status)
+        {
+            String myStatus=null;
+            switch (status)
+            {
+                case Status.Active :
+                    myStatus = "active";
+                    break;
+                case Status.Idle :
+                    myStatus = "idle";
+                    break;
+                case Status.Waiting :
+                    myStatus = "waiting";
+                    break;
+            }
+            return myStatus;
+        }
     }
 }
