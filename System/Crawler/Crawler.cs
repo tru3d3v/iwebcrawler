@@ -182,7 +182,7 @@ namespace CrawlerNameSpace
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
             frontierThread.Start();
         }
-
+        /*
         public static void Main(String[] args)
         {
             bool toContinue = ParseArguements(args);
@@ -206,6 +206,6 @@ namespace CrawlerNameSpace
                     StatusDisplay.DisplayOnScreen(_feedBackQueue, _serversQueues);
                 }
             }
-        }
+        }*/
     }
 }
