@@ -53,6 +53,7 @@
     <Compile Include="ConfigurationStorageTest.cs" />
     <Compile Include="SettingsReader.cs" />
     <Compile Include="SettingsStorage.cs" />
+    <Compile Include="SettingsStorageImp.cs" />
     <Compile Include="StorageSystem.cs" />
     <Compile Include="StorageSystemTest.cs" />
   </ItemGroup>
