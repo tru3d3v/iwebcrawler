@@ -49,8 +49,10 @@
     <Compile Include="CategoriesStorage.cs" />
     <Compile Include="CategoriesStorageImp.cs" />
     <Compile Include="ConfigurationStorage.cs" />
+    <Compile Include="ConfigurationStorageImp.cs" />
     <Compile Include="ConfigurationStorageTest.cs" />
     <Compile Include="SettingsReader.cs" />
+    <Compile Include="SettingsStorage.cs" />
     <Compile Include="StorageSystem.cs" />
     <Compile Include="StorageSystemTest.cs" />
   </ItemGroup>
