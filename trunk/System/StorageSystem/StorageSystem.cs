@@ -14,7 +14,7 @@ namespace CrawlerNameSpace.StorageSystem
      * all the connections with the database, so every other system needs information stored
      * in the database should request it via this proxy system.
      */
-    class StorageSystem : ConfigurationStorage
+    class StorageSystem
     {
         public static void Main(String[] args)
         {
