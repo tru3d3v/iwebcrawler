@@ -27,7 +27,7 @@ namespace CrawlerNameSpace.StorageSystem
                         case XmlNodeType.Text:
                             if (b_connectionString)
                             {
-                                return reader.Value;
+                                return reader.Value.Trim();
                             }
                             break;
                         case XmlNodeType.EndElement:

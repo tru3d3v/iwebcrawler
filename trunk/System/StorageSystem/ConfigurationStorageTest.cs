@@ -9,7 +9,7 @@ namespace CrawlerNameSpace.StorageSystem
 {
    public class ConfigurationStorageTest
     {
-        public void Test1()
+        /*public void Test1()
         {
             StorageSystem ss = new StorageSystem();
             List<TaskStatus> l = ss.getWorkDetails("a7b717e0-4fad-4293-a621-026b6f05713d", QueryOption.AllTasks);
@@ -35,6 +35,6 @@ namespace CrawlerNameSpace.StorageSystem
             ConfigurationStorageTest testStorage = new ConfigurationStorageTest();
             testStorage.Test1();
             testStorage.Test2();
-        }
+        }*/
     }
 }

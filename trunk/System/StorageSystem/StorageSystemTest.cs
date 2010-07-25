@@ -16,7 +16,7 @@ namespace CrawlerNameSpace.StorageSystem
     {
         public static void Main(String[] args)
         {
-            ConfigurationStorageTest.MainTest();
+            //ConfigurationStorageTest.MainTest();
         }
     }
 }
