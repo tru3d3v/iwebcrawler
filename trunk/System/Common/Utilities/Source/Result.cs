@@ -11,7 +11,7 @@ namespace CrawlerNameSpace.Utilities
 {
 
     // This enumuration represents the orders we can ask for the results from the data base
-    public enum Order { NormalOrder, AscendungRank, DescendingRank, AscendingTrust, DescendingTrust};
+    public enum Order { NormalOrder, AscendingRank, DescendingRank, AscendingTrust, DescendingTrust};
 
     /**
      * This class is immutable class which represents the result of crawled url, 
