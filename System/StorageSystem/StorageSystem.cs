@@ -16,6 +16,7 @@ namespace CrawlerNameSpace.StorageSystem
      */
     class StorageSystem
     {
+        /*
         public static void Main(String[] args)
         {
             /*
@@ -37,9 +38,8 @@ namespace CrawlerNameSpace.StorageSystem
                 //df.Trim();
                 System.Console.WriteLine(cat);
             }
-            */
-        }
-       
+            
+        }*/
     }
 }
 

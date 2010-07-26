@@ -14,8 +14,11 @@ namespace CrawlerNameSpace.StorageSystem
 
     class StorageSystemTest
     {
+        
         public static void Main(String[] args)
         {
+            ConfigurationStorageTest test = new ConfigurationStorageTest();
         }
+        
     }
 }

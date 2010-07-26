@@ -51,6 +51,8 @@
     <Compile Include="ConfigurationStorage.cs" />
     <Compile Include="ConfigurationStorageImp.cs" />
     <Compile Include="ConfigurationStorageTest.cs" />
+    <Compile Include="ResultsStorage.cs" />
+    <Compile Include="ResultsStorageImp.cs" />
     <Compile Include="SettingsReader.cs" />
     <Compile Include="SettingsStorage.cs" />
     <Compile Include="SettingsStorageImp.cs" />

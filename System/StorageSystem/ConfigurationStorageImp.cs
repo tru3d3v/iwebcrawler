@@ -30,8 +30,6 @@ namespace CrawlerNameSpace.StorageSystem
 
                 SqlCommand cmd;
 
-                // 3. Pass the connection to a command object
-
                 String statusString = "";
 
                 switch (option)
