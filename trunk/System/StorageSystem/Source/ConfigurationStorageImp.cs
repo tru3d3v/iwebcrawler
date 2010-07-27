@@ -96,10 +96,9 @@ namespace CrawlerNameSpace.StorageSystem
             try
             {
                 conn.Open();
-                //insert new row to Task 
 
+                //insert new row to Task
                 String cmdtxt = "SELECT TaskName FROM Task WHERE UserID = \'" + userID + "\'";
-
                 SqlCommand cmd = new SqlCommand(cmdtxt, conn);
 
                 //Execute command
@@ -108,7 +107,7 @@ namespace CrawlerNameSpace.StorageSystem
                 //check if the inserted userid has a task named taskName
                 while (rdr.Read())
                 {
-                    Console.WriteLine(rdr["TaskName"]);
+                    //Console.WriteLine(rdr["TaskName"]);
                     string nameExtacted = (string)rdr["TaskName"];
                     nameExtacted = nameExtacted.TrimEnd(' ');
                     if (nameExtacted == taskName)
@@ -125,16 +124,12 @@ namespace CrawlerNameSpace.StorageSystem
                 //if the taskName does not exist in the table for the inserted userid 
                 //then insert it into the table.
                 cmdtxt = "INSERT INTO Task (UserID,TaskName) VALUES (\'" + userID + "\',\'" + taskName + "\')";
-
                 cmd.CommandText = cmdtxt;
-
                 cmd.ExecuteNonQuery();
 
                 //return the taskID of the new row created 
                 cmdtxt = "SELECT TaskID FROM Task WHERE UserID=\'" + userID + "\' AND TaskName=\'" + taskName + "\'";
-
                 cmd.CommandText = cmdtxt;
-
                 rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
