@@ -20,10 +20,20 @@ namespace CrawlerNameSpace.StorageSystem
             try
             {
                 ConfigurationStorageTest test = new ConfigurationStorageTest();
-                test.Test1();
-                test.Test2();
-                test.Test3();
-                test.Test4();
+                //test.Test1();
+                //test.Test2();
+               // test.Test3();
+                //test.Test4();
+
+                CategoriesStorageTest catTest = new CategoriesStorageTest();
+                //catTest.Test3();
+
+                SettingsStorageTest setTest = new SettingsStorageTest();
+                //setTest.Test4();
+
+                ResultStorageTest resultTest = new ResultStorageTest();
+                //resultTest.Test1();
+                resultTest.Test2();
             }
             catch (Exception e)
             {

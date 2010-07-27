@@ -69,31 +69,35 @@ namespace CrawlerNameSpace.StorageSystem
         {
             // 1. Instantiate the connection
             SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
-
             SqlDataReader rdr = null;
-
             List<Result> resultsCrawled = new List<Result>();
-            resultsCrawled = null;
             
             try
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT DISTINCT ResultID,Url,CategoryID,rank,TrustMeter" + 
+                SqlCommand cmd = new SqlCommand("SELECT ResultID,Url,CategoryID,rank,TrustMeter" + 
                                 " FROM Results " + 
                                 "WHERE TaskID=\'" + taskId + "\' AND Url = \'" + url + "\'", conn);
                 rdr = cmd.ExecuteReader();
 
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    int rank= Convert.ToInt32(rdr["rank"].ToString().Trim());
-                    int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
+                    while (rdr.Read())
+                    {
+                        int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
+                        int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
 
-                    Result resultItem = new Result(rdr["ResultID"].ToString(), rdr["Url"].ToString().Trim(),
-                                        rdr["CategoryID"].ToString(), rank, trustMeter);
-                    
-                    resultsCrawled.Add(resultItem);
+                        Result resultItem = new Result(rdr["ResultID"].ToString(), rdr["Url"].ToString().Trim(),
+                                            rdr["CategoryID"].ToString(), rank, trustMeter);
 
+                        resultsCrawled.Add(resultItem);
+
+                    }
+                }
+                else
+                {
+                    resultsCrawled = null;
                 }
             }
             catch (Exception e)
@@ -189,10 +193,12 @@ namespace CrawlerNameSpace.StorageSystem
                              resultUrls.Add(resultItem);
 
                          }
+                         if (rdr != null) rdr.Close();
 
                          SqlCommand cmnd = new SqlCommand("SELECT CategoryID From Category WHERE ParentCategory = \'" +
-                                            currentCategories[0] + "\'");
+                                            currentCategories[0] + "\'",conn);
                          
+
                          rdr = cmnd.ExecuteReader();
 
                          //add all the selected categories(sons of the current category being searched) to currentCategories.
@@ -201,6 +207,7 @@ namespace CrawlerNameSpace.StorageSystem
                              currentCategories.Add(rdr["CategoryID"].ToString().Trim());
                          }
                          currentCategories.RemoveAt(0);
+                         if (rdr != null) rdr.Close();
                      }
                      
              }
@@ -383,8 +390,17 @@ namespace CrawlerNameSpace.StorageSystem
                  default:
                      break;
              }
+             if (to>sortedResults.Count)
+                if(from<0)
+                    return sortedResults.GetRange(0, (sortedResults.Count-from));
+                else
+                    return sortedResults.GetRange(from, (sortedResults.Count - from));
+             else
+                 if (from < 0)
+                     return sortedResults.GetRange(0, (to-from));
+                 else
+                     return sortedResults.GetRange(from, (to - from));
 
-             return sortedResults.GetRange(from, to);
          }
     }
 }

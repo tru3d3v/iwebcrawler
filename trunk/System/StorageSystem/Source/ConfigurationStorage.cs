@@ -27,7 +27,7 @@ namespace CrawlerNameSpace.StorageSystem
          * This function is responsible for releasing the task
          * resources from the storage system, and deleting all the resources.
          */
-        void releaseWorkResources(String taskId);
+        void releaseWorkResources(String taskID);
 
         /**
          * This method is responsible for changing the status of a given task, 

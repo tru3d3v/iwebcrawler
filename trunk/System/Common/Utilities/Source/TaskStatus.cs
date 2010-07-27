@@ -133,13 +133,13 @@ namespace CrawlerNameSpace.Utilities
             switch (status)
             {
                 case Status.Active :
-                    myStatus = "active";
+                    myStatus = "ACTIVE";
                     break;
                 case Status.Idle :
-                    myStatus = "idle";
+                    myStatus = "IDLE";
                     break;
                 case Status.Waiting :
-                    myStatus = "waiting";
+                    myStatus = "WAITING";
                     break;
             }
             return myStatus;
