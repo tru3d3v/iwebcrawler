@@ -15,9 +15,20 @@ namespace CrawlerNameSpace.StorageSystem
     class StorageSystemTest
     {
         
-        public static void Main(String[] args)
+        public static void MainTest()
         {
-            ConfigurationStorageTest test = new ConfigurationStorageTest();
+            try
+            {
+                ConfigurationStorageTest test = new ConfigurationStorageTest();
+                test.Test1();
+                test.Test2();
+                test.Test3();
+                test.Test4();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception Caught " + e.Message);
+            }
         }
         
     }

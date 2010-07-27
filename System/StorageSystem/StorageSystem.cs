@@ -16,30 +16,10 @@ namespace CrawlerNameSpace.StorageSystem
      */
     class StorageSystem
     {
-        /*
         public static void Main(String[] args)
         {
-            /*
-            StorageSystem ss = new StorageSystem();
-            //List<TaskStatus> l = ss.getWorkDetails("13dba25a-3401-4766-b00a-fcea8a69cefc",QueryOption.IdleTasks);
-            //System.Console.WriteLine(QueryOption.IdleTasks);
-            List<String> keywords = new List<string>();
-            keywords.Add("woo"); keywords.Add("moo"); keywords.Add("foo");
-            Category t1 = new Category("", null, "Temp1", keywords, 10);
-            Category t2 = new Category("", null, "Temp1->2", keywords, 10);
-            List<Category> ll = new List<Category>();
-            ll.Add(t1); ll.Add(t2);
-            */
-            //ss.setCategories("13dba25a-3401-4766-b00a-fcea8a69cefc",ll);
-            /*
-            foreach(Category cat in ll)
-            {
-                //String df;
-                //df.Trim();
-                System.Console.WriteLine(cat);
-            }
-            
-        }*/
+            StorageSystemTest.MainTest();
+        }
     }
 }
 
