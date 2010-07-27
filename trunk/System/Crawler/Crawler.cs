@@ -5,6 +5,7 @@ using CrawlerNameSpace.Tests;
 using CrawlerNameSpace.Utilities;
 using CrawlerNameSpace.Utilities.Tests;
 using System.Threading;
+using CrawlerNameSpace.StorageSystem;
 
 /**
  * This is the main class for crawler system. this system defines a crawler application
@@ -29,6 +30,8 @@ namespace CrawlerNameSpace
 
         private static List<Queue<Url>> _serversQueues;
         private static Queue<Url>       _feedBackQueue;
+
+        private static List<Thread> _threadsPool = new List<Thread>();
 
         /**
          * Set Flag Method
@@ -128,22 +131,50 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * selects very suitable task to run
+         */
+        private static void SelectTask(ref String user, ref String task)
+        {
+            if (_operationMode == operationMode_t.Auto)
+            {
+                // TODO: need to select the suitable user also
+                int size = 0;
+                List<TaskStatus> tasks = null;
+                while (size == 0)
+                {
+                    tasks = StorageSystem.StorageSystem.getInstance().getWorkDetails(user, QueryOption.WaitingTasks);
+                    size = tasks.Count;
+                    Thread.Sleep(_refreshRate * 1000);
+                }
+                TaskStatus newStatus = tasks[0];
+                newStatus.setTaskStatus(Status.Active);
+                StorageSystem.StorageSystem.getInstance().changeWorkDetails(newStatus);
+                task = tasks[0].getTaskID();
+            }
+        }
+
+        /**
          * initialize the initializer object which will be used in the system objects
          */
-        private static void SetInitializer()
+        private static void SetInitializer(String taskId)
         {
             if (_operationMode == operationMode_t.Manual)
             {
                 _categories  = new List<Category>();
                 _constraints = new Constraints(1, false, "", ".com");
-                _initializer = new Initializer(_constraints, _categories);
             }
+            else if (_operationMode == operationMode_t.Auto)
+            {
+                _categories  = StorageSystem.StorageSystem.getInstance().getCategories(taskId);
+                _constraints = StorageSystem.StorageSystem.getInstance().getRestrictions(taskId);
+            }
+            _initializer = new Initializer(_constraints, _categories);
         }
 
         /**
          * init the queues which will be used as link points between the threads
          */
-        private static void InitQueues()
+        private static void InitQueues(String taskId)
         {
             _serversQueues = new List<Queue<Url>>();
             _feedBackQueue = new Queue<Url>();
@@ -153,7 +184,6 @@ namespace CrawlerNameSpace
                 _serversQueues.Add(new Queue<Url>());
             }
 
-            // TODO: if the mode is auto need to reset the seedList from the db info
             // getting seeds
             if (_operationMode == operationMode_t.Manual)
             {
@@ -163,49 +193,101 @@ namespace CrawlerNameSpace
                     _feedBackQueue.Enqueue(task);
                 }
             }
+            else if (_operationMode == operationMode_t.Auto)
+            {
+                List<String> seeds = StorageSystem.StorageSystem.getInstance().getSeedList(taskId);
+                foreach (string url in seeds)
+                {
+                    Url task = new Url(url.Trim(), 0, 100, url.Trim(), 0);
+                    _feedBackQueue.Enqueue(task);
+                }
+            }
         }
 
         /**
          * invokes the threads to start the work
          */
-        private static void InvokeThreads()
+        private static void InvokeThreads(Queue<int> keepAlive)
         {
             for (int threadNum = 0; threadNum < _numWorkers; threadNum++)
             {
-                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue);
+                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue, keepAlive);
                 Thread workerThread = new Thread(new ThreadStart(worker.run));
                 workerThread.Start();
+                _threadsPool.Add(workerThread);
             }
 
             // init the Frontier thread
-            Frontier frontier = new Frontier(_feedBackQueue, _serversQueues);
+            Frontier frontier = new Frontier(_feedBackQueue, _serversQueues, keepAlive);
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
             frontierThread.Start();
+            _threadsPool.Add(frontierThread);
         }
-        /*
+
+        /**
+         * terminate all the working and frontier threads
+         */
+        private static void TerminateThreads(Queue<int> keepAlive)
+        {
+            lock (keepAlive)
+            {
+                keepAlive.Enqueue(0);
+            }
+            for (int threadNum = 0; threadNum < _numWorkers + 1; threadNum++)
+            {
+                _threadsPool[threadNum].Join();
+            }
+            Console.WriteLine("$$$ Session Terminated ...");
+            _threadsPool.Clear();
+            keepAlive.Dequeue();
+        }
+        
         public static void Main(String[] args)
         {
-            bool toContinue = ParseArguements(args);
+            bool toContinue = ParseArguements(args), needToRestart = false;
             if (toContinue == false) return;
+            Queue<int> keepAlive = new Queue<int>();
+            String currentUser = "5df16977-d18e-4a0a-b81b-0073de3c9a7f", currentTask = "";
 
             while (true)
             {
+                // select which task to invoke
+                SelectTask(ref currentUser, ref currentTask);
+
                 // getting init data
-                SetInitializer();
+                SetInitializer(currentTask);
                 
                 // init queues
-                InitQueues();
+                InitQueues(currentTask);
 
                 // initing worker and frontier threads
-                InvokeThreads();
+                InvokeThreads(keepAlive);
                 
                 // polling to the user requests
-                while (true)
+                while (needToRestart == false)
                 {
                     Thread.Sleep(_refreshRate * 1000);
                     StatusDisplay.DisplayOnScreen(_feedBackQueue, _serversQueues);
+                    if (_operationMode == operationMode_t.Auto)
+                    {
+                        List<TaskStatus> tasks =
+                            StorageSystem.StorageSystem.getInstance().getWorkDetails(currentUser, QueryOption.ActiveTasks);
+
+                        needToRestart = true;
+                        foreach (TaskStatus task in tasks)
+                        {
+                            if (task.getTaskID() == currentTask)
+                            {
+                                needToRestart = false;
+                                continue;
+                            }
+                        }
+                    }
                 }
+
+                // Terminate all the threads
+                TerminateThreads(keepAlive);
             }
-        }*/
+        }
     }
 }

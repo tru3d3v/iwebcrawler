@@ -19,17 +19,27 @@ namespace CrawlerNameSpace
 
         // queue query timer in msec
         private int _timer;
+        // number of requests which can reside in the thread queue (max.)
+        private int _limit;
+        // number of iterations to do while checking the status
+        private int _checkStatusLimit;
+
+        // needed in order to keep alive status of the frontier thread
+        Queue<int> _status;
 
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
          *  and the specified server queue list, so the frontier will schedule it's tasks
          *  between the servers
          */
-        public Frontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues)
+        public Frontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues, Queue<int> status)
         {
             _tasksQueue = tasksQueue;
             _serversQueues = serversQueues;
             _timer = 250;
+            _limit = 100;
+            _checkStatusLimit = 100;
+            _status = status;
         }
 
         /**
@@ -40,18 +50,41 @@ namespace CrawlerNameSpace
         public void sceduleTasks()
         {
             Dictionary<String, String> dictionary = new Dictionary<String, String>();
-            int serverTurn = 0;
-            while (true)
+            int serverTurn = 0, iterations = 0;
+            bool getNewRequest = true, needToTerminate = false;;
+            Url request = null;
+
+            while (needToTerminate == false)
             {
                 try
                 {
-                    Url request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
-
+                    if (getNewRequest)
+                    {
+                        request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
+                        getNewRequest = false;
+                    }
+                    getNewRequest = true;
                     if (dictionary.ContainsKey(request.getUrl())) continue;
                     dictionary.Add(request.getUrl(), null);
 
-                    SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
+                    if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) <= _limit)
+                    {
+                        SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
+                    }
+                    else
+                    {
+                        getNewRequest = false;
+                    }
                     serverTurn = (serverTurn + 1) % _serversQueues.Count;
+                    iterations++;
+                    if (iterations >= _checkStatusLimit)
+                    {
+                        iterations = 0;
+                        lock (_status)
+                        {
+                            if (_status.Count != 0) needToTerminate = true;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

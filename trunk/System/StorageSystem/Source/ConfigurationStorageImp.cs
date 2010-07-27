@@ -61,14 +61,17 @@ namespace CrawlerNameSpace.StorageSystem
                 // get query results
                 rdr = cmd.ExecuteReader();
 
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    TaskStatus taskDetails = new TaskStatus(rdr["TaskID"].ToString());
-                    taskDetails.setTaskElapsedTime((long)rdr["ElapsedTime"]);
-                    taskDetails.setTaskName((String)rdr["TaskName"]);
-                    Status statusOfTask = TaskStatus.convertToStatusObj((String)rdr["Status"]);
-                    taskDetails.setTaskStatus(statusOfTask);
-                    taskDetailsList.Add(taskDetails);
+                    while (rdr.Read())
+                    {
+                        TaskStatus taskDetails = new TaskStatus(rdr["TaskID"].ToString());
+                        taskDetails.setTaskElapsedTime((long)rdr["ElapsedTime"]);
+                        taskDetails.setTaskName((String)rdr["TaskName"]);
+                        Status statusOfTask = TaskStatus.convertToStatusObj((String)rdr["Status"]);
+                        taskDetails.setTaskStatus(statusOfTask);
+                        taskDetailsList.Add(taskDetails);
+                    }
                 }
             }
             finally
