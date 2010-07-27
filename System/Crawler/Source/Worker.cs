@@ -19,6 +19,11 @@ namespace CrawlerNameSpace
 
         // queue query timer 
         int _timer;
+        // number of iterations to do while checking the status
+        private int _checkStatusLimit;
+
+        // needed in order to keep alive status of the frontier thread
+        Queue<int> _status;
 
         // managers of the protocols
         FetcherManager _fetchers;
@@ -29,13 +34,15 @@ namespace CrawlerNameSpace
          *  and return the feed to the feedback, note it won't create new queues it will use
          *  the passed arguments - and they may need to be thread safe
          */
-        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback)
+        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback, Queue<int> status)
         {
             _tasks    = tasks;
             _feedback = feedback;
 
             // sets default timer
             _timer    = 1000;
+
+            _status = status;
 
             // initailizing the fetcher - page downloaders
             _fetchers = new FetcherManager();
@@ -46,6 +53,8 @@ namespace CrawlerNameSpace
             _processors = new ResourceProcessorManager();
             HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
             _processors.attachProcessor("PageProc", htmlProcessor);
+
+            _checkStatusLimit = 100;
         }
         
         /**
@@ -53,7 +62,9 @@ namespace CrawlerNameSpace
          */ 
         public void run()
         {
-            while (true)
+            int iterations = 0;
+            bool needToTerminate = false;
+            while (needToTerminate == false)
             {
                 try
                 {
@@ -72,6 +83,15 @@ namespace CrawlerNameSpace
                         , content.getResourceContent(), content.getReturnCode(), task.getRank());
                     _processors.processResource(modifiedContent);
                     //System.Console.WriteLine(" URL Processed Successfully ... ");
+                    iterations++;
+                    if (iterations >= _checkStatusLimit)
+                    {
+                        iterations = 0;
+                        lock (_status)
+                        {
+                            if (_status.Count != 0) needToTerminate = true;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

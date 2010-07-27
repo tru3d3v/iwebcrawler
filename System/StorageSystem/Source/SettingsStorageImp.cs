@@ -21,8 +21,8 @@ namespace CrawlerNameSpace.StorageSystem
             try
             {
                 string restrict = "", crawl = "";
-                int linkDepth;
-                bool parametersAllowed;
+                int linkDepth = 1;
+                bool parametersAllowed = false;
                 conn = new SqlConnection(SettingsReader.getConnectionString());
 
                 conn.Open();
@@ -30,31 +30,42 @@ namespace CrawlerNameSpace.StorageSystem
                     " FROM Task WHERE TaskID=\'" + taskId + "\'", conn);
 
                 rdr = cmd.ExecuteReader();
-                if (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    linkDepth = Convert.ToInt32(rdr["LinkDepth"]);
-                    int allowParameters = Convert.ToInt32(rdr["AllowUrlParam"]);
-                    parametersAllowed = (allowParameters != 0);
+                    if (rdr.Read())
+                    {
+                        linkDepth = Convert.ToInt32(rdr["LinkDepth"]);
+                        int allowParameters = Convert.ToInt32(rdr["AllowUrlParam"]);
+                        parametersAllowed = (allowParameters != 0);
+                    }
+                    else throw new Exception();
                 }
-                else throw new Exception();
 
                 cmd = new SqlCommand("SELECT Value" +
                     " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'RESTRICT\'", conn);
+                rdr.Close();
                 rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    restrict = restrict + rdr["Value"] + ' ';
+                    while (rdr.Read())
+                    {
+                        restrict = restrict + rdr["Value"] + ' ';
+                    }
+                    if (restrict.Length != 0) restrict = restrict.TrimEnd(new char[] { ' ' });
                 }
-                if (restrict.Length != 0) restrict = restrict.TrimEnd(new char[] { ' ' });
 
                 cmd = new SqlCommand("SELECT Value" +
                     " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'ALLOW\'", conn);
+                rdr.Close();
                 rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    crawl = crawl + rdr["Value"] + ' ';
+                    while (rdr.Read())
+                    {
+                        crawl = crawl + rdr["Value"] + ' ';
+                    }
+                    if (crawl.Length != 0) crawl = crawl.TrimEnd(new char[] { ' ' });
                 }
-                if (crawl.Length != 0) crawl = crawl.TrimEnd(new char[] { ' ' });
 
                 constrains = new Constraints((uint)linkDepth, parametersAllowed, restrict, crawl);
             }
