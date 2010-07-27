@@ -9,7 +9,7 @@ namespace CrawlerNameSpace.StorageSystem
 {
     public class ConfigurationStorageImp : ConfigurationStorage
     {
-        /*
+      /**
        * This function gets UserID and QueryOption and returns the TaskID,TaskName,
        * Status,ElapsedTime of all the tasks that have the given UserID and that they are
        * in the state of the given QueryOpiton.

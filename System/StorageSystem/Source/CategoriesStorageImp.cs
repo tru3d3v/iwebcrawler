@@ -84,6 +84,7 @@ namespace CrawlerNameSpace.StorageSystem
          */
         public void setCategories(String taskId, List<Category> categoryList)
         {
+            resetCategories(taskId);
             SqlConnection conn = null;
 
             try

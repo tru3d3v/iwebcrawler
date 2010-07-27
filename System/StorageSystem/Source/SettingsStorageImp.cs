@@ -119,6 +119,7 @@ namespace CrawlerNameSpace.StorageSystem
                     constrains.isParametrizationAllowed() + "\' WHERE TaskID=\'" + taskId + "\'", conn);
                 cmd.ExecuteNonQuery();
 
+                removeProperty(taskId, "ALLOW");
                 foreach(String crawl in constrains.getCrawlList())
                 {
                     cmd = new SqlCommand("INSERT INTO TaskProperies (TaskID,Property,Value)"
@@ -127,6 +128,7 @@ namespace CrawlerNameSpace.StorageSystem
                     cmd.ExecuteNonQuery();
                 }
 
+                removeProperty(taskId, "RESTRICT");
                 foreach (String crawl in constrains.getRestrictionList())
                 {
                     cmd = new SqlCommand("INSERT INTO TaskProperies (TaskID,Property,Value)"
@@ -190,6 +192,7 @@ namespace CrawlerNameSpace.StorageSystem
 
             try
             {
+                removeProperty(taskId, "SEED");
                 conn = new SqlConnection(SettingsReader.getConnectionString());
 
                 conn.Open();
