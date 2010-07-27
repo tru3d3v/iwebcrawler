@@ -31,7 +31,9 @@ namespace CrawlerNameSpace.StorageSystem
                 while (rdr.Read())
                 {
                     int confidenceLevel = Convert.ToInt32(rdr["ConfidenceLevel"]);
-                    List<String> keywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
+                    List<String> keywords = null;
+                    if (!rdr["Keywords"].Equals(System.DBNull.Value))
+                        keywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
                     Category category = new Category(rdr["CategoryID"].ToString(), rdr["ParentCategory"].ToString(),
                         rdr["CategoryName"].ToString().Trim(), keywords, confidenceLevel);
 
@@ -107,7 +109,8 @@ namespace CrawlerNameSpace.StorageSystem
                     }
 
                     SqlCommand cmd = null;
-                    if (category.getParentName() != null)
+                    Console.WriteLine(category.getParentName());
+                    if ((category.getParentName() != null)&&(category.getParentName()!=""))
                     {
                         cmd = new SqlCommand("INSERT INTO Category (TaskID,CategoryName,Keywords,ParentCategory,ConfidenceLevel)"
                             + " Values (\'" + taskId + "\',\'" + category.getCatrgoryName() + "\',\'" + keywords + "\',\'"
@@ -130,6 +133,30 @@ namespace CrawlerNameSpace.StorageSystem
             {
                 if (conn != null) conn.Close();
             }
+        }
+
+        /**
+         * This method sets the given categoryID(of the parent) to be a parent
+         * of the given other categoryID(of the son).
+         */
+        public void setParentToSon(String parentID, String sonID)
+        {
+            SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
+            try
+            {
+                conn.Open();
+                String cmdtxt = "UPDATE Category SET ParentCategory=\'" + parentID + "\' WHERE CategoryID = \'" + sonID + "\'";
+
+                SqlCommand cmd = new SqlCommand(cmdtxt, conn);
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            } 
         }
     }
 }

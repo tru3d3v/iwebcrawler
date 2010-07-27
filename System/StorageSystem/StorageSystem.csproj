@@ -67,7 +67,10 @@
     <Compile Include="Source\SettingsStorage.cs" />
     <Compile Include="Source\SettingsStorageImp.cs" />
     <Compile Include="StorageSystem.cs" />
+    <Compile Include="Tests\CategoriesStorageTest.cs" />
     <Compile Include="Tests\ConfigurationStorageTest.cs" />
+    <Compile Include="Tests\ResultStorageTest.cs" />
+    <Compile Include="Tests\SettingsStorageTest.cs" />
     <Compile Include="Tests\StorageSystemTest.cs" />
   </ItemGroup>
 </Project>

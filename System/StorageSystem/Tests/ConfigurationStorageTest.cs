@@ -13,7 +13,49 @@ namespace CrawlerNameSpace.StorageSystem
         {
             ConfigurationStorageImp ss = new ConfigurationStorageImp();
             List<TaskStatus> l = ss.getWorkDetails("a7b717e0-4fad-4293-a621-026b6f05713d", QueryOption.AllTasks);
-            Console.WriteLine("[] Tasks saved for the specified user ...");
+            Console.WriteLine("[] All Tasks saved for the specified user ...");
+            foreach (TaskStatus task in l)
+            {
+                Console.WriteLine("TaskId          : " + task.getTaskID());
+                Console.WriteLine("TaskName        : " + task.getTaskName());
+                Console.WriteLine("TaskStatus      : " + task.getTaskStatus());
+                Console.WriteLine("TaskElapsedTime : " + task.getTaskElapsedTime());
+                Console.WriteLine("=============================================================");
+            }
+            if (l.Count == 0) Console.WriteLine("Test Not Found !!");
+            Console.WriteLine(" - PASSED -");
+            Console.WriteLine("=============================================================");
+            //checking active tasks
+            l = ss.getWorkDetails("a7b717e0-4fad-4293-a621-026b6f05713d", QueryOption.ActiveTasks);
+            Console.WriteLine("[] Active Tasks saved for the specified user ...");
+            foreach (TaskStatus task in l)
+            {
+                Console.WriteLine("TaskId          : " + task.getTaskID());
+                Console.WriteLine("TaskName        : " + task.getTaskName());
+                Console.WriteLine("TaskStatus      : " + task.getTaskStatus());
+                Console.WriteLine("TaskElapsedTime : " + task.getTaskElapsedTime());
+                Console.WriteLine("=============================================================");
+            }
+            if (l.Count == 0) Console.WriteLine("Test Not Found !!");
+            Console.WriteLine(" - PASSED -");
+            Console.WriteLine("=============================================================");
+            //checking waiting tasks
+            l = ss.getWorkDetails("a7b717e0-4fad-4293-a621-026b6f05713d", QueryOption.WaitingTasks);
+            Console.WriteLine("[] Waiting Tasks saved for the specified user ...");
+            foreach (TaskStatus task in l)
+            {
+                Console.WriteLine("TaskId          : " + task.getTaskID());
+                Console.WriteLine("TaskName        : " + task.getTaskName());
+                Console.WriteLine("TaskStatus      : " + task.getTaskStatus());
+                Console.WriteLine("TaskElapsedTime : " + task.getTaskElapsedTime());
+                Console.WriteLine("=============================================================");
+            }
+            if (l.Count == 0) Console.WriteLine("Test Not Found !!");
+            Console.WriteLine(" - PASSED -");
+            Console.WriteLine("=============================================================");
+
+            l = ss.getWorkDetails("a7b717e0-4fad-4293-a621-026b6f05713d", QueryOption.IdleTasks);
+            Console.WriteLine("[] Idle Tasks saved for the specified user ...");
             foreach (TaskStatus task in l)
             {
                 Console.WriteLine("TaskId          : " + task.getTaskID());
@@ -40,7 +82,7 @@ namespace CrawlerNameSpace.StorageSystem
         {
             Console.WriteLine("[] Trying to change an existing task ...");
             ConfigurationStorageImp ss = new ConfigurationStorageImp();
-            TaskStatus status = new TaskStatus("3012e088-1519-4a78-9986-89683a7901a3");
+            TaskStatus status = new TaskStatus("92667983-3cb9-4cb7-8b5b-5febb5db9341");
             status.setTaskElapsedTime(39);
             status.setTaskName("snoop");
             status.setTaskStatus(Status.Waiting);
@@ -52,7 +94,7 @@ namespace CrawlerNameSpace.StorageSystem
         {
             Console.WriteLine("[] Trying to remove task...");
             ConfigurationStorageImp ss = new ConfigurationStorageImp();
-            ss.releaseWorkResources("3012e088-1519-4a78-9986-89683a7901a3");
+            ss.releaseWorkResources("e4a55914-0847-4d70-be22-d2ecac77cdfa");
             Console.WriteLine(" - PASSED -");
         }
 

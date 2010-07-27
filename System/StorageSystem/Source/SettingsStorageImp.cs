@@ -43,7 +43,8 @@ namespace CrawlerNameSpace.StorageSystem
 
                 cmd = new SqlCommand("SELECT Value" +
                     " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'RESTRICT\'", conn);
-                rdr.Close();
+
+                if (rdr != null) rdr.Close();
                 rdr = cmd.ExecuteReader();
                 if (rdr.HasRows)
                 {
@@ -56,7 +57,7 @@ namespace CrawlerNameSpace.StorageSystem
 
                 cmd = new SqlCommand("SELECT Value" +
                     " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'ALLOW\'", conn);
-                rdr.Close();
+                if (rdr != null) rdr.Close();
                 rdr = cmd.ExecuteReader();
                 if (rdr.HasRows)
                 {

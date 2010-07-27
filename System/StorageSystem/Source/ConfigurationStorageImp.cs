@@ -35,13 +35,13 @@ namespace CrawlerNameSpace.StorageSystem
                 switch (option)
                 {
                     case QueryOption.ActiveTasks:
-                        statusString = "Active";
+                        statusString = "ACTIVE";
                         break;
                     case QueryOption.IdleTasks:
-                        statusString = "Idle";
+                        statusString = "IDLE";
                         break;
                     case QueryOption.WaitingTasks:
-                        statusString = "Waiting";
+                        statusString = "WAITING";
                         break;
                     default:
                         statusString = "";
