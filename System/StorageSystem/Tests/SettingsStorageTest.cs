@@ -21,13 +21,13 @@ namespace CrawlerNameSpace.StorageSystem
             Console.WriteLine("RestrictionList       : ");
             foreach (String restrict in constraints.getRestrictionList())
             {
-                Console.Write(restrict);
+                Console.Write(restrict + " ");
             }
             Console.WriteLine("");
             Console.WriteLine("CrawlList             : ");
             foreach (String crawl in constraints.getCrawlList())
             {
-                Console.Write(crawl );
+                Console.Write(crawl + " " );
             }
             Console.WriteLine("");
             Console.WriteLine("Allow parametrezation : " + constraints.isParametrizationAllowed());
