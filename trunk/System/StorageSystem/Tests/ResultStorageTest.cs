@@ -105,6 +105,85 @@ namespace CrawlerNameSpace.StorageSystem
 
             Console.WriteLine("-PASSED-");
         }
-        //////////////////FINISH THE SECOND TEST(Test2) FIRST AND DELETE THIS MESSAGE///////////////////
+
+        //This method tests the getTotalURLs method
+        public void Test3()
+        {
+            ResultsStorageImp st = new ResultsStorageImp();
+            Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
+            Console.WriteLine("\"7ec2bfb1-0a0d-406b-9132-2d65abb811f0\"");
+
+            ulong numUrls = st.getTotalURLs("7ec2bfb1-0a0d-406b-9132-2d65abb811f0");
+
+            Console.WriteLine("Total number of Urls of the Task is : ");
+            Console.WriteLine(numUrls);
+            Console.WriteLine("=====================================================================");
+            
+            Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
+            Console.WriteLine("\"b80dcfdd-d8c4-4176-aef1-6b76add16fb3\"");
+
+            numUrls = st.getTotalURLs("b80dcfdd-d8c4-4176-aef1-6b76add16fb3");
+
+            Console.WriteLine("Total number of Urls of the Task is : ");
+            Console.WriteLine(numUrls);
+            Console.WriteLine("=====================================================================");
+
+            Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
+            Console.WriteLine("\"e4a55914-0847-4d70-be22-d2ecac77cdfa\"");
+
+            numUrls = st.getTotalURLs("e4a55914-0847-4d70-be22-d2ecac77cdfa");
+
+            Console.WriteLine("Total number of Urls of the Task is : ");
+            Console.WriteLine(numUrls);
+            Console.WriteLine("=====================================================================");
+
+        }
+
+        //This method tests the removeURLResult method
+        public void Test4()
+        {
+            ResultsStorageImp st = new ResultsStorageImp();
+
+            Console.WriteLine("[] Trying to delete the result row with the resultID:");
+            Console.WriteLine("\"dad56e38-d678-418d-bc8e-0b9e50843092\"");
+
+            st.removeURLResult(new Result("dad56e38-d678-418d-bc8e-0b9e50843092","www.facebook.com",
+                                    "f9e26230-6da1-4e60-9c88-dc4eaa87f9da",30,79));
+
+            Console.WriteLine("-PASSED-");
+        }
+
+        //This method tests the addURLResult method
+        public void Test5()
+        {
+            ResultsStorageImp st = new ResultsStorageImp();
+
+            Console.WriteLine("[] Trying to add the url : http://www.one.co.il to the category boy_soccer.");
+            Console.WriteLine("[] The Id of this category is : 8e0d87ef-b04e-47ab-be25-56af4af3e013");
+            Console.WriteLine("[] The Id of the task to which it is added is : 7ec2bfb1-0a0d-406b-9132-2d65abb811f0");
+
+           // st.addURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", new Result("8e0d87ef-b04e-47ab-be25-56af4af3e013",
+           //                   "http://www.one.co.il", "8e0d87ef-b04e-47ab-be25-56af4af3e013",56,70));
+
+            st.addURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", new Result("8e0d87ef-b04e-47ab-be25-56af4af3e013",
+                               "http://www.one.co.il", "8e0d87ef-b04e-47ab-be25-56af4af3e013", 56, 70));
+            Console.WriteLine("-PASSED-");
+        }
+
+        //This method tests the replaceURLResult method
+        public void Test6()
+        {
+            ResultsStorageImp st = new ResultsStorageImp();
+
+            Console.WriteLine("[] Trying to replace the url:yahoo.com from the news category" + 
+                                    " to the world_basketball category");
+
+
+            st.replaceURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0",new Result("","yahoo.com","",83,91),
+                                    new Result("","yahoo.com","3575315a-5db6-4699-bd49-ce36f67b91b9",83,91));
+
+            Console.WriteLine("-PASSED-");
+
+        }
     }
 }

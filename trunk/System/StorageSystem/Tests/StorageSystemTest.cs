@@ -33,7 +33,11 @@ namespace CrawlerNameSpace.StorageSystem
 
                 ResultStorageTest resultTest = new ResultStorageTest();
                 //resultTest.Test1();
-                resultTest.Test2();
+                //resultTest.Test2();
+               // resultTest.Test3();
+                //resultTest.Test4();
+                //resultTest.Test5();
+                resultTest.Test6();
             }
             catch (Exception e)
             {

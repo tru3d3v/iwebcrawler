@@ -127,15 +127,15 @@ namespace CrawlerNameSpace.StorageSystem
 
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("UPDATE Task" +
-                    " SET LinkDepth=\'" + constrains.getAllowedDepth() + "\' AllowUrlParam=\'" + 
+                    " SET LinkDepth=\'" + constrains.getAllowedDepth() + "\', AllowUrlParam=\'" + 
                     constrains.isParametrizationAllowed() + "\' WHERE TaskID=\'" + taskId + "\'", conn);
                 cmd.ExecuteNonQuery();
 
                 removeProperty(taskId, "ALLOW");
                 foreach(String crawl in constrains.getCrawlList())
                 {
-                    cmd = new SqlCommand("INSERT INTO TaskProperies (TaskID,Property,Value)"
-                            + " Values (\'" + taskId + "\',\'" + "ALLOW" + "\',\'" + crawl + ")", conn);
+                    cmd = new SqlCommand("INSERT INTO TaskProperties (TaskID,Property,Value)"
+                            + " Values (\'" + taskId + "\',\'" + "ALLOW" + "\',\'" + crawl + "\')", conn);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -143,8 +143,8 @@ namespace CrawlerNameSpace.StorageSystem
                 removeProperty(taskId, "RESTRICT");
                 foreach (String crawl in constrains.getRestrictionList())
                 {
-                    cmd = new SqlCommand("INSERT INTO TaskProperies (TaskID,Property,Value)"
-                            + " Values (\'" + taskId + "\',\'" + "RESTRICT" + "\',\'" + crawl + ")", conn);
+                    cmd = new SqlCommand("INSERT INTO TaskProperties (TaskID,Property,Value)"
+                            + " Values (\'" + taskId + "\',\'" + "RESTRICT" + "\',\'" + crawl + "\')", conn);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -210,8 +210,8 @@ namespace CrawlerNameSpace.StorageSystem
                 conn.Open();
                 foreach (String seed in seeds)
                 {
-                    SqlCommand cmd = new SqlCommand("INSERT INTO TaskProperies (TaskID,Property,Value)"
-                            + " Values (\'" + taskId + "\',\'" + "SEED" + "\',\'" + seed + ")", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO TaskProperties (TaskID,Property,Value)"
+                            + " Values (\'" + taskId + "\',\'" + "SEED" + "\',\'" + seed + "\')", conn);
 
                     cmd.ExecuteNonQuery();
                 }

@@ -160,26 +160,14 @@ namespace CrawlerNameSpace.StorageSystem
              SqlDataReader rdr = null;
 
              List<Result> resultUrls = new List<Result>();
-             
-             //here we save all the id's of the categories that reside in the tree of categories.
-             //we add categories as we pass over a certain level of the tree.
-             //so it will look like kind of a queue.
-             List<String> currentCategories = new List<string>();
-
-             currentCategories.Add(categoryId);
-
+            
              try
              {
                  conn.Open();
 
-                     //go through all the categories at the current level of the tree and extract all the 
-                     //urls that belong to that categories.
-
-                     while (currentCategories.Count != 0)
-                     {
                          SqlCommand cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
                                             "TaskID = \'" + taskId + "\' AND CategoryID = \'" + 
-                                            currentCategories[0] + "\'", conn);
+                                            categoryId + "\'", conn);
 
                          rdr = cmd.ExecuteReader();
 
@@ -188,7 +176,7 @@ namespace CrawlerNameSpace.StorageSystem
                              int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
                              int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
                              Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
-                                                  currentCategories[0], rank, trustMeter);
+                                                  categoryId, rank, trustMeter);
 
                              resultUrls.Add(resultItem);
 
@@ -196,19 +184,9 @@ namespace CrawlerNameSpace.StorageSystem
                          if (rdr != null) rdr.Close();
 
                          SqlCommand cmnd = new SqlCommand("SELECT CategoryID From Category WHERE ParentCategory = \'" +
-                                            currentCategories[0] + "\'",conn);
+                                            categoryId + "\'",conn);
                          
-
                          rdr = cmnd.ExecuteReader();
-
-                         //add all the selected categories(sons of the current category being searched) to currentCategories.
-                         while (rdr.Read())
-                         {
-                             currentCategories.Add(rdr["CategoryID"].ToString().Trim());
-                         }
-                         currentCategories.RemoveAt(0);
-                         if (rdr != null) rdr.Close();
-                     }
                      
              }
 
@@ -228,12 +206,12 @@ namespace CrawlerNameSpace.StorageSystem
          /**
           * This function replaces the URL result to the new one(and it's fathers).
           * NOTE:the new data stored in the data base is the data of the given newResult
-          * so make sure that all the needed data there is valid.
+          * so make sure that all the needed data there is valid(except from the resultID).
           */
          public void replaceURLResult(String taskId,Result oldResult, Result newResult)
          { 
              SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
-
+             
              try
              {
                  conn.Open();
@@ -296,25 +274,35 @@ namespace CrawlerNameSpace.StorageSystem
              {
                  conn.Open();
 
-                 //this is the ID of the main category(webpage).
-                 String webpageID = getMainCategoryID();
+                 SqlCommand cmdcheck = new SqlCommand("SELECT TaskName FROM Task  WHERE TaskID = \'" + taskId + "\'",conn);
 
-                 while (categoryID != webpageID)
+                 rdr = cmdcheck.ExecuteReader();
+                 if (rdr.HasRows)
                  {
-                     SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,CategoryID,rank,TrustMeter) " +
+                     if (rdr != null) rdr.Close();
+                     while ((categoryID != null) && (categoryID != ""))
+                     {
+                         SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,CategoryID,rank,TrustMeter) " +
                                         "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
                                         categoryID + "\',\'" + result.getRank() + "\',\'" +
                                         result.getTrustMeter() + "\')", conn);
 
-                     cmd.ExecuteNonQuery();
+                         cmd.ExecuteNonQuery();
 
-                     cmd = new SqlCommand("SELECT ParentCategory From Category WHERE CategoryID = \'" + categoryID + "\'");
+                         SqlCommand cmnd = new SqlCommand("SELECT ParentCategory From Category WHERE CategoryID = \'" + categoryID + "\'", conn);
 
-                     rdr = cmd.ExecuteReader();
+                         rdr = cmnd.ExecuteReader();
 
-                     categoryID = rdr["ParentCategory"].ToString();
+                         if (rdr.HasRows)
+                         {
+                             if (rdr.Read())
+                                 categoryID = rdr["ParentCategory"].ToString();
+                             else
+                                 categoryID = null;
+                         }
+                         if (rdr != null) rdr.Close();
+                     }
                  }
-
              }
              catch (Exception e)
              {
@@ -330,7 +318,8 @@ namespace CrawlerNameSpace.StorageSystem
         /**
          * This method is an assistant method that finds the ID of the category "WebPage".
          */
-         public String getMainCategoryID()
+        /*
+        public String getMainCategoryID()
          {
              SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
                 
@@ -362,7 +351,7 @@ namespace CrawlerNameSpace.StorageSystem
 
              return catID;
          }
-
+        */
         /**
          * This private method receives list of Results and sorts them according to the given  Order order,
          * int from, int to .
@@ -390,16 +379,16 @@ namespace CrawlerNameSpace.StorageSystem
                  default:
                      break;
              }
-             if (to>sortedResults.Count)
+             if (to >= sortedResults.Count)
                 if(from<0)
                     return sortedResults.GetRange(0, (sortedResults.Count-from));
                 else
                     return sortedResults.GetRange(from, (sortedResults.Count - from));
              else
                  if (from < 0)
-                     return sortedResults.GetRange(0, (to-from));
+                     return sortedResults.GetRange(0, (to-from) + 1);
                  else
-                     return sortedResults.GetRange(from, (to - from));
+                     return sortedResults.GetRange(from, (to - from) + 1);
 
          }
     }
