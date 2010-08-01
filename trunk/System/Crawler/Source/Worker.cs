@@ -22,8 +22,8 @@ namespace CrawlerNameSpace
         // number of iterations to do while checking the status
         private int _checkStatusLimit;
 
-        // needed in order to keep alive status of the frontier thread
-        Queue<int> _status;
+        // needed in order to keep alive status of the current worker thread
+        private volatile bool _shouldStop;
 
         // managers of the protocols
         FetcherManager _fetchers;
@@ -34,7 +34,7 @@ namespace CrawlerNameSpace
          *  and return the feed to the feedback, note it won't create new queues it will use
          *  the passed arguments - and they may need to be thread safe
          */
-        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback, Queue<int> status)
+        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback)
         {
             _tasks    = tasks;
             _feedback = feedback;
@@ -42,7 +42,7 @@ namespace CrawlerNameSpace
             // sets default timer
             _timer    = 1000;
 
-            _status = status;
+            _shouldStop = false;
 
             // initailizing the fetcher - page downloaders
             _fetchers = new FetcherManager();
@@ -54,7 +54,7 @@ namespace CrawlerNameSpace
             HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
             _processors.attachProcessor("PageProc", htmlProcessor);
 
-            _checkStatusLimit = 100;
+            _checkStatusLimit = 0;
         }
         
         /**
@@ -87,9 +87,10 @@ namespace CrawlerNameSpace
                     if (iterations >= _checkStatusLimit)
                     {
                         iterations = 0;
-                        lock (_status)
+                        if (_shouldStop)
                         {
-                            if (_status.Count != 0) needToTerminate = true;
+                            System.Console.WriteLine(" Recieved should Stop in worker thread");
+                            needToTerminate = true;
                         }
                     }
                 }
@@ -100,6 +101,14 @@ namespace CrawlerNameSpace
                     continue;
                 }
             }
+        }
+
+        /**
+         * can be called in order to stop work on the worker
+         */
+        public void RequestStop()
+        {
+            _shouldStop = true;
         }
 
         /**

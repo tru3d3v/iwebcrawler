@@ -31,7 +31,10 @@ namespace CrawlerNameSpace
         private static List<Queue<Url>> _serversQueues;
         private static Queue<Url>       _feedBackQueue;
 
-        private static List<Thread> _threadsPool = new List<Thread>();
+        private static List<Thread> _threadsPool     = new List<Thread>();
+        private static List<Worker> _workersPool     = new List<Worker>();
+        private static List<Frontier> _frontiersPool = new List<Frontier>();
+
 
         /**
          * Set Flag Method
@@ -168,7 +171,7 @@ namespace CrawlerNameSpace
                 _categories  = StorageSystem.StorageSystem.getInstance().getCategories(taskId);
                 _constraints = StorageSystem.StorageSystem.getInstance().getRestrictions(taskId);
             }
-            _initializer = new Initializer(_constraints, _categories);
+            _initializer = new Initializer(taskId, _constraints, _categories);
         }
 
         /**
@@ -200,6 +203,7 @@ namespace CrawlerNameSpace
                 {
                     Url task = new Url(url.Trim(), 0, 100, url.Trim(), 0);
                     _feedBackQueue.Enqueue(task);
+                    System.Console.WriteLine("SEED: " + url);
                 }
             }
         }
@@ -207,39 +211,43 @@ namespace CrawlerNameSpace
         /**
          * invokes the threads to start the work
          */
-        private static void InvokeThreads(Queue<int> keepAlive)
+        private static void InvokeThreads()
         {
+            // init the Frontier thread
+            Frontier frontier = new Frontier(_feedBackQueue, _serversQueues);
+            Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
+            frontierThread.Start();
+            _frontiersPool.Add(frontier);
+            _threadsPool.Add(frontierThread);
+
             for (int threadNum = 0; threadNum < _numWorkers; threadNum++)
             {
-                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue, keepAlive);
+                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue);
                 Thread workerThread = new Thread(new ThreadStart(worker.run));
                 workerThread.Start();
                 _threadsPool.Add(workerThread);
+                _workersPool.Add(worker);
             }
-
-            // init the Frontier thread
-            Frontier frontier = new Frontier(_feedBackQueue, _serversQueues, keepAlive);
-            Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
-            frontierThread.Start();
-            _threadsPool.Add(frontierThread);
         }
 
         /**
          * terminate all the working and frontier threads
          */
-        private static void TerminateThreads(Queue<int> keepAlive)
+        private static void TerminateThreads()
         {
-            lock (keepAlive)
+            _frontiersPool[0].RequestStop();
+            _threadsPool[0].Join();
+            Console.WriteLine("$$$ Frontier has been finished ...");
+
+            for (int threadNum = 0; threadNum < _numWorkers; threadNum++)
             {
-                keepAlive.Enqueue(0);
-            }
-            for (int threadNum = 0; threadNum < _numWorkers + 1; threadNum++)
-            {
-                _threadsPool[threadNum].Join();
+                _workersPool[threadNum].RequestStop();
+                _threadsPool[threadNum + 1].Join();
             }
             Console.WriteLine("$$$ Session Terminated ...");
             _threadsPool.Clear();
-            keepAlive.Dequeue();
+            _workersPool.Clear();
+            _frontiersPool.Clear();
         }
         
         public static void Main(String[] args)
@@ -261,7 +269,7 @@ namespace CrawlerNameSpace
                 InitQueues(currentTask);
 
                 // initing worker and frontier threads
-                InvokeThreads(keepAlive);
+                InvokeThreads();
                 
                 // polling to the user requests
                 while (needToRestart == false)
@@ -286,7 +294,7 @@ namespace CrawlerNameSpace
                 }
 
                 // Terminate all the threads
-                TerminateThreads(keepAlive);
+                TerminateThreads();
             }
         }
     }

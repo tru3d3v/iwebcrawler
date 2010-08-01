@@ -17,10 +17,14 @@ namespace CrawlerNameSpace.Utilities
         //constraintsOptions contains the constraints defined by the user. 
         private Constraints constraintsOptions;
 
-        public Initializer(Constraints _constraints, List<Category> _categories)
+        // will save the task id
+        private string _taskId;
+
+        public Initializer(String taskId, Constraints _constraints, List<Category> _categories)
         {
             constraintsOptions = _constraints;
             categoryList = _categories;
+            _taskId = taskId;
         }
 
         /**
@@ -37,6 +41,14 @@ namespace CrawlerNameSpace.Utilities
         public Constraints getContraints()
         {
             return constraintsOptions;
+        }
+
+        /**
+         * returns the task id
+         */
+        public string getTaskId()
+        {
+            return _taskId;
         }
     }
 }

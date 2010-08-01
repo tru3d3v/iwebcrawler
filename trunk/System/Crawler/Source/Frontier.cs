@@ -25,21 +25,21 @@ namespace CrawlerNameSpace
         private int _checkStatusLimit;
 
         // needed in order to keep alive status of the frontier thread
-        Queue<int> _status;
+        private volatile bool _shouldStop;
 
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
          *  and the specified server queue list, so the frontier will schedule it's tasks
          *  between the servers
          */
-        public Frontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues, Queue<int> status)
+        public Frontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues)
         {
             _tasksQueue = tasksQueue;
             _serversQueues = serversQueues;
             _timer = 250;
             _limit = 100;
-            _checkStatusLimit = 100;
-            _status = status;
+            _checkStatusLimit = 0;
+            _shouldStop = false;
         }
 
         /**
@@ -80,9 +80,10 @@ namespace CrawlerNameSpace
                     if (iterations >= _checkStatusLimit)
                     {
                         iterations = 0;
-                        lock (_status)
+                        if (_shouldStop)
                         {
-                            if (_status.Count != 0) needToTerminate = true;
+                            System.Console.WriteLine("Frontier Thread recieved should stop");
+                            needToTerminate = true;
                         }
                     }
                 }
@@ -91,6 +92,14 @@ namespace CrawlerNameSpace
                     RuntimeStatistics.addToErrors(1);
                 }
             }
+        }
+
+        /**
+         * can be called in order to stop work on the frontier
+         */
+        public void RequestStop()
+        {
+            _shouldStop = true;
         }
 
         /**

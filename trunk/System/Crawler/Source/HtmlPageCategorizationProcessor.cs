@@ -4,6 +4,7 @@ using System.Text;
 using CrawlerNameSpace.Utilities;
 using System.IO;
 using System.Threading;
+using CrawlerNameSpace.StorageSystem;
 
 namespace CrawlerNameSpace
 {
@@ -25,7 +26,7 @@ namespace CrawlerNameSpace
         private Ranker ranker;
         private Filter filter;
         private Queue<Url> queueFronier;
-
+        private string taskId;
 
         public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier)
         {
@@ -34,6 +35,7 @@ namespace CrawlerNameSpace
             ranker = new Ranker(categorizer);
             filter = new Filter("http://",initializer.getContraints());
             queueFronier = frontier;
+            taskId = initializer.getTaskId();
         }
         /**
          * This method tries to process the given content assuming that the given content
@@ -92,11 +94,16 @@ namespace CrawlerNameSpace
         public void deployResourceToStorage(Result result)
         {
             //System.Console.WriteLine("[*] System.Threading.Thread.CurrentThread.ID is " + System.Threading.Thread.CurrentThread.ManagedThreadId);
-
+            if (taskId != "")
+            {
+                StorageSystem.StorageSystem.getInstance().addURLResult(taskId, result);
+            }
+            /*
             StreamWriter sw = new StreamWriter("Storage" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
             string temp = result.ToString().Replace("[-]", " " + System.Environment.NewLine);
             sw.WriteLine(temp);
             sw.Close();
+            */
         }
 
         /*
@@ -106,7 +113,8 @@ namespace CrawlerNameSpace
          */
         public void deployLinksToFrontier(Url urlProcessed)
         {
-            /*StreamWriter sw = new StreamWriter("Frontier.txt", true);
+            /*
+            StreamWriter sw = new StreamWriter("Frontier.txt", true);
             string temp = urlProcessed.ToString().Replace("[-]", " " + System.Environment.NewLine);
             sw.WriteLine(temp);
             sw.Close();
