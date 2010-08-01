@@ -82,5 +82,17 @@ namespace CrawlerNameSpace.StorageSystem
             ss.setParentToSon("f9e26230-6da1-4e60-9c88-dc4eaa87f9da", "75d7e9f8-a1aa-49eb-8ec6-274e8036f3f5");
             Console.WriteLine(" - PASSED -");
         }
+
+        //Tests all the methods when the data searched for does not exist in the data base
+        public void Test4()
+        {
+            CategoriesStorageImp ss = new CategoriesStorageImp();
+            //Trying to call the method with task id that does not exist in the data base
+            List<Category> categories = ss.getCategories("7562bfb1-0a0d-406b-9132-2d65abb811f0");
+
+            if (categories.Count==0) Console.WriteLine(" - PASSED -");
+
+
+        }
     }
 }

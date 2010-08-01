@@ -132,9 +132,11 @@ namespace CrawlerNameSpace.StorageSystem
                 SqlCommand cmd = new SqlCommand("SELECT COUNT(TaskID) AS TotalUrls FROM Results " + 
                                         "WHERE TaskID = \'" + taskId +"\'", conn);
                 rdr = cmd.ExecuteReader();
-
-                rdr.Read();
-                totalUrls = Convert.ToUInt32(rdr["TotalUrls"].ToString().Trim());
+                if (rdr.HasRows)
+                {
+                    rdr.Read();
+                    totalUrls = Convert.ToUInt32(rdr["TotalUrls"].ToString().Trim());
+                }
             }
             catch (Exception e)
             {
@@ -280,27 +282,38 @@ namespace CrawlerNameSpace.StorageSystem
                  if (rdr.HasRows)
                  {
                      if (rdr != null) rdr.Close();
-                     while ((categoryID != null) && (categoryID != ""))
+                     if ((categoryID == "") || (categoryID == "0") || (categoryID == null))
                      {
-                         SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,CategoryID,rank,TrustMeter) " +
-                                        "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
-                                        categoryID + "\',\'" + result.getRank() + "\',\'" +
-                                        result.getTrustMeter() + "\')", conn);
-
+                         SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,rank,TrustMeter) " +
+                                                      "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
+                                                      result.getRank() + "\',\'" +
+                                                      result.getTrustMeter() + "\')", conn);
                          cmd.ExecuteNonQuery();
-
-                         SqlCommand cmnd = new SqlCommand("SELECT ParentCategory From Category WHERE CategoryID = \'" + categoryID + "\'", conn);
-
-                         rdr = cmnd.ExecuteReader();
-
-                         if (rdr.HasRows)
+                     }
+                     else
+                     {
+                         while ((categoryID != null) && (categoryID != ""))
                          {
-                             if (rdr.Read())
-                                 categoryID = rdr["ParentCategory"].ToString();
-                             else
-                                 categoryID = null;
+                             SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,CategoryID,rank,TrustMeter) " +
+                                            "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
+                                            categoryID + "\',\'" + result.getRank() + "\',\'" +
+                                            result.getTrustMeter() + "\')", conn);
+
+                             cmd.ExecuteNonQuery();
+
+                             SqlCommand cmnd = new SqlCommand("SELECT ParentCategory From Category WHERE CategoryID = \'" + categoryID + "\'", conn);
+
+                             rdr = cmnd.ExecuteReader();
+
+                             if (rdr.HasRows)
+                             {
+                                 if (rdr.Read())
+                                     categoryID = rdr["ParentCategory"].ToString();
+                                 else
+                                     categoryID = null;
+                             }
+                             if (rdr != null) rdr.Close();
                          }
-                         if (rdr != null) rdr.Close();
                      }
                  }
              }
