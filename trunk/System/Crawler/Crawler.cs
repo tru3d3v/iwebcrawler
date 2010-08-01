@@ -138,6 +138,7 @@ namespace CrawlerNameSpace
          */
         private static void SelectTask(ref String user, ref String task)
         {
+            System.Console.Write("$$$ Selecting Suitable task .. ");
             if (_operationMode == operationMode_t.Auto)
             {
                 // TODO: need to select the suitable user also
@@ -154,6 +155,7 @@ namespace CrawlerNameSpace
                 StorageSystem.StorageSystem.getInstance().changeWorkDetails(newStatus);
                 task = tasks[0].getTaskID();
             }
+            System.Console.WriteLine("SUCCESS");
         }
 
         /**
@@ -161,6 +163,7 @@ namespace CrawlerNameSpace
          */
         private static void SetInitializer(String taskId)
         {
+            System.Console.Write("$$$ Getting Constraints .. ");
             if (_operationMode == operationMode_t.Manual)
             {
                 _categories  = new List<Category>();
@@ -172,6 +175,7 @@ namespace CrawlerNameSpace
                 _constraints = StorageSystem.StorageSystem.getInstance().getRestrictions(taskId);
             }
             _initializer = new Initializer(taskId, _constraints, _categories);
+            System.Console.WriteLine("SUCCESS");
         }
 
         /**
@@ -179,6 +183,7 @@ namespace CrawlerNameSpace
          */
         private static void InitQueues(String taskId)
         {
+            System.Console.Write("$$$ Initalizing Requests .. ");
             _serversQueues = new List<Queue<Url>>();
             _feedBackQueue = new Queue<Url>();
 
@@ -203,9 +208,10 @@ namespace CrawlerNameSpace
                 {
                     Url task = new Url(url.Trim(), 0, 100, url.Trim(), 0);
                     _feedBackQueue.Enqueue(task);
-                    System.Console.WriteLine("SEED: " + url);
+                    //System.Console.WriteLine("SEED: " + url);
                 }
             }
+            System.Console.WriteLine("SUCCESS");
         }
 
         /**
@@ -213,6 +219,7 @@ namespace CrawlerNameSpace
          */
         private static void InvokeThreads()
         {
+            System.Console.Write("$$$ Start Invoking threads .. ");
             // init the Frontier thread
             Frontier frontier = new Frontier(_feedBackQueue, _serversQueues);
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
@@ -228,6 +235,7 @@ namespace CrawlerNameSpace
                 _threadsPool.Add(workerThread);
                 _workersPool.Add(worker);
             }
+            System.Console.WriteLine("SUCCESS");
         }
 
         /**
@@ -235,19 +243,22 @@ namespace CrawlerNameSpace
          */
         private static void TerminateThreads()
         {
+            System.Console.Write("$$$ Start Termnating threads .. ");
             _frontiersPool[0].RequestStop();
             _threadsPool[0].Join();
-            Console.WriteLine("$$$ Frontier has been finished ...");
+            //Console.WriteLine("$ Frontier has been finished ...");
 
             for (int threadNum = 0; threadNum < _numWorkers; threadNum++)
             {
-                _workersPool[threadNum].RequestStop();
-                _threadsPool[threadNum + 1].Join();
+                _threadsPool[threadNum + 1].Abort();
+                //_workersPool[threadNum].RequestStop();
+                //_threadsPool[threadNum + 1].Join();
             }
-            Console.WriteLine("$$$ Session Terminated ...");
+            //Console.WriteLine("$ Session Terminated ...");
             _threadsPool.Clear();
             _workersPool.Clear();
             _frontiersPool.Clear();
+            System.Console.WriteLine("SUCCESS");
         }
         
         public static void Main(String[] args)
@@ -295,6 +306,7 @@ namespace CrawlerNameSpace
 
                 // Terminate all the threads
                 TerminateThreads();
+                needToRestart = false;
             }
         }
     }

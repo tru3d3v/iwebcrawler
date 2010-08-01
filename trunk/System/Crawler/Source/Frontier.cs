@@ -82,7 +82,7 @@ namespace CrawlerNameSpace
                         iterations = 0;
                         if (_shouldStop)
                         {
-                            System.Console.WriteLine("Frontier Thread recieved should stop");
+                            //System.Console.WriteLine("Frontier Thread recieved should stop");
                             needToTerminate = true;
                         }
                     }
