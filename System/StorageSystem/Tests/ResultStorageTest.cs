@@ -14,10 +14,10 @@ namespace CrawlerNameSpace.StorageSystem
         {
             ResultsStorageImp st = new ResultsStorageImp();
             Console.WriteLine("[] Trying to get the results that have been crawled from task :");
-            Console.WriteLine("[]\"3012e088-1519-4a78-9986-89683a7901a3\"");
-            Console.WriteLine("[] For the Url : http://www.sex.com");
+            Console.WriteLine("[]\"e4a55914-0847-4d70-be22-d2ecac77cdfa\"");
+            Console.WriteLine("[] For the Url : facebook.com");
 
-            List<Result> resultedUrls = st.getURLResults("3012e088-1519-4a78-9986-89683a7901a3", "http://www.sex.com");
+            List<Result> resultedUrls = st.getURLResults("e4a55914-0847-4d70-be22-d2ecac77cdfa", "facebook.com");
      
             Console.WriteLine("The results of the url are :");
             foreach (Result resultUrl in resultedUrls)
@@ -165,8 +165,8 @@ namespace CrawlerNameSpace.StorageSystem
            // st.addURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", new Result("8e0d87ef-b04e-47ab-be25-56af4af3e013",
            //                   "http://www.one.co.il", "8e0d87ef-b04e-47ab-be25-56af4af3e013",56,70));
 
-            st.addURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", new Result("8e0d87ef-b04e-47ab-be25-56af4af3e013",
-                               "http://www.one.co.il", "8e0d87ef-b04e-47ab-be25-56af4af3e013", 56, 70));
+            st.addURLResult("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", new Result("0",
+                               "http://www.one.co.il", "0", 0, 100));
             Console.WriteLine("-PASSED-");
         }
 
@@ -183,6 +183,26 @@ namespace CrawlerNameSpace.StorageSystem
                                     new Result("","yahoo.com","3575315a-5db6-4699-bd49-ce36f67b91b9",83,91));
 
             Console.WriteLine("-PASSED-");
+        }
+
+        //This method tests all the methods when the data searched does not exist in the data base
+        public void Test7()
+        {
+            ResultsStorageImp st = new ResultsStorageImp();
+            //testing the getURLResults method with a task that does not exist.
+            Console.WriteLine("[] Trying to get the results that have been crawled from task that does not exist:");
+            Console.WriteLine("[] For the Url : http://www.sex.com");
+            List<Result> resultedUrls = st.getURLResults("3012e088-2319-4a78-9986-89683a7901a3", "http://www.sex.com");
+
+            if (resultedUrls==null)
+                Console.WriteLine("-PASSED-");
+
+            //testing the getTotalURLs method with task that does not exist
+            Console.WriteLine("[] Trying to get the Total number of crawled urls from task that does not exist :");
+
+            ulong numUrls = st.getTotalURLs("7ec2bfb8-0a0d-406b-9132-2d65abb811f0");
+
+            if (numUrls == 0) Console.WriteLine("-PASSED-");
 
         }
     }

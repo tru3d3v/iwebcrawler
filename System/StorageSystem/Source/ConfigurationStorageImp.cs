@@ -108,17 +108,19 @@ namespace CrawlerNameSpace.StorageSystem
                 rdr = cmd.ExecuteReader();
 
                 //check if the inserted userid has a task named taskName
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    //Console.WriteLine(rdr["TaskName"]);
-                    string nameExtacted = (string)rdr["TaskName"];
-                    nameExtacted = nameExtacted.TrimEnd(' ');
-                    if (nameExtacted == taskName)
+                    while (rdr.Read())
                     {
-                        throw new Exception("TaskName for the user allready exists");
+                        //Console.WriteLine(rdr["TaskName"]);
+                        string nameExtacted = (string)rdr["TaskName"];
+                        nameExtacted = nameExtacted.TrimEnd(' ');
+                        if (nameExtacted == taskName)
+                        {
+                            throw new Exception("TaskName for the user allready exists");
+                        }
                     }
                 }
-
                 if (rdr != null)
                 {
                     rdr.Close();

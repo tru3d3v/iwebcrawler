@@ -20,6 +20,7 @@ namespace CrawlerNameSpace.StorageSystem
 
             try
             {
+                bool taskExist = false;
                 string restrict = "", crawl = "";
                 int linkDepth = 1;
                 bool parametersAllowed = false;
@@ -34,6 +35,7 @@ namespace CrawlerNameSpace.StorageSystem
                 {
                     if (rdr.Read())
                     {
+                        taskExist = true;
                         linkDepth = Convert.ToInt32(rdr["LinkDepth"]);
                         int allowParameters = Convert.ToInt32(rdr["AllowUrlParam"]);
                         parametersAllowed = (allowParameters != 0);
@@ -67,8 +69,10 @@ namespace CrawlerNameSpace.StorageSystem
                     }
                     if (crawl.Length != 0) crawl = crawl.TrimEnd(new char[] { ' ' });
                 }
-
-                constrains = new Constraints((uint)linkDepth, parametersAllowed, restrict, crawl);
+                if (taskExist)
+                    constrains = new Constraints((uint)linkDepth, parametersAllowed, restrict, crawl);
+                else
+                    constrains = null;
             }
             catch (Exception e)
             {
@@ -177,9 +181,12 @@ namespace CrawlerNameSpace.StorageSystem
                 SqlCommand cmd = new SqlCommand("SELECT Value" +
                     " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'SEED\'", conn);
                 rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    seedsList.Add(rdr["Value"].ToString());
+                    while (rdr.Read())
+                    {
+                        seedsList.Add(rdr["Value"].ToString());
+                    }
                 }
             }
             catch (Exception e)

@@ -84,5 +84,24 @@ namespace CrawlerNameSpace.StorageSystem
             st.setSeedList("e4a55914-0847-4d70-be22-d2ecac77cdfa", seeds);
             Console.WriteLine(" - PASSED -");
         }
+
+        //This method tests all the methods when the data searched does not exist in the data base
+        public void Test5()
+        {
+            SettingsStorageImp st = new SettingsStorageImp();
+            //testing the method getRestrictions 
+            Console.WriteLine("[] Trying to get the constraints of a task that does not exist");
+            Constraints constraints = st.getRestrictions("e4a55914-0847-4d70-be22-d2ecac7c9dfa");
+
+            if (constraints==null)
+                Console.WriteLine(" - PASSED -");
+
+            //testing the method getSeedList
+            Console.WriteLine("[] Trying to get the seeds of a task that does not exist");
+            List<String> seeds = st.getSeedList("e4a55914-0847-4d70-be22-d2ecac7c9dfa");
+
+            if (seeds.Count == 0)
+                Console.WriteLine(" - PASSED -");
+        }
     }
 }

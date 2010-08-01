@@ -28,16 +28,19 @@ namespace CrawlerNameSpace.StorageSystem
                     " FROM Category WHERE TaskID=\'" + taskId + "\'", conn);
 
                 rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                if (rdr.HasRows)
                 {
-                    int confidenceLevel = Convert.ToInt32(rdr["ConfidenceLevel"]);
-                    List<String> keywords = null;
-                    if (!rdr["Keywords"].Equals(System.DBNull.Value))
-                        keywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
-                    Category category = new Category(rdr["CategoryID"].ToString(), rdr["ParentCategory"].ToString(),
-                        rdr["CategoryName"].ToString().Trim(), keywords, confidenceLevel);
+                    while (rdr.Read())
+                    {
+                        int confidenceLevel = Convert.ToInt32(rdr["ConfidenceLevel"]);
+                        List<String> keywords = null;
+                        if (!rdr["Keywords"].Equals(System.DBNull.Value))
+                            keywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
+                        Category category = new Category(rdr["CategoryID"].ToString(), rdr["ParentCategory"].ToString(),
+                            rdr["CategoryName"].ToString().Trim(), keywords, confidenceLevel);
 
-                    categoryList.Add(category);
+                        categoryList.Add(category);
+                    }
                 }
             }
             catch (Exception e)
