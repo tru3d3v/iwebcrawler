@@ -204,6 +204,14 @@ namespace CrawlerNameSpace.StorageSystem
 
             if (numUrls == 0) Console.WriteLine("-PASSED-");
 
+            //testing the getURlsFromCategory method with category that does not exist
+            Console.WriteLine("[] Trying to get all the urls that belong to the a category that does not exist :");
+           
+            List<Result> urls = st.getURLsFromCategory("7e32bfb1-0a0d-406b-9132-2d65abb811f0",
+                                "75d7e9f8-a1aa-49eb-8ec6-274la036f3f5", Order.NormalOrder, 1, 4);
+
+            if (urls.Count == 0) Console.WriteLine("-PASSED-");
+
         }
     }
 }
