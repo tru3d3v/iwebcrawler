@@ -284,6 +284,7 @@ namespace CrawlerNameSpace.StorageSystem
                      if (rdr != null) rdr.Close();
                      if ((categoryID == "") || (categoryID == "0") || (categoryID == null))
                      {
+                         //System.Console.WriteLine("1> Cat ID: " + categoryID);
                          SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,rank,TrustMeter) " +
                                                       "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
                                                       result.getRank() + "\',\'" +
@@ -294,6 +295,7 @@ namespace CrawlerNameSpace.StorageSystem
                      {
                          while ((categoryID != null) && (categoryID != ""))
                          {
+                             //System.Console.WriteLine("2> Cat ID: " + categoryID);
                              SqlCommand cmd = new SqlCommand("INSERT INTO Results (TaskID,Url,CategoryID,rank,TrustMeter) " +
                                             "Values(\'" + taskId + "\',\'" + result.getUrl() + "\',\'" +
                                             categoryID + "\',\'" + result.getRank() + "\',\'" +

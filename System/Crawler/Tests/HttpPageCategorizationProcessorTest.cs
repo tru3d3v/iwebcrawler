@@ -14,7 +14,7 @@ namespace CrawlerNameSpace.Tests
 
         public void Test1()
         {
-            Initializer initializer = new Initializer(constraints, categories);
+            Initializer initializer = new Initializer("", constraints, categories);
             Queue<Url> queue = new Queue<Url>();
             ResourceContent resource = new ResourceContent("www.nana10.co.il", ResourceType.HtmlResource, 
                 getFileContent("nana10.txt"), 200, 0);
