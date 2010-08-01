@@ -172,23 +172,24 @@ namespace CrawlerNameSpace.StorageSystem
                                             categoryId + "\'", conn);
 
                          rdr = cmd.ExecuteReader();
-
-                         while (rdr.Read())
+                         if (rdr.HasRows)
                          {
-                             int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
-                             int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
-                             Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
-                                                  categoryId, rank, trustMeter);
+                             while (rdr.Read())
+                             {
+                                 int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
+                                 int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
+                                 Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
+                                                      categoryId, rank, trustMeter);
 
-                             resultUrls.Add(resultItem);
+                                 resultUrls.Add(resultItem);
 
+                             }
                          }
-                         if (rdr != null) rdr.Close();
-
-                         SqlCommand cmnd = new SqlCommand("SELECT CategoryID From Category WHERE ParentCategory = \'" +
-                                            categoryId + "\'",conn);
                          
-                         rdr = cmnd.ExecuteReader();
+                         //SqlCommand cmnd = new SqlCommand("SELECT CategoryID From Category WHERE ParentCategory = \'" +
+                           //                 categoryId + "\'",conn);
+                         
+                        // rdr = cmnd.ExecuteReader();
                      
              }
 
@@ -201,8 +202,10 @@ namespace CrawlerNameSpace.StorageSystem
                  if (rdr != null) rdr.Close();
                  if (conn != null) conn.Close();
              }
-
-             return sortListOfResults(resultUrls,order,from,to);
+             if (resultUrls.Count == 0)
+                 return resultUrls;
+             else
+                 return sortListOfResults(resultUrls,order,from,to);
          }
 
          /**
