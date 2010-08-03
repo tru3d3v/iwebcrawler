@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CreateTask.aspx.cs" Inherits="CreateTask" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -7,6 +7,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<link rel="stylesheet" href="images/style.css" type="text/css" />
 	<title>iWeb Crawler Control Page</title>
+
+    <script language="javascript" type="text/javascript">
+// <!CDATA[
+
+        function Button1_onclick() {
+
+        }
+
+// ]]>
+    </script>
 </head>
 <body>
 	<form id="form1" runat="server">
@@ -25,7 +35,7 @@
 				<div class="logotext" style="margin:30px"><span class="orangelogotext">i</span>Crawler</div> 
 			</div>
 			<div id="pagetitle">
-				<div id="title" class="titletext" align="right">Welcome to iWeb Crawler!</div>
+				<div id="title" class="titletext" align="right">Create new task</div>
 			</div>
 		</div>
 		<div id="content" align="center">
@@ -42,20 +52,15 @@
 			</div>
 		<div id="contenttext">
 			<div class="bodytext" style="padding:12px;" align="justify">
-				<strong>Hi! This is iWeb Crawler Main Control Page, this is the first working version of iWeb Crawler created mainly for testing and debuging</strong><br />
+				<strong>Please specify the task basic details</strong><br />
 				
 			</div>
-			<div class="panel" style="height:75px;" align="justify">
-				<span class="orangetitle">How To Start ..</span>
+			<div class="panel" style="height:75px; text-align: center;" align="justify">
 				<span class="bodytext"><br />
-				In order to invoke a specified task, first you need to create the task with unique name and you may inserted the task proporties like categories and thier keywords - you can change the proporties later via edit mode - after this you may send the task to be procced in the crawler, you may look at the results in the results section</span>			
-			</div>
-			<div class="panel" style="height:75px;" align="justify">
-				<span class="orangetitle">Credits</span>
-				<span class="bodytext"><br />
-				This Crawler has been developped as Software Crawler Project, at the Technion EE faculty<br />
-				by: Mohammed Agabaria, Adam Shobash</span>			
-			</div>
+					Task Name:  <input id="TaskName" type="text" /><br /><br />
+                <input id="Button1" type="button" value="Create a New Task" onclick="return Button1_onclick()" /></div><br />
+					
+				
 			</div>
 			
 		</div>
