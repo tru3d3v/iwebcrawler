@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "iWeb", "..\iWeb\", "{16A50E74-08F7-4C55-9164-A44F829060DC}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
+		ProjectReferences = "{39B7CF49-9FD7-4915-9A0D-6881901D710C}|StorageSystem.dll;{0F5042C6-6DE0-4C85-B116-863F069DC858}|Utilities.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/iWeb"
 		Debug.AspNetCompiler.PhysicalPath = "..\iWeb\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\iWeb\"
