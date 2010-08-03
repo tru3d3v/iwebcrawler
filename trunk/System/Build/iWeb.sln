@@ -1,16 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "..\Crawler\Crawler.csproj", "{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0F5042C6-6DE0-4C85-B116-863F069DC858} = {0F5042C6-6DE0-4C85-B116-863F069DC858}
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "iWeb", "..\iWeb\", "{16A50E74-08F7-4C55-9164-A44F829060DC}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "3.5"
+		Debug.AspNetCompiler.VirtualPath = "/iWeb"
+		Debug.AspNetCompiler.PhysicalPath = "..\iWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\iWeb\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/iWeb"
+		Release.AspNetCompiler.PhysicalPath = "..\iWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\iWeb\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "57464"
+		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "..\Crawler\Crawler.csproj", "{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "..\StorageSystem\StorageSystem.csproj", "{39B7CF49-9FD7-4915-9A0D-6881901D710C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "..\Common\Utilities\Utilities.csproj", "{0F5042C6-6DE0-4C85-B116-863F069DC858}"
 EndProject
-Project("{4F174C21-8C12-11D0-8340-0000F80270F8}") = "CrawlerDataBase", "..\Common\CrawlerDataBase\CrawlerDataBase.dbp", "{8C378C37-74C6-4476-BBF7-BC7428305A86}"
+Project("{4F174C21-8C12-11D0-8340-0000F80270F8}") = "CrawlerDataBase", "..\Common\CrawlerDataBase\CrawlerDataBase.dbp", "{1EDC66ED-798D-4BB9-9736-A9360C10485E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +36,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16A50E74-08F7-4C55-9164-A44F829060DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16A50E74-08F7-4C55-9164-A44F829060DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16A50E74-08F7-4C55-9164-A44F829060DC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{16A50E74-08F7-4C55-9164-A44F829060DC}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU

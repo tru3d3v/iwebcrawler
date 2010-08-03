@@ -51,12 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
-      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Source\CategoriesStorage.cs" />
     <Compile Include="Source\CategoriesStorageImp.cs" />
     <Compile Include="Source\ConfigurationStorage.cs" />
