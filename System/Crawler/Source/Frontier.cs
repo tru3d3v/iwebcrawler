@@ -29,8 +29,8 @@ namespace CrawlerNameSpace
 
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
-         *  and the specified server queue list, so the frontier will schedule it's tasks
-         *  between the servers
+         * and the specified server queue list, so the frontier will schedule it's tasks
+         * between the servers
          */
         public Frontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues)
         {
