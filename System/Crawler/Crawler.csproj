@@ -94,16 +94,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
-      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StorageSystem\StorageSystem.csproj">
-      <Project>{39B7CF49-9FD7-4915-9A0D-6881901D710C}</Project>
-      <Name>StorageSystem</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework Client Profile</ProductName>
