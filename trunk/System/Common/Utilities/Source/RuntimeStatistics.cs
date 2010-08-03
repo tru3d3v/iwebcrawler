@@ -15,6 +15,18 @@ namespace CrawlerNameSpace.Utilities
         private static Long PagesCrawled = 0;
 
         /**
+         * resets the counters
+         */
+        public static void resetStatistics()
+        {
+            crawledUrls = 0;
+            totalErrors = 0;
+            extractedUrls = 0;
+            feedUrls = 0;
+            PagesCrawled = 0;
+        }
+
+        /**
          * adds the specified amount to the crawled urls counter
          */
         public static void addToCrawledUrls(Long amount)

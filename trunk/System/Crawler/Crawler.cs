@@ -297,6 +297,8 @@ namespace CrawlerNameSpace
                         {
                             if (task.getTaskID() == currentTask)
                             {
+                                task.setTaskElapsedTime(task.getTaskElapsedTime() + _refreshRate);
+                                StorageSystem.StorageSystem.getInstance().changeWorkDetails(task);
                                 needToRestart = false;
                                 continue;
                             }
@@ -307,6 +309,7 @@ namespace CrawlerNameSpace
                 // Terminate all the threads
                 TerminateThreads();
                 needToRestart = false;
+                RuntimeStatistics.resetStatistics();
             }
         }
     }
