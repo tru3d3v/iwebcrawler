@@ -128,7 +128,8 @@ namespace CrawlerNameSpace.StorageSystem
 
                 //if the taskName does not exist in the table for the inserted userid 
                 //then insert it into the table.
-                cmdtxt = "INSERT INTO Task (UserID,TaskName) VALUES (\'" + userID + "\',\'" + taskName + "\')";
+                cmdtxt = "INSERT INTO Task (UserID,TaskName,Status,ElapsedTime,LinkDepth,AllowUrlParam) " + 
+                    "VALUES (\'" + userID + "\',\'" + taskName + "\',\'IDLE\',0,4,\'false\')";
                 cmd.CommandText = cmdtxt;
                 cmd.ExecuteNonQuery();
 
