@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Dump\StorageSystem\Debug\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <IntermediateOutputPath>..\Dump\StorageSystem\Debug\obj\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -31,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Dump\StorageSystem\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>..\Dump\StorageSystem\Release\obj\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -66,5 +66,11 @@
     <Compile Include="Tests\ResultStorageTest.cs" />
     <Compile Include="Tests\SettingsStorageTest.cs" />
     <Compile Include="Tests\StorageSystemTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
+      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

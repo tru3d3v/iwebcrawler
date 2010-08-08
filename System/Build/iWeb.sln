@@ -23,8 +23,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "iWeb", "..\iWeb\", "{16A50E
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler", "..\Crawler\Crawler.csproj", "{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "..\StorageSystem\StorageSystem.csproj", "{39B7CF49-9FD7-4915-9A0D-6881901D710C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "..\Common\Utilities\Utilities.csproj", "{0F5042C6-6DE0-4C85-B116-863F069DC858}"
@@ -41,10 +39,6 @@ Global
 		{16A50E74-08F7-4C55-9164-A44F829060DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16A50E74-08F7-4C55-9164-A44F829060DC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{16A50E74-08F7-4C55-9164-A44F829060DC}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39B7CF49-9FD7-4915-9A0D-6881901D710C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39B7CF49-9FD7-4915-9A0D-6881901D710C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39B7CF49-9FD7-4915-9A0D-6881901D710C}.Release|Any CPU.ActiveCfg = Release|Any CPU

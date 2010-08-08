@@ -12,7 +12,7 @@
 // <!CDATA[
 
         function Button1_onclick() {
-
+            
         }
 
 // ]]>
@@ -57,8 +57,14 @@
 			</div>
 			<div class="panel" style="height:75px; text-align: center;" align="justify">
 				<span class="bodytext"><br />
-					Task Name:  <input id="TaskName" type="text" /><br /><br />
-                <input id="Button1" type="button" value="Create a New Task" onclick="return Button1_onclick()" /></div><br />
+					Task Name:  
+                <asp:TextBox ID="TextBox1" runat="server" ontextchanged="TextBox1_TextChanged"></asp:TextBox>
+                <br /><br />
+                <asp:Button ID="Button1" runat="server" onclick="Button1_Click" 
+                    Text="Create New Task" />
+                <br />
+                <asp:Label ID="Label2" runat="server" Text=""></asp:Label>
+            </div><br />
 					
 				
 			</div>

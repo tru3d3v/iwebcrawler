@@ -18,6 +18,10 @@
 
         }
 
+        function Button1_onclick() {
+            Button1_action();
+        }
+
 // ]]>
     </script>
 </head>
@@ -61,6 +65,8 @@
                 <asp:DropDownList ID="DropDownList1" runat="server" 
                     onselectedindexchanged="DropDownList1_SelectedIndexChanged">
                 </asp:DropDownList>
+                &nbsp;<asp:Button ID="Button1" runat="server" onclick="Button1_Click" 
+                    Text="Select" />
                 <br />
 				
 			</div>
