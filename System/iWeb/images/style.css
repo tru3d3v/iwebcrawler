@@ -66,7 +66,7 @@ body {
 
 /*TEXT STYLES*/
 .bodytext {
-	font: 0.7em Tahoma, sans-serif;
+	font: normal normal normal small normal Tahoma, sans-serif;
 	color: #666666;
 }
 .smalltext {
