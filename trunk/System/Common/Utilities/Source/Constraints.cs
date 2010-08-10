@@ -53,6 +53,27 @@ namespace CrawlerNameSpace.Utilities
         }
 
         /**
+         * constucts a new constrains object with the specified configuration
+         */
+        public Constraints(uint depth, bool allowParam, List<string> restrict, List<string> crawl)
+        {
+            linkDepth = depth;
+            allowUrlParameters = allowParam;
+
+            restrictedNetworks = new List<string>();
+            crawlNetworks = new List<string>();
+            foreach(string network in restrict)
+            {
+                restrictedNetworks.Add(network.ToLower());
+            }
+
+            foreach (string network in crawl)
+            {
+                crawlNetworks.Add(network.ToLower());
+            }
+        }
+
+        /**
          * returns the depth max. limit (0 means no limitation at all)
          */ 
         public uint getAllowedDepth()
