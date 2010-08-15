@@ -73,7 +73,11 @@
         {
             width: 70px;
         }
-    </style>
+        #form1
+        {
+            text-align: left;
+        }
+        </style>
 </head>
 <script type="text/javascript">
     function showContent(vThis) {
@@ -142,20 +146,16 @@
                              <td class="style5">
                                  <asp:DropDownList ID="DropDownList1" runat="server" 
                                      onselectedindexchanged="DropDownList1_SelectedIndexChanged">
-                                     <asp:ListItem>10</asp:ListItem>
-                                     <asp:ListItem Selected="True">20</asp:ListItem>
-                                     <asp:ListItem>30</asp:ListItem>
-                                     <asp:ListItem>40</asp:ListItem>
-                                     <asp:ListItem>50</asp:ListItem>
-                                     <asp:ListItem>60</asp:ListItem>
-                                     <asp:ListItem>70</asp:ListItem>
-                                     <asp:ListItem>80</asp:ListItem>
-                                     <asp:ListItem>90</asp:ListItem>
-                                     <asp:ListItem>100</asp:ListItem>
+                                     <asp:ListItem>5</asp:ListItem>
+                                     <asp:ListItem Selected="True">10</asp:ListItem>
+                                     <asp:ListItem>15</asp:ListItem>
+                                     <asp:ListItem>20</asp:ListItem>
+                                     <asp:ListItem>25</asp:ListItem>
                                  </asp:DropDownList>
                              </td>
                              <td class="style4">
-                                 Allow Editing:</td>
+				<span class="bodytext">
+                                 Allow Remove:</td>
                              <td>
                                  <asp:CheckBox ID="CheckBox1" runat="server" />
                              </td>
@@ -174,16 +174,13 @@
                                  </asp:DropDownList>
                              </td>
                              <td class="style4">
-                                 Allow Remove:</td>
+                                 &nbsp;</td>
                              <td>
-                                 <asp:CheckBox ID="CheckBox2" runat="server" />
-                             </td>
+                                 &nbsp;</td>
                          </tr>
                 </table>
                 <div class="style6">
-                    <span class="bodytext">
-                <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Apply" />
-                    </span>
+                    <asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="Apply" />
                 <br />
                 <br />
                 <br />
@@ -205,15 +202,22 @@
                             <td class="style11" style="text-align: center">
                                 Category:</td>
                             <td>
-                                <asp:DropDownList ID="DropDownList3" runat="server" Height="17px" 
+                                <asp:DropDownList ID="DropDownList3" runat="server" Height="20px" 
                                     style="text-align: center" Width="140px">
                                 </asp:DropDownList>
 &nbsp;<asp:Button ID="Button2" runat="server" Text="View" />
                             </td>
                         </tr>
                     </table>
-				</div>	
+				</div>
+				<div style="margin-left:20px; text-align: left" align="justify">
+				Go to page: 
+            <asp:DropDownList ID="DropDownList4" runat="server">
+            </asp:DropDownList>
+            &nbsp;<asp:Button ID="Button1" runat="server" Text="go" /></div>	
 				
+				&nbsp;<% =drawEntries()%>
+
 			</div>
 			
 		</div>
