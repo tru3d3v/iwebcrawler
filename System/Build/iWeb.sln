@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "iWeb", "..\iWeb\", "{16A50E
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "57464"
+		VWDPort = "64980"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject

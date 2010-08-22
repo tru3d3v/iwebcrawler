@@ -45,7 +45,7 @@
 				<strong>Hi! This is iWeb Crawler Main Control Page, this is the first working version of iWeb Crawler created mainly for testing and debuging</strong><br />
 				
 			</div>
-			<div class="panel" style="height:75px;" align="justify">
+			<div class="panel" style="height:90px;" align="justify">
 				<span class="orangetitle">How To Start ..</span>
 				<span class="bodytext"><br />
 				In order to invoke a specified task, first you need to create the task with unique name and you may inserted the task proporties like categories and thier keywords - you can change the proporties later via edit mode - after this you may send the task to be procced in the crawler, you may look at the results in the results section</span>			

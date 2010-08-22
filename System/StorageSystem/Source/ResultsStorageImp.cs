@@ -117,20 +117,27 @@ namespace CrawlerNameSpace.StorageSystem
          * This function returns the number of the urls which already has been crawled that belongs to the 
          * given taskId.
          */
-        public ulong getTotalURLs(String taskId)
+        public ulong getTotalURLs(String taskId, String categoryId)
         {
             SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
-
             SqlDataReader rdr = null;
 
             ulong totalUrls = 0;
-
             try
             {
                 conn.Open();
-
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(TaskID) AS TotalUrls FROM Results " + 
-                                        "WHERE TaskID = \'" + taskId +"\'", conn);
+                SqlCommand cmd = null;
+                if (categoryId == null)
+                {
+                    cmd = new SqlCommand("SELECT COUNT(TaskID) AS TotalUrls FROM Results " +
+                                        "WHERE TaskID = \'" + taskId + "\'", conn);
+                }
+                else
+                {
+                    cmd = new SqlCommand("SELECT COUNT(TaskID) AS TotalUrls FROM Results " +
+                                        "WHERE TaskID = \'" + taskId + "\' AND CategoryID = \'" +
+                                            categoryId + "\'", conn);
+                }
                 rdr = cmd.ExecuteReader();
                 if (rdr.HasRows)
                 {
@@ -158,33 +165,39 @@ namespace CrawlerNameSpace.StorageSystem
          public List<Result> getURLsFromCategory(String taskId, String categoryId, Order order, int from, int to)
          {
              SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
-
              SqlDataReader rdr = null;
-
              List<Result> resultUrls = new List<Result>();
             
              try
              {
                  conn.Open();
-
-                         SqlCommand cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
-                                            "TaskID = \'" + taskId + "\' AND CategoryID = \'" + 
+                 SqlCommand cmd = null;
+                 if (categoryId == null)
+                 {
+                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
+                                            "TaskID = \'" + taskId + "\'", conn);
+                 }
+                 else
+                 {
+                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
+                                            "TaskID = \'" + taskId + "\' AND CategoryID = \'" +
                                             categoryId + "\'", conn);
+                 }
 
-                         rdr = cmd.ExecuteReader();
-                         if (rdr.HasRows)
-                         {
-                             while (rdr.Read())
-                             {
-                                 int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
-                                 int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
-                                 Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
-                                                      categoryId, rank, trustMeter);
+                 rdr = cmd.ExecuteReader();
+                 if (rdr.HasRows)
+                 {
+                     while (rdr.Read())
+                     {
+                         int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
+                         int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
+                         Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
+                                              categoryId, rank, trustMeter);
 
-                                 resultUrls.Add(resultItem);
+                         resultUrls.Add(resultItem);
 
-                             }
-                         }
+                     }
+                 }
                          
                          //SqlCommand cmnd = new SqlCommand("SELECT CategoryID From Category WHERE ParentCategory = \'" +
                            //                 categoryId + "\'",conn);

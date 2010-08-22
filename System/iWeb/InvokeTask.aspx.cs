@@ -74,7 +74,7 @@ public partial class InvokeTask : System.Web.UI.Page
             Label2.Text = requiredTask.getTaskName().Trim();
             Label3.Text = TaskStatus.convertToStatusString(requiredTask.getTaskStatus());
             Label4.Text = printWorkingTime(requiredTask.getTaskElapsedTime());
-            Label5.Text = StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID().Trim()).ToString();
+            Label5.Text = StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID().Trim(), null).ToString();
         }
 
         Label6.Text = StorageSystem.getInstance().getWorkDetails("5df16977-d18e-4a0a-b81b-0073de3c9a7f", QueryOption.ActiveTasks).Count.ToString();

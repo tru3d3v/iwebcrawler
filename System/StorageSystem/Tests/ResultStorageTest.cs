@@ -113,7 +113,7 @@ namespace CrawlerNameSpace.StorageSystem
             Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
             Console.WriteLine("\"7ec2bfb1-0a0d-406b-9132-2d65abb811f0\"");
 
-            ulong numUrls = st.getTotalURLs("7ec2bfb1-0a0d-406b-9132-2d65abb811f0");
+            ulong numUrls = st.getTotalURLs("7ec2bfb1-0a0d-406b-9132-2d65abb811f0", null);
 
             Console.WriteLine("Total number of Urls of the Task is : ");
             Console.WriteLine(numUrls);
@@ -122,7 +122,7 @@ namespace CrawlerNameSpace.StorageSystem
             Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
             Console.WriteLine("\"b80dcfdd-d8c4-4176-aef1-6b76add16fb3\"");
 
-            numUrls = st.getTotalURLs("b80dcfdd-d8c4-4176-aef1-6b76add16fb3");
+            numUrls = st.getTotalURLs("b80dcfdd-d8c4-4176-aef1-6b76add16fb3", null);
 
             Console.WriteLine("Total number of Urls of the Task is : ");
             Console.WriteLine(numUrls);
@@ -131,7 +131,7 @@ namespace CrawlerNameSpace.StorageSystem
             Console.WriteLine("[] Trying to get the Total number of crawled urls from task with ID :");
             Console.WriteLine("\"e4a55914-0847-4d70-be22-d2ecac77cdfa\"");
 
-            numUrls = st.getTotalURLs("e4a55914-0847-4d70-be22-d2ecac77cdfa");
+            numUrls = st.getTotalURLs("e4a55914-0847-4d70-be22-d2ecac77cdfa", null);
 
             Console.WriteLine("Total number of Urls of the Task is : ");
             Console.WriteLine(numUrls);
@@ -200,7 +200,7 @@ namespace CrawlerNameSpace.StorageSystem
             //testing the getTotalURLs method with task that does not exist
             Console.WriteLine("[] Trying to get the Total number of crawled urls from task that does not exist :");
 
-            ulong numUrls = st.getTotalURLs("7ec2bfb8-0a0d-406b-9132-2d65abb811f0");
+            ulong numUrls = st.getTotalURLs("7ec2bfb8-0a0d-406b-9132-2d65abb811f0", null);
 
             if (numUrls == 0) Console.WriteLine("-PASSED-");
 
