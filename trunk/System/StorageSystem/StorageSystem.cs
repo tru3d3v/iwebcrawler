@@ -143,9 +143,9 @@ namespace CrawlerNameSpace.StorageSystem
         /**
          * This function returns the number of the urls which already has been crawled.
          */
-        public ulong getTotalURLs(String taskId)
+        public ulong getTotalURLs(String taskId, String categoryId)
         {
-            return _resultsStorageImp.getTotalURLs(taskId);
+            return _resultsStorageImp.getTotalURLs(taskId, categoryId);
         }
 
         /**

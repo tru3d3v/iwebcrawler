@@ -115,7 +115,9 @@
 				<div class="logotext" style="margin:30px"><span class="orangelogotext">i</span>Crawler</div> 
 			</div>
 			<div id="pagetitle">
-				<div id="title" class="titletext" align="right">View Results</div>
+				<div id="title" class="titletext" align="right">
+                    <asp:Button ID="PostBack" runat="server" Text="Button" Visible="False" />
+                    View Results</div>
 			</div>
 		</div>
 		<div id="content" align="center">
@@ -137,7 +139,7 @@
                 <span class="bodytext">Display Settings</span></h6>
 				
 			
-			<div class="style7" style="height:75px; " align="justify">
+			<div class="style7" style="height:75px;" align="justify">
 				<span class="bodytext">
 					 <table class="style3">
                          <tr>
@@ -157,7 +159,7 @@
 				<span class="bodytext">
                                  Allow Remove:</td>
                              <td>
-                                 <asp:CheckBox ID="CheckBox1" runat="server" />
+                                 <asp:CheckBox ID="CheckBox1" runat="server" Enabled="False" />
                              </td>
                          </tr>
                          <tr>
@@ -205,7 +207,7 @@
                                 <asp:DropDownList ID="DropDownList3" runat="server" Height="20px" 
                                     style="text-align: center" Width="140px">
                                 </asp:DropDownList>
-&nbsp;<asp:Button ID="Button2" runat="server" Text="View" />
+&nbsp;<asp:Button ID="Button2" runat="server" Text="View" Enabled="False" />
                             </td>
                         </tr>
                     </table>

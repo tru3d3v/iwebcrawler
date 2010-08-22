@@ -26,7 +26,7 @@ namespace CrawlerNameSpace.StorageSystem
         /**
          * This function returns the number of the urls which already has been crawled.
          */
-        ulong getTotalURLs(String taskId);
+        ulong getTotalURLs(String taskId, String categoryId);
 
         /**
          * This function replaces the URL result to the new one (and it's fathers).

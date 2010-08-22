@@ -32,6 +32,10 @@ public partial class EditTask : System.Web.UI.Page
             {
                 ListBox1.Items.Add(seed);
             }
+            if (requiredTask.getTaskStatus() != Status.Idle)
+            {
+                Button13.Enabled = false;
+            }
         }
     }
 
