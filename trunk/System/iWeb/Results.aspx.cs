@@ -208,7 +208,10 @@ public partial class Results : System.Web.UI.Page
     public string drawEntries()
     {
         int numOfEntries = Convert.ToInt32(DropDownList1.SelectedValue);
-        int page = Convert.ToInt32(DropDownList4.SelectedValue);
+        int page = 0;
+        string sv = DropDownList4.SelectedValue;
+        if(DropDownList4.SelectedValue != "")
+            page = Convert.ToInt32(DropDownList4.SelectedValue);
         int from = (page - 1) * numOfEntries;
         int to = page * numOfEntries - 1;
         TaskStatus task = validateTask();
@@ -224,7 +227,6 @@ public partial class Results : System.Web.UI.Page
 
         for (int i = 0; i < numOfEntries; i++)
         {
-            // OnLoad=""javascript:__doPostBack('ForcePostBack','');"">")
             try 
             {
                 if (CheckBox1.Checked)

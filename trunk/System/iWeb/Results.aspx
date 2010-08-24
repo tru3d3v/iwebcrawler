@@ -139,7 +139,7 @@
                 <span class="bodytext">Display Settings</span></h6>
 				
 			
-			<div class="style7" style="height:75px;" align="justify">
+			<div class="style7" style="height:75px; display:none;" align="justify">
 				<span class="bodytext">
 					 <table class="style3">
                          <tr>
@@ -225,8 +225,8 @@
 		</div>
 		<div id="footer" class="smallgraytext" align="center">
 		<img src="images/crawler.jpg" /><br />
-<a href="Default.aspx">Main Control Page</a> | <a href="About.aspx">About iWeb Crawler</a> | <a href="CreateTask.aspx">Create Task</a> | <a href="SelectTask.aspx?target=edit">Edit Task Proporties</a> | <a href="SelectTask.aspx?target=invoke">Start/Stop Task</a><br />
-			UI Version: <asp:Label ID="LabelUIVersion" runat="server" Text="Label"></asp:Label>, Engine Version: <asp:Label ID="LabelEngineVersion" runat="server" Text="Label"></asp:Label><br />
+<a href="Default.aspx">Main Control Page</a> | <a href="CreateTask.aspx">Create Task</a> | <a href="SelectTask.aspx?target=edit">Edit Task Proporties</a> | <a href="SelectTask.aspx?target=invoke">Start/Stop Task</a> | <a href="SelectTask.aspx?target=results">View Results</a><br />
+			UI Version: <asp:Label ID="LabelUIVersion" runat="server" Text="Label"></asp:Label>, Core Version: <asp:Label ID="LabelEngineVersion" runat="server" Text="Label"></asp:Label><br />
 			iWeb Crawler Development Team &copy; 2010<br />
 				
 			

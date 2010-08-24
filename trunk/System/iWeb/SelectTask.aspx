@@ -70,17 +70,15 @@
                 <br />
 				
 			</div>
-			<img src="images/loading.gif" />
+			<img src="images/loading.gif" style=" margin-top:-20px;" />
 			</div>
 			
 		</div>
 		<div id="footer" class="smallgraytext" align="center">
 		<img src="images/crawler.jpg" /><br />
-<a href="Default.aspx">Main Control Page</a> | <a href="About.aspx">About iWeb Crawler</a> | <a href="CreateTask.aspx">
-            Create Task</a> | <a href="SelectTask.aspx?target=edit">Edit Task Proporties</a> 
-            | <a href="SelectTask.aspx?target=invoke">Start/Stop Task</a><br />
+<a href="Default.aspx">Main Control Page</a> | <a href="CreateTask.aspx">Create Task</a> | <a href="SelectTask.aspx?target=edit">Edit Task Proporties</a> | <a href="SelectTask.aspx?target=invoke">Start/Stop Task</a> | <a href="SelectTask.aspx?target=results">View Results</a><br />
 			UI Version: <asp:Label ID="LabelUIVersion" runat="server" Text="Label"></asp:Label>
-            , Engine Version: <asp:Label ID="LabelEngineVersion" runat="server" Text="Label"></asp:Label><br />
+            , Core Version: <asp:Label ID="LabelEngineVersion" runat="server" Text="Label"></asp:Label><br />
 			iWeb Crawler Development Team © 2010<br />
 				
 			
