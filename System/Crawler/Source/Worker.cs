@@ -12,7 +12,7 @@ namespace CrawlerNameSpace
      * in order to process thier content, after that the results will be sent to the storage
      * and the feed of the comming urls will be added to the frontier Queue
      */
-    class Worker
+    public class Worker
     {
         // url queues of the tasks to crawl and the feed to the frontier
         Queue<Url> _tasks, _feedback;
