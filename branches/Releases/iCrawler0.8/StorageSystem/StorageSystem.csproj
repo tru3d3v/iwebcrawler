@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39B7CF49-9FD7-4915-9A0D-6881901D710C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StorageSystem</RootNamespace>
+    <AssemblyName>StorageSystem</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\Dump\StorageSystem\Debug\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\Dump\StorageSystem\Release\obj\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\CategoriesStorage.cs" />
+    <Compile Include="Source\CategoriesStorageImp.cs" />
+    <Compile Include="Source\ConfigurationStorage.cs" />
+    <Compile Include="Source\ConfigurationStorageImp.cs" />
+    <Compile Include="Source\ResultsStorage.cs" />
+    <Compile Include="Source\ResultsStorageImp.cs" />
+    <Compile Include="Source\SettingsReader.cs" />
+    <Compile Include="Source\SettingsStorage.cs" />
+    <Compile Include="Source\SettingsStorageImp.cs" />
+    <Compile Include="StorageSystem.cs" />
+    <Compile Include="Tests\CategoriesStorageTest.cs" />
+    <Compile Include="Tests\ConfigurationStorageTest.cs" />
+    <Compile Include="Tests\ResultStorageTest.cs" />
+    <Compile Include="Tests\SettingsStorageTest.cs" />
+    <Compile Include="Tests\StorageSystemTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
+      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
