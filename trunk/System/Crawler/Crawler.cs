@@ -15,128 +15,30 @@ using CrawlerNameSpace.StorageSystem;
  */
 namespace CrawlerNameSpace
 {
-    class Crawler
+    public class Crawler
     {
-        enum operationMode_t { Auto, Manual };
+        public enum operationMode_t { Auto, Manual };
 
-        private static int _numWorkers  = 4;
-        private static int _refreshRate = 5;
-        private static List<String>    _seedList      = new List<string>();
-        private static operationMode_t _operationMode = operationMode_t.Manual;
+        protected static int _numWorkers  = 4;
+        protected static int _refreshRate = 5;
+        protected static List<String> _seedList = new List<string>();
+        protected static operationMode_t _operationMode = operationMode_t.Manual;
 
-        private static List<Category> _categories;
-        private static Constraints    _constraints;
-        private static Initializer    _initializer;
+        protected static List<Category> _categories;
+        protected static Constraints _constraints;
+        protected static Initializer _initializer;
 
-        private static List<Queue<Url>> _serversQueues;
-        private static Queue<Url>       _feedBackQueue;
+        protected static List<Queue<Url>> _serversQueues;
+        protected static Queue<Url> _feedBackQueue;
 
-        private static List<Thread> _threadsPool     = new List<Thread>();
-        private static List<Worker> _workersPool     = new List<Worker>();
-        private static List<Frontier> _frontiersPool = new List<Frontier>();
-
-
-        /**
-         * Set Flag Method
-         * this functions gets flag and value it will process the flag parameters
-         * as listed in the value
-         */
-        private static bool SetFlag(string flag, string value)
-        {
-            switch (flag)
-            {
-                case "numThreads":
-                    try
-                    {
-                        _numWorkers = Convert.ToInt16(value);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Console.WriteLine("ERROR: Cannot Convert to Integer Value " + value);
-                        return false;
-                    }
-                    break;
-                case "refreshRate":
-                    try
-                    {
-                        _refreshRate = Convert.ToInt16(value);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Console.WriteLine("ERROR: Cannot Convert to Integer Value " + value);
-                        return false;
-                    }
-                    break;
-                case "seedList":
-                    _seedList.Clear();
-                    foreach (String seed in value.Split(','))
-                    {
-                        _seedList.Add("http://" + seed);
-                    }
-                    break;
-                case "operationMode":
-                    if (value.Equals("Auto") == true)
-                        _operationMode = operationMode_t.Auto;
-                    else if (value.Equals("Manual") == true)
-                        _operationMode = operationMode_t.Manual;
-                    else
-                    {
-                        System.Console.WriteLine("ERROR: Unknown Operation Mode " + value);
-                        return false;
-                    }
-                    break;
-                default:
-                    System.Console.WriteLine("ERROR: Unknown Flag " + flag);
-                    return false;
-            }
-            return true;
-        }
-
-        /**
-         * prints usage help on the screen
-         */
-        private static void PrintHelp()
-        {
-            System.Console.WriteLine("iWebCrawler Supported flags:");
-            System.Console.WriteLine("-numThreads:<NUM>            {to specifiy how much workers to allocate - default is 4}");
-            System.Console.WriteLine("-seedList:url1,url2,..,urln  {to specifiy the seed list of the crawler}");
-            System.Console.WriteLine("-operationMode:[Auto/Manual] {Auto means that the crawler will run as service and will");
-            System.Console.WriteLine("                              get it's options from the database, Manual is for manual");
-            System.Console.WriteLine("                              usage for the crawler}");
-            System.Console.WriteLine("-refreshRate:<NUM>           {to specifiy the statistics refresh rate in sec - default is 5}");
-        }
-
-        /**
-         * parses the arguements and moves them to be processed
-         */
-        private static bool ParseArguements(String[] args)
-        {
-            foreach (String option in args)
-            {
-                if (option.StartsWith("-") == false || option.Contains(":") == false
-                    || option.Split(':').Length != 2)
-                {
-                    if (option.Substring(1).Split(':')[0] == "help")
-                    {
-                        PrintHelp();
-                        return false;
-                    }
-                    System.Console.WriteLine("ERROR: You have inserted option in illegal format : " + option);
-                    return false;
-                }
-
-                String flag = option.Substring(1).Split(':')[0];
-                String value = option.Substring(1).Split(':')[1];
-
-                SetFlag(flag, value);
-            }
-            return true;
-        }
+        protected static List<Thread> _threadsPool = new List<Thread>();
+        protected static List<Worker> _workersPool = new List<Worker>();
+        protected static List<Frontier> _frontiersPool = new List<Frontier>();
 
         /**
          * selects very suitable task to run
          */
-        private static void SelectTask(ref String user, ref String task)
+        protected static void SelectTask(ref String user, ref String task)
         {
             System.Console.Write("$$$ Selecting Suitable task .. ");
             if (_operationMode == operationMode_t.Auto)
@@ -161,7 +63,7 @@ namespace CrawlerNameSpace
         /**
          * initialize the initializer object which will be used in the system objects
          */
-        private static void SetInitializer(String taskId)
+        protected static void SetInitializer(String taskId)
         {
             System.Console.Write("$$$ Getting Constraints .. ");
             if (_operationMode == operationMode_t.Manual)
@@ -181,7 +83,7 @@ namespace CrawlerNameSpace
         /**
          * init the queues which will be used as link points between the threads
          */
-        private static void InitQueues(String taskId)
+        protected static void InitQueues(String taskId)
         {
             System.Console.Write("$$$ Initalizing Requests .. ");
             _serversQueues = new List<Queue<Url>>();
@@ -217,7 +119,7 @@ namespace CrawlerNameSpace
         /**
          * invokes the threads to start the work
          */
-        private static void InvokeThreads()
+        protected static void InvokeThreads()
         {
             System.Console.Write("$$$ Start Invoking threads .. ");
             // init the Frontier thread
@@ -241,7 +143,7 @@ namespace CrawlerNameSpace
         /**
          * terminate all the working and frontier threads
          */
-        private static void TerminateThreads()
+        protected static void TerminateThreads()
         {
             System.Console.Write("$$$ Start Termnating threads .. ");
             _threadsPool[0].Abort();
@@ -260,58 +162,6 @@ namespace CrawlerNameSpace
             _workersPool.Clear();
             _frontiersPool.Clear();
             System.Console.WriteLine("SUCCESS");
-        }
-        
-        public static void Main(String[] args)
-        {
-            bool toContinue = ParseArguements(args), needToRestart = false;
-            if (toContinue == false) return;
-            Queue<int> keepAlive = new Queue<int>();
-            String currentUser = "5df16977-d18e-4a0a-b81b-0073de3c9a7f", currentTask = "";
-
-            while (true)
-            {
-                // select which task to invoke
-                SelectTask(ref currentUser, ref currentTask);
-
-                // getting init data
-                SetInitializer(currentTask);
-                
-                // init queues
-                InitQueues(currentTask);
-
-                // initing worker and frontier threads
-                InvokeThreads();
-                
-                // polling to the user requests
-                while (needToRestart == false)
-                {
-                    Thread.Sleep(_refreshRate * 1000);
-                    StatusDisplay.DisplayOnScreen(_feedBackQueue, _serversQueues);
-                    if (_operationMode == operationMode_t.Auto)
-                    {
-                        List<TaskStatus> tasks =
-                            StorageSystem.StorageSystem.getInstance().getWorkDetails(currentUser, QueryOption.ActiveTasks);
-
-                        needToRestart = true;
-                        foreach (TaskStatus task in tasks)
-                        {
-                            if (task.getTaskID() == currentTask)
-                            {
-                                task.setTaskElapsedTime(task.getTaskElapsedTime() + _refreshRate);
-                                StorageSystem.StorageSystem.getInstance().changeWorkDetails(task);
-                                needToRestart = false;
-                                continue;
-                            }
-                        }
-                    }
-                }
-
-                // Terminate all the threads
-                TerminateThreads();
-                needToRestart = false;
-                RuntimeStatistics.resetStatistics();
-            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace CrawlerNameSpace
      * and so;
      * NOTE: Currently implemented as dummy
      */
-    class Frontier
+    public class Frontier
     {
         private Queue<Url> _tasksQueue;
         private List<Queue<Url>> _serversQueues;
