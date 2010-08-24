@@ -244,7 +244,7 @@ namespace CrawlerNameSpace
         private static void TerminateThreads()
         {
             System.Console.Write("$$$ Start Termnating threads .. ");
-            _frontiersPool[0].Abort();
+            _threadsPool[0].Abort();
             //_frontiersPool[0].RequestStop();
             //_threadsPool[0].Join();
             //Console.WriteLine("$ Frontier has been finished ...");

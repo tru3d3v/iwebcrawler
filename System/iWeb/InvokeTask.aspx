@@ -108,7 +108,7 @@
                         </tr>
                         <tr>
                             <td class="style8">
-                                Wroking Time:</td>
+                                Working Time:</td>
                             <td class="style5">
                                 <asp:Label ID="Label4" runat="server" Text="Label" style="font-size: small"></asp:Label>
                             </td>
