@@ -18,6 +18,6 @@ public class Version
 
     public static string getUIVersion()
     {
-        return "0.0 Alpha Mode";
+        return "0.1 Alpha Mode";
     }
 }
