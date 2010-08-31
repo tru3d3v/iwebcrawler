@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace CrawlerNameSpace.Utilities
 {
@@ -10,9 +12,12 @@ namespace CrawlerNameSpace.Utilities
      */
     public class Category
     {
-        //These are two consts that are used in the getMatchLevel method.
-        private const double ALPHA = 2.5;
-        private const double BETA  = 0.4; 
+        //These are consts that are used in the getMatchLevel method.
+        private const double ALPHA = 2500;
+        private const double BETA = 0.4;
+        private const double GAMMA = 45;
+        private const double MIN_WORDS_LIMIT = 5000;
+
         private String       categoryID;
         private String       parentName;
         private String       categoryName;
@@ -77,50 +82,79 @@ namespace CrawlerNameSpace.Utilities
          */
         public int getMatchLevel(String wordList) 
         {
-           /*
-            long n = wordList.Count;
-            int  c = keywordList.Count;
-            double   threshold = ((n * BETA) / c);
-            double[] histogram = new double[c];
-            double   sumOfhistogram=0;
+            char[] separators = {' ', '\t', '\n'};
+            int numOfWords    = Math.Max(1, wordList.Split(separators).Length);
+            int numOfKeywords = Math.Max(1, keywordList.Count);
+            int nonZero = 0;
+            double sumOfhistogram = 0;
+            double threshold = ((numOfWords * BETA) / numOfKeywords);
 
-            //keywordList and wordList are copied to a new arrays so that we won't change them(the originals)
+            // keywordList and wordList are copied to a new arrays so that we won't change them(the originals)
             List<String> keywordListCopied = new List<string>(keywordList);
-            List<String> wordListCopied    = new List<string>(wordList.);
-
-            //Transforming the keywordListCopied and wordListCopied to canonical form
+            String wordListCopied = (String)wordList.Clone();
+            
+            // Transforming the keywordListCopied and wordListCopied to canonical form
             keywordListCopied.ForEach(canonicForm);
-            wordListCopied.ForEach(canonicForm);
+            canonicForm(wordListCopied);
 
+            int[] histogram = new int[numOfKeywords];
             //Initialising the histogram array to zeros
-            for (int i = 0; i < histogram.Length; i++)
+            for (int i = 0; i < numOfKeywords; i++)
             {
                 histogram[i] = 0;
             }
 
-            foreach (String word in wordListCopied)
+            foreach (String keyword in keywordListCopied)
             {
-                foreach (String keyword in keywordListCopied)
+                Regex objPattern = new Regex(keyword);
+                int count = objPattern.Matches(wordListCopied,0).Count;
+
+                int index = keywordListCopied.IndexOf(keyword);
+                if (histogram[index] == 0) nonZero++;
+                if (histogram[index] < threshold)
                 {
-                    if (keyword.Contains(word))
-                    {
-                        int index = keywordListCopied.IndexOf(keyword);
-                        if (histogram[index] < threshold)
-                        {
-                            histogram[index]++;
-                        }
-                    }
+                    int add = Math.Min(histogram[index] + count, (int)threshold) - histogram[index];
+                    histogram[index] = histogram[index] + add;
+                    sumOfhistogram = sumOfhistogram + add;
                 }
             }
-
-            for (int i = 0; i < histogram.Length; i++)
+            
+            double nonZeroBonus = (nonZero * GAMMA) / numOfKeywords;
+            double matchPercent = (sumOfhistogram * ALPHA) / numOfWords;
+            double total = Math.Min(100, nonZeroBonus + matchPercent);
+            if (numOfWords < MIN_WORDS_LIMIT)
             {
-                sumOfhistogram += histogram[i];
+                total = 0.25 * total;
             }
+            
+            StreamWriter sw = new 
+                StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+            sw.WriteLine(" ***** DATA FOR REQUEST ************************************************* ");
+            //sw.WriteLine(" .CONTENT WORDS: ");
+            //sw.WriteLine(wordListCopied.ToString());
+            sw.WriteLine(" .NUM OF WORDS: ");
+            sw.WriteLine(numOfWords.ToString());
+            sw.WriteLine(" .KEY WORDS: ");
+            sw.WriteLine(keywordListCopied.ToString());
+            sw.WriteLine(" .NUM OF KEY WORDS: ");
+            sw.WriteLine(numOfKeywords.ToString());
+            sw.WriteLine(" .THRESOLD PARAM: ");
+            sw.WriteLine(threshold.ToString());
+            sw.WriteLine(" .SUM OF HISTOGRAM: ");
+            sw.WriteLine(sumOfhistogram.ToString());
+            sw.WriteLine(" .NONZERO PARAM: ");
+            sw.WriteLine(nonZero.ToString());
+            sw.WriteLine(" .HISTOGRAM DATA:");
+            for (int j = 0; j < numOfKeywords; j++)
+            {
+                sw.WriteLine(" .[" + keywordList[j] + "] -> " + histogram[j].ToString());
+            }
+            sw.WriteLine(" .TOTAL TRUST: ");
+            sw.WriteLine(total.ToString());
+            sw.WriteLine(" * END ****************************************************************** ");
+            sw.Close();
 
-            return (int)((sumOfhistogram * (1.0 / n) * (ALPHA))*100);
-            */
-            return 100;
+            return Convert.ToInt32(total);
         }
 
         /**

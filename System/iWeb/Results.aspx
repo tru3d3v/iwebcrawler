@@ -207,7 +207,7 @@
                                 <asp:DropDownList ID="DropDownList3" runat="server" Height="20px" 
                                     style="text-align: center" Width="140px">
                                 </asp:DropDownList>
-&nbsp;<asp:Button ID="Button2" runat="server" Text="View" Enabled="False" />
+&nbsp;<asp:Button ID="Button4" runat="server" Text="View" />
                             </td>
                         </tr>
                     </table>
@@ -216,7 +216,7 @@
 				Go to page: 
             <asp:DropDownList ID="DropDownList4" runat="server">
             </asp:DropDownList>
-            &nbsp;<asp:Button ID="Button1" runat="server" Text="go" /></div>	
+            &nbsp;<asp:Button ID="Button1" runat="server" Text="go" onclick="Button1_Click1" /></div>	
 				
 				&nbsp;<% =drawEntries()%>
 
