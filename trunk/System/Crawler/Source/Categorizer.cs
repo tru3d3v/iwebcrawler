@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
+using System.IO;
 
 namespace CrawlerNameSpace
 {
@@ -27,6 +28,20 @@ namespace CrawlerNameSpace
         public List<Result> classifyContent(String resource,String url)
         {
             List<Result> results = new List<Result>();
+            foreach (Category category in categoryList)
+            {
+                StreamWriter sw = new
+                    StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
+                sw.WriteLine(" URL : " + url);
+                sw.Close();
+
+                int matchLevel = category.getMatchLevel(resource);
+                if (matchLevel > category.getConfidenceLevel())
+                {
+                    results.Add(new Result("0", url, category.getCategoryID(), 0, matchLevel));
+                }
+            }
             results.Add(new Result("0", url, "0", 0, 100));
             return results;
         }

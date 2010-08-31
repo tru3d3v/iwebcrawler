@@ -13,8 +13,7 @@ public partial class Results : System.Web.UI.Page
     private void putNumOfPages(int numOfEntries, int entriesPerPage)
     {
         int numOfPages = numOfEntries / entriesPerPage;
-        if (numOfPages == 0) numOfPages = numOfPages + 1;
-        if (numOfEntries % entriesPerPage != 0) numOfPages = numOfPages + 1;
+        if (numOfPages == 0 || numOfEntries % entriesPerPage != 0) numOfPages = numOfPages + 1;
 
         DropDownList4.Items.Clear();
         for (int i = 0; i < numOfPages; i++)
@@ -140,6 +139,16 @@ public partial class Results : System.Web.UI.Page
         }
     }
 
+    private Category getSelectedCategory(string taskID)
+    {
+        List<Category> categories = StorageSystem.getInstance().getCategories(taskID);
+        foreach (Category category in categories)
+        {
+            return category;
+        }
+        return null;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         Label1.Text = "View Results";
@@ -152,16 +161,32 @@ public partial class Results : System.Web.UI.Page
         if (requiredTask != null)
         {
             loadSettings();
-            DropDownList3.Items.Clear();
             Label2.Text = requiredTask.getTaskName().Trim();
-            Label3.Text = StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(),null).ToString();
+
+            int prevSelectView = DropDownList3.SelectedIndex;
+            DropDownList3.Items.Clear();
             DropDownList3.Items.Add("ALL");
             List<Category> cats = StorageSystem.getInstance().getCategories(requiredTask.getTaskID());
             foreach (Category cat in cats)
             {
                 DropDownList3.Items.Add(cat.getCatrgoryName().Trim());
             }
-            int numOfResults = (int)StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(), null);
+            if (DropDownList3.Items.Count > prevSelectView)
+            {
+                DropDownList3.SelectedIndex = prevSelectView;
+            }
+            int numOfResults = 0;
+            if (DropDownList3.SelectedValue == "ALL")
+            {
+                numOfResults = (int)StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(), null);
+                Label3.Text = StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(), null).ToString();
+            }
+            else
+            {
+                Category category = getSelectedCategory(requiredTask.getTaskID());
+                Label3.Text = StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(), category.getCategoryID()).ToString();
+                numOfResults = (int)StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID(), category.getCategoryID());
+            }
             int prevSelect = DropDownList4.SelectedIndex;
             putNumOfPages(numOfResults, Convert.ToInt32(DropDownList1.SelectedValue));
             if (DropDownList4.Items.Count > prevSelect)
@@ -205,6 +230,18 @@ public partial class Results : System.Web.UI.Page
         return Order.NormalOrder;
     }
 
+    private string getCategoryName(string categoryID, List<Category> categories)
+    {
+        foreach (Category category in categories)
+        {
+            if (categoryID.Trim() == category.getCategoryID().Trim())
+            {
+                return category.getCatrgoryName();
+            }
+        }
+        return "Web Page";
+    }
+
     public string drawEntries()
     {
         int numOfEntries = Convert.ToInt32(DropDownList1.SelectedValue);
@@ -217,10 +254,26 @@ public partial class Results : System.Web.UI.Page
         TaskStatus task = validateTask();
         Order order = getSelectedOrder();
         List<Result> results = null;
+        List<Category> categories = null;
         
         if(task != null)
         {
-            results = StorageSystem.getInstance().getURLsFromCategory(task.getTaskID(),null,order,from,to);
+            categories = StorageSystem.getInstance().getCategories(task.getTaskID());
+            if (DropDownList3.SelectedValue == "ALL")
+            {
+                results = StorageSystem.getInstance().getURLsFromCategory(task.getTaskID(), null, order, from, to);
+            }
+            else
+            {
+                foreach (Category category in categories)
+                {
+                    if (category.getCatrgoryName().Trim() == DropDownList3.SelectedValue)
+                    {
+                        results = StorageSystem.getInstance().getURLsFromCategory(task.getTaskID(), category.getCategoryID(), order, from, to);
+                        break;
+                    }
+                }
+            }
         }
         
         string display = "";
@@ -233,11 +286,12 @@ public partial class Results : System.Web.UI.Page
                 {
                     display = display + "<div class=\"style7\" style=\"height:auto; \" align=\"justify\">" +
                     "<table class=\"style3\">" + "<tr>" + "<td class=\"style14\" style=\"width:20%; text-align: left;\">" +
-                    "URL:</td>" + "<td colspan=\"5\" style=\"text-align: left\">" +
-                    results[i].getUrl().Trim() +
+                    "URL:</td>" + "<td colspan=\"5\" style=\"text-align: left\"><a href=\"" +
+                    results[i].getUrl().Trim() + "\">" +
+                    results[i].getUrl().Trim() + "</a>" +
                     "</td>" + "</tr>" + "<tr>" + "<td class=\"style14\" style=\"width:20%; text-align: left;\">" + "Category:</td>" +
                     "<td class=\"style15\" style=\"width:15%; \" style=\"text-align: left\">" +
-                    "Web Page" +
+                    getCategoryName(results[i].getCategoryID(), categories) +
                     "</td>" +
                     "<td class=\"style17\" style=\"width:15%; \" style=\"text-align: left\">" + "Trust:</td>" + "<td class=\"style16\" style=\"width:15%; \" style=\"text-align: left\">" +
                     results[i].getTrustMeter().ToString() +
@@ -256,11 +310,12 @@ public partial class Results : System.Web.UI.Page
                 {
                     display = display + "<div class=\"style7\" style=\"height:auto; \" align=\"justify\">" +
                     "<table class=\"style3\">" + "<tr>" + "<td class=\"style14\" style=\"width:20%; text-align: left;\">" +
-                    "URL:</td>" + "<td colspan=\"5\" style=\"text-align: left\">" +
-                    results[i].getUrl().Trim() +
+                    "URL:</td>" + "<td colspan=\"5\" style=\"text-align: left\"><a href=\"" +
+                    results[i].getUrl().Trim() + "\">" + 
+                    results[i].getUrl().Trim() + "</a>" +
                     "</td>" + "</tr>" + "<tr>" + "<td class=\"style14\" style=\"width:20%; text-align: left;\">" + "Category:</td>" +
                     "<td class=\"style15\" style=\"width:15%; \" style=\"text-align: left\">" +
-                    "Web Page" +
+                    getCategoryName(results[i].getCategoryID(), categories) +
                     "</td>" +
                     "<td class=\"style17\" style=\"width:15%; \" style=\"text-align: left\">" + "Trust:</td>" + "<td class=\"style16\" style=\"width:15%; \" style=\"text-align: left\">" +
                     results[i].getTrustMeter().ToString() +
@@ -302,5 +357,13 @@ public partial class Results : System.Web.UI.Page
         }
         Session["Remove"] = CheckBox1.Checked;
         //Response.Redirect("Results.aspx?TID=" + Request["TID"]);
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void Button1_Click1(object sender, EventArgs e)
+    {
+
     }
 }

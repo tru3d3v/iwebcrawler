@@ -158,6 +158,24 @@ namespace CrawlerNameSpace.StorageSystem
             return totalUrls;
         }
 
+        private string getOrderString(Order order)
+        {
+            switch (order)
+            {
+                case Order.NormalOrder:
+                    return "";
+                case Order.AscendingRank:
+                    return " ORDER BY rank ASC";
+                case Order.DescendingRank:
+                    return " ORDER BY rank DESC";
+                case Order.AscendingTrust:
+                    return " ORDER BY TrustMeter ASC";
+                case Order.DescendingTrust:
+                    return " ORDER BY TrustMeter DESC";
+            }
+            return "";
+        }
+
          /**
           * This function returns a list of urls which suits a specific category, every url will be described 
           * as object which contains data about: url, categoryId, rank, trustMeter.
@@ -172,16 +190,17 @@ namespace CrawlerNameSpace.StorageSystem
              {
                  conn.Open();
                  SqlCommand cmd = null;
+                 string orderStr = getOrderString(order);
                  if (categoryId == null)
                  {
-                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
-                                            "TaskID = \'" + taskId + "\'", conn);
+                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter,CategoryID From Results WHERE " +
+                                            "TaskID = \'" + taskId + "\'" + orderStr, conn);
                  }
                  else
                  {
-                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter From Results WHERE " +
+                     cmd = new SqlCommand("SELECT ResultID,Url,rank,TrustMeter,CategoryID From Results WHERE " +
                                             "TaskID = \'" + taskId + "\' AND CategoryID = \'" +
-                                            categoryId + "\'", conn);
+                                            categoryId + "\'" + orderStr, conn);
                  }
 
                  rdr = cmd.ExecuteReader();
@@ -192,7 +211,7 @@ namespace CrawlerNameSpace.StorageSystem
                          int rank = Convert.ToInt32(rdr["rank"].ToString().Trim());
                          int trustMeter = Convert.ToInt32(rdr["TrustMeter"].ToString().Trim());
                          Result resultItem = new Result(rdr["ResultID"].ToString().Trim(), rdr["Url"].ToString().Trim(),
-                                              categoryId, rank, trustMeter);
+                                              rdr["CategoryID"].ToString().Trim(), rank, trustMeter);
 
                          resultUrls.Add(resultItem);
 
@@ -215,10 +234,7 @@ namespace CrawlerNameSpace.StorageSystem
                  if (rdr != null) rdr.Close();
                  if (conn != null) conn.Close();
              }
-             if (resultUrls.Count == 0)
-                 return resultUrls;
-             else
-                 return sortListOfResults(resultUrls,order,from,to);
+             return rangeOfResults(resultUrls, from, to);
          }
 
          /**
@@ -387,40 +403,11 @@ namespace CrawlerNameSpace.StorageSystem
          * This private method receives list of Results and sorts them according to the given  Order order,
          * int from, int to .
          */
-         private List<Result> sortListOfResults(List<Result> resultsList,Order order,int from,int to)
+         private List<Result> rangeOfResults(List<Result> resultsList,int from,int to)
          {
-             List<Result> sortedResults = new List<Result>(resultsList);
-             
-             switch (order)
-             {
-                 case Order.AscendingTrust :
-                     sortedResults.Sort(CompareResultByTrustMeter);
-                     break;
-                 case Order.DescendingTrust :
-                     sortedResults.Sort(CompareResultByTrustMeter);
-                     sortedResults.Reverse();
-                     break;
-                 case Order.AscendingRank :
-                     sortedResults.Sort(CompareResultByRank);
-                     break;
-                 case Order.DescendingRank :
-                     sortedResults.Sort(CompareResultByRank);
-                     sortedResults.Reverse();
-                     break;
-                 default:
-                     break;
-             }
-             if (to >= sortedResults.Count)
-                if(from<0)
-                    return sortedResults.GetRange(0, (sortedResults.Count-from));
-                else
-                    return sortedResults.GetRange(from, (sortedResults.Count - from));
-             else
-                 if (from < 0)
-                     return sortedResults.GetRange(0, (to-from) + 1);
-                 else
-                     return sortedResults.GetRange(from, (to - from) + 1);
-
+             from = Math.Max(0, from);
+             to = Math.Min(to, resultsList.Count - 1);
+             return resultsList.GetRange(from, (to - from) + 1);
          }
     }
 }
