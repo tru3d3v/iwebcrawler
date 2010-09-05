@@ -14,9 +14,15 @@ namespace CrawlerNameSpace.Utilities
     {
         //These are consts that are used in the getMatchLevel method.
         private const double ALPHA = 2500;
-        private const double BETA = 0.4;
-        private const double GAMMA = 45;
+        private const double BETA = 0.1;
+        private const double GAMMA = 55;
         private const double MIN_WORDS_LIMIT = 5000;
+
+        private const int NONZERO_WEIGHT = 50;
+        private const int MATCH_WEIGHT   = 100;
+        private const double NORMALIZE_CONST = 0.7;
+
+        private const int MAX_MATCH_LEVEL = 100;
 
         private String       categoryID;
         private String       parentName;
@@ -87,7 +93,7 @@ namespace CrawlerNameSpace.Utilities
             int numOfKeywords = Math.Max(1, keywordList.Count);
             int nonZero = 0;
             double sumOfhistogram = 0;
-            double threshold = ((numOfWords * BETA) / numOfKeywords);
+            double threshold = Math.Max(2.0, ((numOfWords * BETA) / numOfKeywords));
 
             // keywordList and wordList are copied to a new arrays so that we won't change them(the originals)
             List<String> keywordListCopied = new List<string>(keywordList);
@@ -110,7 +116,7 @@ namespace CrawlerNameSpace.Utilities
                 int count = objPattern.Matches(wordListCopied,0).Count;
 
                 int index = keywordListCopied.IndexOf(keyword);
-                if (histogram[index] == 0) nonZero++;
+                if (count != 0 && histogram[index] == 0) nonZero++;
                 if (histogram[index] < threshold)
                 {
                     int add = Math.Min(histogram[index] + count, (int)threshold) - histogram[index];
@@ -120,8 +126,10 @@ namespace CrawlerNameSpace.Utilities
             }
             
             double nonZeroBonus = (nonZero * GAMMA) / numOfKeywords;
+            nonZeroBonus = Math.Min(NONZERO_WEIGHT, nonZeroBonus);
             double matchPercent = (sumOfhistogram * ALPHA) / numOfWords;
-            double total = Math.Min(100, nonZeroBonus + matchPercent);
+            matchPercent = Math.Min(MATCH_WEIGHT, matchPercent);
+            double total = Math.Min(MAX_MATCH_LEVEL, NORMALIZE_CONST * (nonZeroBonus + matchPercent));
             if (numOfWords < MIN_WORDS_LIMIT)
             {
                 total = 0.25 * total;
@@ -149,6 +157,10 @@ namespace CrawlerNameSpace.Utilities
             {
                 sw.WriteLine(" .[" + keywordList[j] + "] -> " + histogram[j].ToString());
             }
+            sw.WriteLine(" .NON-ZERO BONUS: ");
+            sw.WriteLine(nonZeroBonus.ToString());
+            sw.WriteLine(" .MATCH PERCENT: ");
+            sw.WriteLine(matchPercent.ToString());
             sw.WriteLine(" .TOTAL TRUST: ");
             sw.WriteLine(total.ToString());
             sw.WriteLine(" * END ****************************************************************** ");

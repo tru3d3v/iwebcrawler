@@ -294,6 +294,32 @@ namespace CrawlerNameSpace.StorageSystem
          }
 
          /**
+           * This function removes all entries for specific task, which specified in the given argument.
+           */
+         public void removeAllResults(String taskID)
+         {
+             SqlConnection conn = new SqlConnection(SettingsReader.getConnectionString());
+
+             try
+             {
+                 conn.Open();
+
+                 SqlCommand cmd = new SqlCommand("DELETE FROM Results WHERE TaskID = \'" + taskID + "\'", conn);
+
+                 cmd.ExecuteNonQuery();
+
+             }
+             catch (Exception e)
+             {
+                 System.Console.WriteLine("Exception Caught: " + e.Message);
+             }
+             finally
+             {
+                 if (conn != null) conn.Close();
+             }
+         }
+
+         /**
           * This function adds the URL result to the given categories (and it's fathers).
           */
          public void addURLResult(String taskId, Result result)
@@ -407,7 +433,9 @@ namespace CrawlerNameSpace.StorageSystem
          {
              from = Math.Max(0, from);
              to = Math.Min(to, resultsList.Count - 1);
-             return resultsList.GetRange(from, (to - from) + 1);
+             if(resultsList.Count > to)
+                return resultsList.GetRange(from, (to - from) + 1);
+             return null;
          }
     }
 }

@@ -42,7 +42,7 @@ namespace CrawlerNameSpace
                     results.Add(new Result("0", url, category.getCategoryID(), 0, matchLevel));
                 }
             }
-            results.Add(new Result("0", url, "0", 0, 100));
+            //results.Add(new Result("0", url, "0", 0, 100));
             return results;
         }
 

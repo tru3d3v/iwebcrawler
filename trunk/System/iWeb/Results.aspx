@@ -159,7 +159,7 @@
 				<span class="bodytext">
                                  Allow Remove:</td>
                              <td>
-                                 <asp:CheckBox ID="CheckBox1" runat="server" Enabled="False" />
+                                 <asp:CheckBox ID="CheckBox1" runat="server" Enabled="True" />
                              </td>
                          </tr>
                          <tr>
@@ -216,7 +216,10 @@
 				Go to page: 
             <asp:DropDownList ID="DropDownList4" runat="server">
             </asp:DropDownList>
-            &nbsp;<asp:Button ID="Button1" runat="server" Text="go" onclick="Button1_Click1" /></div>	
+            &nbsp;<asp:Button ID="Button1" runat="server" Text="go" onclick="Button1_Click1" />&nbsp;<asp:Button 
+                        ID="Button5" runat="server" Enabled="False" onclick="Button5_Click" 
+                        Text="Remove All" />
+            </div>	
 				
 				&nbsp;<% =drawEntries()%>
 
