@@ -157,8 +157,8 @@ public partial class EditTask : System.Web.UI.Page
             List<string> restrict = getListBoxContent(ListBox3);
             bool paramAllowed = false;
             if (DropDownList1.SelectedIndex == 1) paramAllowed = true;
-            int depth = Convert.ToInt32(TextBox1.Text);
-            Constraints constraints = new Constraints(4, paramAllowed, restrict, crawl);
+            uint depth = Convert.ToUInt32(TextBox1.Text);
+            Constraints constraints = new Constraints(depth, paramAllowed, restrict, crawl);
             StorageSystem.getInstance().setRestrictions((string)Session["TID"], constraints);
         }
     }

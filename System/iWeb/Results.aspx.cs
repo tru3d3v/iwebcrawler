@@ -144,7 +144,10 @@ public partial class Results : System.Web.UI.Page
         List<Category> categories = StorageSystem.getInstance().getCategories(taskID);
         foreach (Category category in categories)
         {
-            return category;
+            if (category.getCatrgoryName() == DropDownList3.SelectedValue)
+            {
+                return category;
+            }
         }
         return null;
     }
@@ -335,7 +338,7 @@ public partial class Results : System.Web.UI.Page
     }
     protected void Button3_Click(object sender, EventArgs e)
     {
-        SetCookie("Records", DropDownList1.Items[DropDownList1.SelectedIndex].Value.ToString(), 1);
+        /*SetCookie("Records", DropDownList1.Items[DropDownList1.SelectedIndex].Value.ToString(), 1);
         string orderBy = DropDownList2.Items[DropDownList2.SelectedIndex].Value;
         switch (orderBy)
         {
@@ -354,8 +357,9 @@ public partial class Results : System.Web.UI.Page
             case "Trust - Decesinding":
                 Session["OrderBy"] = Order.DescendingTrust;
                 break;
-        }
-        Session["Remove"] = CheckBox1.Checked;
+        }*/
+        Button5.Enabled = CheckBox1.Checked;
+        //Session["Remove"] = CheckBox1.Checked;
         //Response.Redirect("Results.aspx?TID=" + Request["TID"]);
     }
     protected void Button2_Click(object sender, EventArgs e)
@@ -365,5 +369,13 @@ public partial class Results : System.Web.UI.Page
     protected void Button1_Click1(object sender, EventArgs e)
     {
 
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        TaskStatus task = validateTask();
+        if(task != null)
+        {
+            StorageSystem.getInstance().removeAllResults(task.getTaskID());
+        }
     }
 }
