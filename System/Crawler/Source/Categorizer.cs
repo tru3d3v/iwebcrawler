@@ -47,6 +47,31 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * This method gets a HTML page, and returns a list of all the 
+         * match levels of the resource to all the categories.
+         */
+
+        public List<int> classifyContentToAllCategories(String resource)
+        {
+            List<int> matchLevelResults = new List<int>();
+            foreach (Category category in categoryList)
+            {
+                /*
+                StreamWriter sw = new
+                    StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
+                sw.WriteLine(" URL : " + url);
+                sw.Close();
+                */
+                int matchLevel = category.getMatchLevel(resource);
+
+                matchLevelResults.Add(matchLevel);
+            }
+            //results.Add(new Result("0", url, "0", 0, 100));
+            return matchLevelResults;
+        }
+
+        /**
          * This method finds and returns the Id of the categories to whom
          * the given resource is belonged.
          */

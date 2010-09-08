@@ -58,8 +58,8 @@ namespace CrawlerNameSpace
                 //If filteredLinks is not empty 
                 if (filteredLinks.Count > 0)
                 {
-                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource.getRankOfUrl(),
-                      resource.getResourceContent(), filteredLinks[0]), item.getDomainUrl(), hashUrl(item.getDomainUrl()));
+                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource,item), 
+                                      item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
                     RuntimeStatistics.addToFeedUrls(1);
                 }
