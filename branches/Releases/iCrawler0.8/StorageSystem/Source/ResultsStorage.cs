@@ -39,6 +39,11 @@ namespace CrawlerNameSpace.StorageSystem
         void removeURLResult(Result result);
 
         /**
+         * This function removes all entries for specific task, which specified in the given argument.
+         */
+        void removeAllResults(String taskID);
+
+        /**
          * This function adds the URL result to the given categories (and it's fathers).
          */
         void addURLResult(String taskId, Result result);
