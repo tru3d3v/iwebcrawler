@@ -14,7 +14,9 @@ namespace CrawlerNameSpace.Tests
 
         public void Test1()
         {
-            if (testRanker.rankUrl(0, resource.getResourceContent(), resource.getResourceUrl()) == 0)
+            LinkItem item = new LinkItem();
+
+            if (testRanker.rankUrl(resource,item) == 0)
             {
                 Console.WriteLine("rankUrl(int parentRank, String parentContent, String url) PASSED");
             }
