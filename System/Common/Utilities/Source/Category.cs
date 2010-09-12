@@ -86,7 +86,7 @@ namespace CrawlerNameSpace.Utilities
          * This method returns the match level of the given wordlist according to a
          * certain formula.
          */
-        public int getMatchLevel(String wordList) 
+        public int getMatchLevel(String wordList,double alpha, double min_words_limit,bool isRank) 
         {
             char[] separators = {' ', '\t', '\n'};
             int numOfWords    = Math.Max(1, wordList.Split(separators).Length);
@@ -116,7 +116,12 @@ namespace CrawlerNameSpace.Utilities
                 int count = objPattern.Matches(wordListCopied,0).Count;
 
                 int index = keywordListCopied.IndexOf(keyword);
-                if (count != 0 && histogram[index] == 0) nonZero++;
+                if (count != 0 && histogram[index] == 0)
+                    if (isRank)
+                        nonZero += 2;
+                    else
+                        nonZero++;
+
                 if (histogram[index] < threshold)
                 {
                     int add = Math.Min(histogram[index] + count, (int)threshold) - histogram[index];
@@ -127,14 +132,14 @@ namespace CrawlerNameSpace.Utilities
             
             double nonZeroBonus = (nonZero * GAMMA) / numOfKeywords;
             nonZeroBonus = Math.Min(NONZERO_WEIGHT, nonZeroBonus);
-            double matchPercent = (sumOfhistogram * ALPHA) / numOfWords;
+            double matchPercent = (sumOfhistogram * alpha) / numOfWords;
             matchPercent = Math.Min(MATCH_WEIGHT, matchPercent);
             double total = Math.Min(MAX_MATCH_LEVEL, NORMALIZE_CONST * (nonZeroBonus + matchPercent));
-            if (numOfWords < MIN_WORDS_LIMIT)
+            if (numOfWords < min_words_limit)
             {
                 total = 0.25 * total;
             }
-            
+           /* 
             StreamWriter sw = new 
                 StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
             sw.WriteLine(" ***** DATA FOR REQUEST ************************************************* ");
@@ -165,7 +170,45 @@ namespace CrawlerNameSpace.Utilities
             sw.WriteLine(total.ToString());
             sw.WriteLine(" * END ****************************************************************** ");
             sw.Close();
-
+            */
+            if (isRank)
+            {
+                StreamWriter sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** DATA FOR Categorizer ************************************************* ");
+                //sw.WriteLine(" .CONTENT WORDS: ");
+                //sw.WriteLine(wordListCopied.ToString());
+                sw.WriteLine(" .NUM OF WORDS: ");
+                sw.WriteLine(numOfWords.ToString());
+                String[] wordListSplited = wordListCopied.Split(separators);
+                for (int k = 0; k < numOfWords;k++ )
+                {
+                    sw.WriteLine(" .[" + k + "] -> " + wordListSplited[k]);
+                }
+                sw.WriteLine(" .KEY WORDS: ");
+                sw.WriteLine(keywordListCopied.ToString());
+                sw.WriteLine(" .NUM OF KEY WORDS: ");
+                sw.WriteLine(numOfKeywords.ToString());
+                sw.WriteLine(" .THRESOLD PARAM: ");
+                sw.WriteLine(threshold.ToString());
+                sw.WriteLine(" .SUM OF HISTOGRAM: ");
+                sw.WriteLine(sumOfhistogram.ToString());
+                sw.WriteLine(" .NONZERO PARAM: ");
+                sw.WriteLine(nonZero.ToString());
+                sw.WriteLine(" .HISTOGRAM DATA:");
+                for (int j = 0; j < numOfKeywords; j++)
+                {
+                    sw.WriteLine(" .[" + keywordList[j] + "] -> " + histogram[j].ToString());
+                }
+                sw.WriteLine(" .NON-ZERO BONUS: ");
+                sw.WriteLine(nonZeroBonus.ToString());
+                sw.WriteLine(" .MATCH PERCENT: ");
+                sw.WriteLine(matchPercent.ToString());
+                sw.WriteLine(" .TOTAL TRUST: ");
+                sw.WriteLine(total.ToString());
+                sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
+            }
+            
             return Convert.ToInt32(total);
         }
 

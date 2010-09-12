@@ -30,13 +30,14 @@ namespace CrawlerNameSpace
             List<Result> results = new List<Result>();
             foreach (Category category in categoryList)
             {
+               /* 
                 StreamWriter sw = new
                     StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
                 sw.WriteLine(" URL : " + url);
                 sw.Close();
-
-                int matchLevel = category.getMatchLevel(resource);
+                */
+                int matchLevel = category.getMatchLevel(resource,2500,5000,false);
                 if (matchLevel > category.getConfidenceLevel())
                 {
                     results.Add(new Result("0", url, category.getCategoryID(), 0, matchLevel));
@@ -51,19 +52,12 @@ namespace CrawlerNameSpace
          * match levels of the resource to all the categories.
          */
 
-        public List<int> classifyContentToAllCategories(String resource)
+        public List<int> classifyContentToAllCategories(String resource, double alpha, double min_words_limit)
         {
             List<int> matchLevelResults = new List<int>();
             foreach (Category category in categoryList)
             {
-                /*
-                StreamWriter sw = new
-                    StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-                sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
-                sw.WriteLine(" URL : " + url);
-                sw.Close();
-                */
-                int matchLevel = category.getMatchLevel(resource);
+                int matchLevel = category.getMatchLevel(resource, alpha, min_words_limit,true);
 
                 matchLevelResults.Add(matchLevel);
             }

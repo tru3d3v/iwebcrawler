@@ -100,7 +100,7 @@ namespace CrawlerNameSpace.Utilities.Tests
                 "is a team sport played between" +
                 "two teams of eleven players ball. sport grass  a goal the ball goal." + 
                 " play, the goalkeepers  players";
-            Console.WriteLine("is: " + testCategory.getMatchLevel(checkWordList));
+            Console.WriteLine("is: " + testCategory.getMatchLevel(checkWordList,2500,5000,false));
         }
 
         /**
