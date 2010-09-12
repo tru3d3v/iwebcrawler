@@ -12,7 +12,7 @@ namespace CrawlerNameSpace
     {
         // These attributes saves the link item status, it maintains the tag, link, 
         // parent-url and text.
-        private String Parent, Tag, Link, Text, domainUrl;
+        private String Parent, Tag, Link, Text, domainUrl,Anchor;
 
         /**
          * Constructs a new LinkItem
@@ -112,6 +112,13 @@ namespace CrawlerNameSpace
             return Text;
         }
 
+        /**
+         * returns the anchor of the url
+         */
+        public String getAnchor()
+        {
+            return Anchor;
+        }
         /**
          * returns a string which represnets this
          */ 

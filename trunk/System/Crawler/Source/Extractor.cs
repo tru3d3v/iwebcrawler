@@ -11,7 +11,7 @@ namespace CrawlerNameSpace
 {
     class Extractor
     {
-        private static int SEMETRIC_LINE = 40;
+        private static int SEMETRIC_LINE = 250;
         private static String LINK_ATTR = "href";
 
         /**
