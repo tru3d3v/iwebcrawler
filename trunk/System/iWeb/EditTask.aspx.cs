@@ -36,6 +36,10 @@ public partial class EditTask : System.Web.UI.Page
             {
                 Button13.Enabled = false;
             }
+            if (StorageSystem.getInstance().getTotalURLs(requiredTask.getTaskID().Trim(), null) != 0)
+            {
+                Button14.Enabled = false;
+            }
         }
     }
 
@@ -161,5 +165,9 @@ public partial class EditTask : System.Web.UI.Page
             Constraints constraints = new Constraints(depth, paramAllowed, restrict, crawl);
             StorageSystem.getInstance().setRestrictions((string)Session["TID"], constraints);
         }
+    }
+    protected void Button14_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("CategoryManager.aspx?TID=" + Request["TID"]);
     }
 }
