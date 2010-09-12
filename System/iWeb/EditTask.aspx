@@ -208,11 +208,18 @@
 			</div>
 			<div style="text-align: center">
 			
+			    <asActions<br />
+				
+			</div>
+			<div style="text-align: center">
+			
 			    <asp:Button ID="Button11" runat="server" Text="Restore Saved Settings" 
                     onclick="Button11_Click" />
-&nbsp;<asp:Button ID="Button12" runat="server" Text="Save Current Settings" 
+                &nbsp;<asp:Button ID="Button12" runat="server" Text="Save Current Settings" 
                     onclick="Button12_Click" />
-&nbsp;<asp:Button ID="Button13" runat="server" Text="Delete Task" onclick="Button13_Click" />
+&nbsp;<asp:Button ID="Button14" runat="server" onclick="Button14_Click" 
+                    Text="Category Manager" />
+                &nbsp;<asp:Button ID="Button13" runat="server" Text="Delete Task" onclick="Button13_Click" />
 			
 			</div>
 					
@@ -222,7 +229,7 @@
 		</div>
 		<div id="footer" class="smallgraytext" align="center">
 		<img src="images/crawler.jpg" /><br />
-<a href="Default.aspx">Main Control Page</a> | <a href="CreateTask.aspx">Create Task</a> | <a href="SelectTask.aspx?target=edit">Edit Task Proporties</a> | <a href="SelectTask.aspx?target=invoke">Start/Stop Task</a> | <a href="SelectTask.aspx?target=results">View Results</a><br />
+<a href="Default.aspx">Main Control Page<a href="SelectTask.aspx?target=invoke">Start/Stop Task</a> | <a href="SelectTask.aspx?target=results">View Results</a><br />
 			UI Version: <asp:Label ID="LabelUIVersion" runat="server" Text="Label"></asp:Label>
             , Core Version: <asp:Label ID="LabelEngineVersion" runat="server" Text="Label"></asp:Label><br />
 			iWeb Crawler Development Team © 2010<br />
