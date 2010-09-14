@@ -13,6 +13,7 @@ namespace CrawlerNameSpace.Utilities
     public class Category
     {
         //These are consts that are used in the getMatchLevel method.
+        /*
         private const double ALPHA = 2500;
         private const double BETA = 0.1;
         private const double GAMMA = 55;
@@ -23,7 +24,7 @@ namespace CrawlerNameSpace.Utilities
         private const double NORMALIZE_CONST = 0.7;
 
         private const int MAX_MATCH_LEVEL = 100;
-
+        */
         private String       categoryID;
         private String       parentName;
         private String       categoryName;
@@ -86,23 +87,23 @@ namespace CrawlerNameSpace.Utilities
          * This method returns the match level of the given wordlist according to a
          * certain formula.
          */
-        public int getMatchLevel(String wordList,double alpha, double min_words_limit,bool isRank) 
+        public int getMatchLevel(String wordList,CategorizerOptions parameters) 
         {
             char[] separators = {' ', '\t', '\n'};
             int numOfWords    = Math.Max(1, wordList.Split(separators).Length);
             int numOfKeywords = Math.Max(1, keywordList.Count);
             int nonZero = 0;
             double sumOfhistogram = 0;
-            double threshold = Math.Max(2.0, ((numOfWords * BETA) / numOfKeywords));
+            double threshold = Math.Max(2.0, ((numOfWords * parameters.BETA) / numOfKeywords));
 
             // keywordList and wordList are copied to a new arrays so that we won't change them(the originals)
             List<String> keywordListCopied = new List<string>(keywordList);
             String wordListCopied = (String)wordList.Clone();
             
             // Transforming the keywordListCopied and wordListCopied to canonical form
-            keywordListCopied.ForEach(canonicForm);
-            canonicForm(wordListCopied);
-
+            //keywordListCopied.ForEach(canonicForm);
+            canonicForm(ref wordListCopied);
+            //wordListCopied = wordListCopied.ToLower();
             int[] histogram = new int[numOfKeywords];
             //Initialising the histogram array to zeros
             for (int i = 0; i < numOfKeywords; i++)
@@ -112,14 +113,11 @@ namespace CrawlerNameSpace.Utilities
 
             foreach (String keyword in keywordListCopied)
             {
-                Regex objPattern = new Regex(keyword);
+                Regex objPattern = new Regex(keyword.ToLower());
                 int count = objPattern.Matches(wordListCopied,0).Count;
 
                 int index = keywordListCopied.IndexOf(keyword);
                 if (count != 0 && histogram[index] == 0)
-                    if (isRank)
-                        nonZero += 2;
-                    else
                         nonZero++;
 
                 if (histogram[index] < threshold)
@@ -130,16 +128,16 @@ namespace CrawlerNameSpace.Utilities
                 }
             }
             
-            double nonZeroBonus = (nonZero * GAMMA) / numOfKeywords;
-            nonZeroBonus = Math.Min(NONZERO_WEIGHT, nonZeroBonus);
-            double matchPercent = (sumOfhistogram * alpha) / numOfWords;
-            matchPercent = Math.Min(MATCH_WEIGHT, matchPercent);
-            double total = Math.Min(MAX_MATCH_LEVEL, NORMALIZE_CONST * (nonZeroBonus + matchPercent));
-            if (numOfWords < min_words_limit)
+            double nonZeroBonus = (nonZero * parameters.GAMMA) / numOfKeywords;
+            nonZeroBonus = Math.Min(parameters.NONZERO_WEIGHT, nonZeroBonus);
+            double matchPercent = (sumOfhistogram * parameters.ALPHA) / numOfWords;
+            matchPercent = Math.Min(parameters.MATCH_WEIGHT, matchPercent);
+            double total = Math.Min(parameters.MAX_MATCH_LEVEL, parameters.NORMALIZE_CONST * (nonZeroBonus + matchPercent));
+            if (numOfWords < parameters.MIN_WORDS_LIMIT)
             {
                 total = 0.25 * total;
             }
-           /* 
+           
             StreamWriter sw = new 
                 StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
             sw.WriteLine(" ***** DATA FOR REQUEST ************************************************* ");
@@ -170,10 +168,10 @@ namespace CrawlerNameSpace.Utilities
             sw.WriteLine(total.ToString());
             sw.WriteLine(" * END ****************************************************************** ");
             sw.Close();
-            */
-            if (isRank)
+            /*
+            if (parameters.isRank)
             {
-                StreamWriter sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine(" ***** DATA FOR Categorizer ************************************************* ");
                 //sw.WriteLine(" .CONTENT WORDS: ");
                 //sw.WriteLine(wordListCopied.ToString());
@@ -208,7 +206,7 @@ namespace CrawlerNameSpace.Utilities
                 sw.WriteLine(" * END ****************************************************************** ");
                 sw.Close();
             }
-            
+            */
             return Convert.ToInt32(total);
         }
 
@@ -216,9 +214,9 @@ namespace CrawlerNameSpace.Utilities
          * This method returns the canonical form of the given string.
          * Canonical form means all letters are low cased
          */
-        public void canonicForm(String text)
+        public void canonicForm(ref String text)
         {
-            text=text.ToLowerInvariant();
+            text=text.ToLower();
         }
 
         /**
