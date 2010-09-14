@@ -30,9 +30,8 @@ namespace CrawlerNameSpace
             List<Result> results = new List<Result>();
             foreach (Category category in categoryList)
             {
-               
                 StreamWriter sw = new
-                    StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                    StreamWriter("_DEBUG_INFO_CATEGORIZER@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
                 sw.WriteLine(" URL : " + url);
                 sw.Close();

@@ -60,7 +60,7 @@ namespace CrawlerNameSpace.Utilities
                 long pages = RuntimeStatistics.getPagesCrawledNum();
                 float extarctedPercentage = extracted / crawled;
                 float feedBackPercentage = feedback / crawled;
-                float errorsPercentage = ((float)errors / (float)crawled) * 100;
+                float errorsPercentage = ((float)errors / (float)extracted) * 100;
 
                 System.Console.WriteLine("  Total Crawled   Urls : {0}\t\t (Rate {1} pages per refresh rate)", crawled, pages);
                 System.Console.WriteLine("  Total Extracted Urls : {0}\t\t [{1}X]", extracted, extarctedPercentage);

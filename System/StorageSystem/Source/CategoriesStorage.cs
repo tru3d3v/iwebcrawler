@@ -21,5 +21,11 @@ namespace CrawlerNameSpace.StorageSystem
          * NOTE: this operation will reset pervious configuration
          */ 
         void setCategories(String taskId, List<Category> categoryList);
+
+        /**
+         * This method sets the given categoryID(of the parent) to be a parent
+         * of the given other categoryID(of the son).
+         */
+        void setParentToSon(String parentID, String sonID);
     }
 }

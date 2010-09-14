@@ -36,5 +36,15 @@ namespace CrawlerNameSpace.StorageSystem
          * list (not appending).
          */
         void setSeedList(String taskId, List<String> seeds);
+
+        /**
+         * sets the specified property in the database with the new specified value
+         */
+        void setProperty(String taskId, String property, String value);
+
+        /**
+         * returns the property value; null in case property not found
+         */
+        String getProperty(String taskId, String property);
     }
 }

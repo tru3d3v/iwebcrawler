@@ -280,21 +280,50 @@
                         <td colspan="5">
                             <asp:Button ID="Button4" runat="server" Text="Remove (include sons)" 
                                 onclick="Button4_Click" />
-                            &nbsp;<asp:Button ID="Button8" runat="server" Text="Remove (move sons to father)" />
+                                
+                            &nbsp;<asp:Button ID="Button8" runat="server" 
+                                Text="Remove (move sons to father)" onclick="Button8_Click" />
                         </td>
                     </tr>
                 </table>
 			</div>
+			<div class="style2" style="padding:12px;" align="justify">
+				<span class="style4"><span class="style5">Save Options</span></span></span><br />
+				
+			</div>
+			
+			<div class="panel" style="height:auto; text-align: center;">
+			
+			    <table class="style1">
+                    <tr>
+                        <td style="text-align: left">
+                            <asp:CheckBox ID="CheckBox1" runat="server" Checked="True" />
+&nbsp;<span class="bodytext">Remove duplicate keywords when saving</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left">
+                            <asp:CheckBox ID="CheckBox2" runat="server" Checked="True" 
+                                oncheckedchanged="CheckBox2_CheckedChanged" />
+                            <span class="bodytext">&nbsp;Add son's keywords to fathers when saving 
+                        </td>
+                    </tr>
+                </table>
+			
+			</div>
+			
+			
 			<div class="style2" style="padding:12px;" align="justify">
 				<span class="style4"><span class="style5">Actions</span></span><br />
 				
 			</div>
             <asp:Button ID="Button5" runat="server" Text="Back (Unsaved changes will be lost)" 
                 onclick="Button5_Click" />
-		    &nbsp;<asp:Button ID="Button6" runat="server" Text="Save" />
+		    &nbsp;<asp:Button ID="Button6" runat="server" Text="Save" 
+                onclick="Button6_Click" />
             &nbsp;<asp:Button ID="Button7" runat="server" Text="Restore Saved Settings" 
                 onclick="Button7_Click" />
 		</div>
+		
 		
 			
 		</div>
