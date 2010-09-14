@@ -139,7 +139,7 @@ namespace CrawlerNameSpace.Utilities
             }
 
             StreamWriter sw = null;
-            if (!isRank)
+            if (!parameters.isRank)
             {
                 sw = new
                     StreamWriter("_DEBUG_INFO_CATEGORIZER@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
@@ -173,7 +173,7 @@ namespace CrawlerNameSpace.Utilities
                 sw.Close();
             }
             
-            if (isRank)
+            if (parameters.isRank)
             {
                 sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine(" ***** DATA FOR Categorizer ************************************************* ");
@@ -210,7 +210,7 @@ namespace CrawlerNameSpace.Utilities
                 sw.WriteLine(" * END ****************************************************************** ");
                 sw.Close();
             }
-            */
+            
             return Convert.ToInt32(total);
         }
 
