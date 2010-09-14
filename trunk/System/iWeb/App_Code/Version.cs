@@ -13,11 +13,11 @@ public class Version
 
     public static string getCoreVersion()
     {
-        return "0.8 Alpha Mode";
+        return "0.8.5 Alpha Mode";
     }
 
     public static string getUIVersion()
     {
-        return "0.1 Alpha Mode";
+        return "0.2 Alpha Mode";
     }
 }

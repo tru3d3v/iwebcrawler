@@ -13,11 +13,12 @@ namespace CrawlerNameSpace.Utilities
         public double ALPHA;
         public double BETA;
         public double GAMMA;
-        public  double MIN_WORDS_LIMIT;
 
-        public  int NONZERO_WEIGHT;
-        public  int MATCH_WEIGHT ;
-        public  double NORMALIZE_CONST;
+        public double MIN_WORDS_LIMIT;
+        public double MIN_WORDS_PENLTY;
+
+        public int NONZERO_MAX_EFFECT;
+        public int MATCH_MAX_EFFECT;
         public int MAX_MATCH_LEVEL;
 
         public bool isRank;
@@ -25,28 +26,17 @@ namespace CrawlerNameSpace.Utilities
         //default
         public CategorizerOptions()
         {
-            ALPHA = 2500;
-            BETA = 0.1;
-            GAMMA = 55;
-            MIN_WORDS_LIMIT = 5000;
-            NONZERO_WEIGHT = 50;
-            MATCH_WEIGHT = 100;
-            NORMALIZE_CONST = 0.7;
+            ALPHA = 2950;
+            BETA = 0.125;
+            GAMMA = 75;
+
+            MIN_WORDS_LIMIT = 3500;
+            MIN_WORDS_PENLTY = 0.25;
+            
+            NONZERO_MAX_EFFECT = 50;
+            MATCH_MAX_EFFECT = 100;
             MAX_MATCH_LEVEL = 100;
             isRank = false;
-        }
-        public CategorizerOptions(double alpha, double beta, double gamma, double min_words_limit,
-                            int nonzero_weight, int match_weight,double normalize_const,int max_match_level,bool isrank)
-        {
-            ALPHA=alpha;
-            BETA=beta;
-            GAMMA=gamma;
-            MIN_WORDS_LIMIT=min_words_limit;
-            NONZERO_WEIGHT=nonzero_weight;
-            MATCH_WEIGHT=match_weight;
-            NORMALIZE_CONST=normalize_const;
-            MAX_MATCH_LEVEL = max_match_level;
-            isRank = isrank;
         }
     }
 }
