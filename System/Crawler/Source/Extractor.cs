@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
 /**
  * This class is responsible for extracting and parsing html page, this module can
@@ -39,6 +40,8 @@ namespace CrawlerNameSpace
             getText(list, page);
             // gets the links
             getLinks(list);
+            //gets the anchor of each link
+            getAnchors(list);
 
             return list;
         }
@@ -135,8 +138,47 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * modifies the link-items to contain the anchors, it assumes that
+         * the link-items already has been assigned to tag
+         */
+        private void getAnchors(List<LinkItem> links)
+        {
+
+            foreach(LinkItem item in links)
+            {
+                if ((item.getTag()==null)||(item.getTag()==""))
+                    continue;
+                String[] seperators = {"</span>","<span>","<Span>","</Span>"};
+                String[] splitedTags = item.getTag().Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+                if (splitedTags.Length != 0)
+                {
+                    int i=0;
+                    foreach(string splited in splitedTags)
+                    {
+                        if (splited.CompareTo("/span") == 0)
+                            item.setAnchor(splitedTags[i - 1]);
+                        i++;
+                    }
+                }
+                //else //TODO:CONTINUE THIS METHOD
+                /*   
+                StreamWriter sw = new
+                StreamWriter("DataForExtractor" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine("***************TAG***************");
+                sw.WriteLine(item.getTag());
+                sw.WriteLine("The Splited Strings Are:");
+                foreach (String splited in splitedTags)
+                {
+                    sw.WriteLine(" [" + splited + "]");
+                }
+                sw.WriteLine("***************ENDTAG***************");
+                sw.Close();
+                 */
+            }
+        }
+        /**
          * returns the link from the html-link attribute which given in the tag
-         */ 
+         */
         private String getLink(String tag)
         {
             String lowerTag = tag.ToLower();
