@@ -50,7 +50,7 @@ namespace CrawlerNameSpace
             sw.Close();
 
             //rank of the whole page
-            wholePageRank = getRankOfWholeContent(parentResource);
+            //wholePageRank = getRankOfWholeContent(parentResource);
 
             //rank of the nearby text
             nearbyTextRank =getRankOfNearbyText(item);
@@ -147,7 +147,8 @@ namespace CrawlerNameSpace
             //sw.WriteLine(" URL : " + resource.getResourceUrl());
             sw.Close();
             //calculate the min and max of the match levels of the whole resource content to the categories.
-            List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0),2500,5000);
+            CategorizerOptions options = new CategorizerOptions();
+            List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0),options);
             maxMatchLevelForContent = calculateMax(matchLevelsForContent);
             avgMatchLevelForContent = calculateAvg(matchLevelsForContent);
 
@@ -182,7 +183,11 @@ namespace CrawlerNameSpace
             sw.WriteLine(item.getText());
             sw.Close();
             //calculate the min and max of the match levels of the nearby text to the categories.
-            List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),10,1);
+            CategorizerOptions options = new CategorizerOptions();
+            options.ALPHA = 500;
+            options.MIN_WORDS_LIMIT = 1;
+            options.isRank = true;
+            List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),options);
             maxMatchLevelForNearby = calculateMax(matchLevelsForNearby);
             avgMatchLevelForNearby = calculateAvg(matchLevelsForNearby);
 
@@ -218,7 +223,11 @@ namespace CrawlerNameSpace
             sw.WriteLine(item.getAnchor());
             sw.Close();
             //calculate the min and max of the match levels of the anchor url to the categories.
-            List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),10,1);
+            CategorizerOptions options = new CategorizerOptions();
+            options.ALPHA = 10;
+            options.MIN_WORDS_LIMIT = 1;
+            options.isRank = true;
+            List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),options);
             maxMatchLevelForAnchor = calculateMax(matchLevelsForAnchor);
             avgMatchLevelForAnchor = calculateAvg(matchLevelsForAnchor);
 

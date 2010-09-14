@@ -94,13 +94,13 @@ namespace CrawlerNameSpace.Utilities.Tests
         {
             Console.WriteLine("The match level of :");
             Console.WriteLine("Association football or soccer, is a team sport played between two " +
-            "teams of eleven players ball. sport grass  a goal the ball goal. play,"+
+            "teams of eleven players ball. sport grass  a goal the ball goal. play," +
             "the goalkeepers  players ");
-            String checkWordList = "Association football or soccer, " + 
+            String checkWordList = "Association football or soccer, " +
                 "is a team sport played between" +
-                "two teams of eleven players ball. sport grass  a goal the ball goal." + 
+                "two teams of eleven players ball. sport grass  a goal the ball goal." +
                 " play, the goalkeepers  players";
-            Console.WriteLine("is: " + testCategory.getMatchLevel(checkWordList,2500,5000,false));
+            Console.WriteLine("is: " + testCategory.getMatchLevel(checkWordList, new CategorizerOptions()));
         }
 
         /**

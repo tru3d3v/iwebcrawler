@@ -11,7 +11,7 @@ namespace CrawlerNameSpace
 {
     class Extractor
     {
-        private static int SEMETRIC_LINE = 250;
+        private static int SEMETRIC_LINE = 800;
         private static String LINK_ATTR = "href";
 
         /**
@@ -49,6 +49,12 @@ namespace CrawlerNameSpace
          */ 
         private void getText(List<LinkItem> links, String page)
         {
+            /*
+            String pageWithoutTags= removeTags(page);
+            char[] separators = {' ', '\t', '\n'};
+            string[] pageWordList = page.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
+             */
+            char[] separators = {' ', '\t', '\n','{','}','[',']','|'};
             foreach (LinkItem item in links)
             {
                 int index = page.IndexOf(item.getTag());
@@ -59,13 +65,23 @@ namespace CrawlerNameSpace
                     int higher = Math.Min(index + item.getTag().Length + SEMETRIC_LINE, page.Length - 1);
 
                     String subString = page.Substring(lower, higher - lower);
-                    item.setText(removeTags(subString));
+                    subString = removeTags(subString);
+                    String[] subStringSplited = subString.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
+                    //subString = subStringSplited.ToString();
+                    StringBuilder nearbyText=new StringBuilder("");
+                    foreach (String substring in subStringSplited)
+                    {
+                        if ((substring.Trim() != " ") && (substring.Trim() != "\t") && (substring.Trim() != "\n"))
+                            nearbyText.Append(substring.Trim() + " ");
+                    }
+                    item.setText(nearbyText.ToString().Trim());
                 }
                 else
                 {
                     item.setText("");
                 }
             }
+            
         }
 
         /**
