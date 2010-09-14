@@ -8,6 +8,25 @@ using CrawlerNameSpace.Utilities;
 
 public partial class CategoryManager : System.Web.UI.Page
 {
+    private string getCategoryName(List<Category> list, String id)
+    {
+        if (id == null || id == "") return "root";
+        foreach (Category cat in list)
+        {
+            if (cat.getCategoryID().Trim() == id)
+                return cat.getCatrgoryName();
+        }
+        return "root";
+    }
+    private string getCategoryID(List<Category> list, String name)
+    {
+        foreach (Category cat in list)
+        {
+            if (cat.getCatrgoryName().Trim() == name)
+                return cat.getCategoryID();
+        }
+        return "";
+    }
     private void resetDefaults()
     {
         DropDownList1.Items.Clear();
@@ -19,9 +38,16 @@ public partial class CategoryManager : System.Web.UI.Page
         {
             DropDownList1.Items.Add("root");
             List<Category> cats = StorageSystem.getInstance().getCategories(ts.getTaskID().Trim());
-            Session["CategoryList"] = cats;
-
+            List<Category> previewCats = new List<Category>();
             foreach (Category cat in cats)
+            {
+                string pname = getCategoryName(cats, cat.getParentName());
+                Category newCat = new Category(cat.getCategoryID(), pname, cat.getCatrgoryName(), cat.getKeywordList(), cat.getConfidenceLevel());
+                previewCats.Add(newCat);
+            }
+            Session["CategoryList"] = previewCats;
+
+            foreach (Category cat in previewCats)
             {
                 DropDownList1.Items.Add(cat.getCatrgoryName().Trim());
                 DropDownList2.Items.Add(cat.getCatrgoryName().Trim());
@@ -63,7 +89,7 @@ public partial class CategoryManager : System.Web.UI.Page
             {
                 Category oldCat = list[catIndex];
                 List<string> keywords = oldCat.getKeywordList();
-                keywords.Add(TextBox5.Text);
+                keywords.Add(TextBox5.Text.ToLower());
                 Category newCat = new Category("", oldCat.getParentName().Trim(), oldCat.getCatrgoryName(), keywords, oldCat.getConfidenceLevel());
                 list.RemoveAt(catIndex);
                 list.Add(newCat);
@@ -93,11 +119,11 @@ public partial class CategoryManager : System.Web.UI.Page
 
     protected void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (Session["CategoryList"] != null)
+        if (Session["CategoryList"] != null && ListBox2.SelectedIndex != -1)
         {
             List<Category> list = (List<Category>)Session["CategoryList"];
             Category cat = getCategory(list, ListBox2.SelectedValue);
-            if(cat != null)
+            if (cat != null)
             {
                 Label2.Text = cat.getParentName().Trim();
                 Label3.Text = cat.getConfidenceLevel().ToString();
@@ -105,9 +131,9 @@ public partial class CategoryManager : System.Web.UI.Page
 
                 Label8.Text = "";
                 int cnt = 0;
-                foreach(string key in cat.getKeywordList())
+                foreach (string key in cat.getKeywordList())
                 {
-                    if(cnt == cat.getKeywordList().Count -1)
+                    if (cnt == cat.getKeywordList().Count - 1)
                     {
                         Label8.Text = Label8.Text + key + ". ";
                     }
@@ -119,6 +145,14 @@ public partial class CategoryManager : System.Web.UI.Page
                 }
                 Label5.Text = getSons(list, cat.getCatrgoryName()).Count.ToString();
             }
+        }
+        else
+        {
+            Label2.Text = "None";
+            Label3.Text = "0";
+            Label4.Text = "0";
+            Label8.Text = "No Keywords";
+            Label5.Text = "0";
         }
     }
     private bool validateName(List<Category> list, string name)
@@ -215,13 +249,16 @@ public partial class CategoryManager : System.Web.UI.Page
 
         if (Session["CategoryList"] != null)
         {
-            List<Category> list = (List<Category>)Session["CategoryList"];
-            Category cat = getCategory(list, DropDownList2.SelectedValue);
-            if (cat != null)
+            if (DropDownList2.SelectedIndex != -1)
             {
-                foreach(string key in cat.getKeywordList())
+                List<Category> list = (List<Category>)Session["CategoryList"];
+                Category cat = getCategory(list, DropDownList2.SelectedValue);
+                if (cat != null)
                 {
-                    ListBox1.Items.Add(key);
+                    foreach (string key in cat.getKeywordList())
+                    {
+                        ListBox1.Items.Add(key);
+                    }
                 }
             }
         }
@@ -257,6 +294,7 @@ public partial class CategoryManager : System.Web.UI.Page
     protected void Button7_Click(object sender, EventArgs e)
     {
         resetDefaults();
+        ListBox2_SelectedIndexChanged(null, null);
     }
     private void remove(List<Category> cats, string cat)
     {
@@ -280,7 +318,118 @@ public partial class CategoryManager : System.Web.UI.Page
         {
             List<Category> list = (List<Category>)Session["CategoryList"];
             remove(list, ListBox2.SelectedValue);
-            //ListBox2_SelectedIndexChanged(null, null);
+            DropDownList2_SelectedIndexChanged(null, null);
+            ListBox2_SelectedIndexChanged(null, null);
+        }
+    }
+    protected void Button8_Click(object sender, EventArgs e)
+    {
+        if (ListBox2.SelectedValue != null)
+        {
+            List<Category> list = (List<Category>)Session["CategoryList"];
+            // moving sons to father
+            Category category = getCategory(list, ListBox2.SelectedValue);
+            List<Category> newList = new List<Category>();
+            foreach (Category cat in list)
+            {
+                if (cat.getParentName().Trim() == category.getCatrgoryName())
+                {
+                    Category newCat = new Category(cat.getCategoryID(),
+                        category.getParentName(),
+                        cat.getCatrgoryName(),
+                        cat.getKeywordList(),
+                        cat.getConfidenceLevel());
+                    newList.Add(newCat);
+                }
+                else
+                {
+                    Category newCat = new Category(cat.getCategoryID(),
+                        cat.getParentName(),
+                        cat.getCatrgoryName(),
+                        cat.getKeywordList(),
+                        cat.getConfidenceLevel());
+                    newList.Add(newCat);
+                }
+            }
+            Session["CategoryList"] = newList;
+            remove(newList, ListBox2.SelectedValue);
+            DropDownList2_SelectedIndexChanged(null, null);
+            ListBox2_SelectedIndexChanged(null, null);
+        }
+    }
+
+    private void mergeWithFatherKeywords(List<string> fkeys, List<string> skeys)
+    {
+        foreach (string key in skeys)
+        {
+            if (fkeys.Contains(key) != true) fkeys.Add(key);
+        }
+    }
+
+    private void forwardKeywords(List<Category> list, string father)
+    {
+        int index = getCategoryIndex(list, father);
+        if (index != -1 || father == "root")
+        {
+            List<Category> sons = getSons(list, father);
+            foreach (Category cat in sons)
+            {
+                forwardKeywords(list, cat.getCatrgoryName().Trim());
+            }
+
+            if (index != -1)
+            {
+                List<string> fkeys = list[index].getKeywordList();
+                foreach (Category son in sons)
+                {
+                    mergeWithFatherKeywords(fkeys, son.getKeywordList());
+                }
+
+                Category oldCat = list[index];
+                Category newCat = new Category(oldCat.getCategoryID(), oldCat.getParentName(), oldCat.getCatrgoryName(), fkeys, oldCat.getConfidenceLevel());
+                list[index] = newCat;
+            }
+        }
+    }
+
+    protected void CheckBox2_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+    private List<String> removeDuplicates(List<String> oldList)
+    {
+        List<String> newList = new List<string>();
+        foreach (String word in oldList)
+        {
+            if (newList.Contains(word) == false) newList.Add(word);
+        }
+        return newList;
+    }
+
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        TaskStatus ts = validateTask();
+        if (Session["CategoryList"] != null && ts != null)
+        {
+            List<Category> list = (List<Category>)Session["CategoryList"];
+            if(CheckBox2.Checked) forwardKeywords(list, "root");
+
+            List<Category> initalList = new List<Category>();
+            foreach (Category cat in list)
+            {
+                List<String> keywords = cat.getKeywordList();
+                if (CheckBox2.Checked) keywords = removeDuplicates(cat.getKeywordList());
+                Category newCat = new Category("", "", cat.getCatrgoryName().Trim(), keywords, cat.getConfidenceLevel());
+                initalList.Add(newCat);
+            }
+            StorageSystem.getInstance().setCategories(ts.getTaskID().Trim(), initalList);
+            List<Category> dbList = StorageSystem.getInstance().getCategories(ts.getTaskID().Trim());
+            foreach (Category cat in list)
+            {
+                string pid = getCategoryID(dbList, cat.getParentName());
+                string id = getCategoryID(dbList, cat.getCatrgoryName());
+                StorageSystem.getInstance().setParentToSon(pid, id);
+            }
         }
     }
 }

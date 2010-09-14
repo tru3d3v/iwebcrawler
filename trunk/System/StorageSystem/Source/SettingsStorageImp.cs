@@ -118,6 +118,80 @@ namespace CrawlerNameSpace.StorageSystem
         }
 
         /**
+         * sets the specified property in the database with the new specified value
+         */
+        public void setProperty(String taskId, String property, String value)
+        {
+            removeProperty(taskId, property);
+            insertProperty(taskId, property, value);
+        }
+
+        /**
+         * returns the property value; null in case property not found
+         */
+        public String getProperty(String taskId, String property)
+        {
+            List<String> seedsList = new List<string>();
+            SqlConnection conn = null;
+            SqlDataReader rdr = null;
+
+            try
+            {
+                conn = new SqlConnection(SettingsReader.getConnectionString());
+
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT Value" +
+                    " FROM TaskProperties WHERE TaskID=\'" + taskId + "\' AND Property=\'" + property + "\'", conn);
+                rdr = cmd.ExecuteReader();
+                if (rdr.HasRows)
+                {
+                    return rdr["Value"].ToString().Trim();
+                }
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Exception Caught: " + e.Message);
+                seedsList = null;
+            }
+            finally
+            {
+                if (rdr != null) rdr.Close();
+                if (conn != null) conn.Close();
+            }
+            return null;
+        }
+
+        /**
+         * inserts a new property in the database with the specified value
+         * note: it will add another property entry if you have used this property before.
+         */
+        public int insertProperty(String taskId, String property, String value)
+        {
+            SqlConnection conn = null;
+            int rowsRemoved = 0;
+
+            try
+            {
+                conn = new SqlConnection(SettingsReader.getConnectionString());
+
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("INSERT INTO TaskProperties (TaskID,Property,Value)"
+                            + " Values (\'" + taskId + "\',\'" + property + "\',\'" + value + "\')", conn);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Exception Caught: " + e.Message);
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
+            return rowsRemoved;
+        }
+
+        /**
          * sets a new restrictions for the specified task
          */ 
         public void setRestrictions(String taskId, Constraints constrains)

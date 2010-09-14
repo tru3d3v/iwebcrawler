@@ -93,6 +93,14 @@ namespace CrawlerNameSpace.StorageSystem
         }
 
         /**
+         * This method link between the parent node and it's son
+         */
+        public void setParentToSon(String parentID, String sonID)
+        {
+            _categoriesStorageImp.setParentToSon(parentID, sonID);
+        }
+
+        /**
          * gets all the restrictions which was attached to the given task.
          */
         public Constraints getRestrictions(String taskId)
@@ -122,6 +130,22 @@ namespace CrawlerNameSpace.StorageSystem
         public void setSeedList(String taskId, List<String> seeds)
         {
             _settingsStorageImp.setSeedList(taskId, seeds);
+        }
+
+        /**
+         * sets the specified property in the database with the new specified value
+         */
+        public void setProperty(String taskId, String property, String value)
+        {
+            _settingsStorageImp.setProperty(taskId, property, value);
+        }
+
+        /**
+         * returns the property value; null in case property not found
+         */
+        public String getProperty(String taskId, String property)
+        {
+            return _settingsStorageImp.getProperty(taskId, property);
         }
 
         /**

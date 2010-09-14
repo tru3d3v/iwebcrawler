@@ -137,39 +137,43 @@ namespace CrawlerNameSpace.Utilities
             {
                 total = 0.25 * total;
             }
-           
-            StreamWriter sw = new 
-                StreamWriter("Data" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" ***** DATA FOR REQUEST ************************************************* ");
-            //sw.WriteLine(" .CONTENT WORDS: ");
-            //sw.WriteLine(wordListCopied.ToString());
-            sw.WriteLine(" .NUM OF WORDS: ");
-            sw.WriteLine(numOfWords.ToString());
-            sw.WriteLine(" .KEY WORDS: ");
-            sw.WriteLine(keywordListCopied.ToString());
-            sw.WriteLine(" .NUM OF KEY WORDS: ");
-            sw.WriteLine(numOfKeywords.ToString());
-            sw.WriteLine(" .THRESOLD PARAM: ");
-            sw.WriteLine(threshold.ToString());
-            sw.WriteLine(" .SUM OF HISTOGRAM: ");
-            sw.WriteLine(sumOfhistogram.ToString());
-            sw.WriteLine(" .NONZERO PARAM: ");
-            sw.WriteLine(nonZero.ToString());
-            sw.WriteLine(" .HISTOGRAM DATA:");
-            for (int j = 0; j < numOfKeywords; j++)
+
+            StreamWriter sw = null;
+            if (!isRank)
             {
-                sw.WriteLine(" .[" + keywordList[j] + "] -> " + histogram[j].ToString());
+                sw = new
+                    StreamWriter("_DEBUG_INFO_CATEGORIZER@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** DATA FOR REQUEST ************************************************* ");
+                //sw.WriteLine(" .CONTENT WORDS: ");
+                //sw.WriteLine(wordListCopied.ToString());
+                sw.WriteLine(" .NUM OF WORDS: ");
+                sw.WriteLine(numOfWords.ToString());
+                sw.WriteLine(" .KEY WORDS: ");
+                sw.WriteLine(keywordListCopied.ToString());
+                sw.WriteLine(" .NUM OF KEY WORDS: ");
+                sw.WriteLine(numOfKeywords.ToString());
+                sw.WriteLine(" .THRESOLD PARAM: ");
+                sw.WriteLine(threshold.ToString());
+                sw.WriteLine(" .SUM OF HISTOGRAM: ");
+                sw.WriteLine(sumOfhistogram.ToString());
+                sw.WriteLine(" .NONZERO PARAM: ");
+                sw.WriteLine(nonZero.ToString());
+                sw.WriteLine(" .HISTOGRAM DATA:");
+                for (int j = 0; j < numOfKeywords; j++)
+                {
+                    sw.WriteLine(" .[" + keywordList[j] + "] -> " + histogram[j].ToString());
+                }
+                sw.WriteLine(" .NON-ZERO BONUS: ");
+                sw.WriteLine(nonZeroBonus.ToString());
+                sw.WriteLine(" .MATCH PERCENT: ");
+                sw.WriteLine(matchPercent.ToString());
+                sw.WriteLine(" .TOTAL TRUST: ");
+                sw.WriteLine(total.ToString());
+                sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
             }
-            sw.WriteLine(" .NON-ZERO BONUS: ");
-            sw.WriteLine(nonZeroBonus.ToString());
-            sw.WriteLine(" .MATCH PERCENT: ");
-            sw.WriteLine(matchPercent.ToString());
-            sw.WriteLine(" .TOTAL TRUST: ");
-            sw.WriteLine(total.ToString());
-            sw.WriteLine(" * END ****************************************************************** ");
-            sw.Close();
-            /*
-            if (parameters.isRank)
+            
+            if (isRank)
             {
                 sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine(" ***** DATA FOR Categorizer ************************************************* ");
@@ -178,10 +182,10 @@ namespace CrawlerNameSpace.Utilities
                 sw.WriteLine(" .NUM OF WORDS: ");
                 sw.WriteLine(numOfWords.ToString());
                 String[] wordListSplited = wordListCopied.Split(separators);
-                for (int k = 0; k < numOfWords;k++ )
-                {
-                    sw.WriteLine(" .[" + k + "] -> " + wordListSplited[k]);
-                }
+                //for (int k = 0; k < numOfWords;k++ )
+                //{
+                //    sw.WriteLine(" .[" + k + "] -> " + wordListSplited[k]);
+                //}
                 sw.WriteLine(" .KEY WORDS: ");
                 sw.WriteLine(keywordListCopied.ToString());
                 sw.WriteLine(" .NUM OF KEY WORDS: ");

@@ -33,9 +33,13 @@ namespace CrawlerNameSpace.StorageSystem
                     while (rdr.Read())
                     {
                         int confidenceLevel = Convert.ToInt32(rdr["ConfidenceLevel"]);
-                        List<String> keywords = null;
+                        List<String> dbkeywords = null, keywords = new List<string>();
                         if (!rdr["Keywords"].Equals(System.DBNull.Value))
-                            keywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
+                            dbkeywords = new List<string>(((String)rdr["Keywords"]).Split(';'));
+                        foreach (string key in dbkeywords)
+                        {
+                            if (key.Length != 0) keywords.Add(key);
+                        }
                         Category category = new Category(rdr["CategoryID"].ToString(), rdr["ParentCategory"].ToString(),
                             rdr["CategoryName"].ToString().Trim(), keywords, confidenceLevel);
 
@@ -149,6 +153,8 @@ namespace CrawlerNameSpace.StorageSystem
             {
                 conn.Open();
                 String cmdtxt = "UPDATE Category SET ParentCategory=\'" + parentID + "\' WHERE CategoryID = \'" + sonID + "\'";
+                if (parentID == "" || parentID == null)
+                    cmdtxt = "UPDATE Category SET ParentCategory=NULL WHERE CategoryID = \'" + sonID + "\'";
 
                 SqlCommand cmd = new SqlCommand(cmdtxt, conn);
                 cmd.ExecuteNonQuery();
