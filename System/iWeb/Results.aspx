@@ -127,6 +127,7 @@
 					<a href="Default.aspx" title="Main Control">Main Control</a>
 					<a href="CreateTask.aspx" title="Create a new Task">Create Task</a>
 					<a href="SelectTask.aspx?target=edit" title="Edit Task Proporties">Edit Task</a>
+					<a href="SelectTask.aspx?target=options" title="Crawler Options">Crawler Options</a>
 					<a href="SelectTask.aspx?target=invoke" title="Start/Stop Task">Start/Stop Task</a>
 					<a href="SelectTask.aspx?target=results" title="View Crawler Results">View Results</a>
 				</div>

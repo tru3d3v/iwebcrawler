@@ -129,13 +129,13 @@ namespace CrawlerNameSpace.Utilities
             }
             
             double nonZeroBonus = (nonZero * parameters.GAMMA) / numOfKeywords;
-            nonZeroBonus = Math.Min(parameters.NONZERO_WEIGHT, nonZeroBonus);
+            nonZeroBonus = Math.Min(parameters.NONZERO_MAX_EFFECT, nonZeroBonus);
             double matchPercent = (sumOfhistogram * parameters.ALPHA) / numOfWords;
-            matchPercent = Math.Min(parameters.MATCH_WEIGHT, matchPercent);
-            double total = Math.Min(parameters.MAX_MATCH_LEVEL, parameters.NORMALIZE_CONST * (nonZeroBonus + matchPercent));
+            matchPercent = Math.Min(parameters.MATCH_MAX_EFFECT, matchPercent);
+            double total = parameters.MAX_MATCH_LEVEL * (nonZeroBonus + matchPercent) / (parameters.MATCH_MAX_EFFECT + parameters.NONZERO_MAX_EFFECT);
             if (numOfWords < parameters.MIN_WORDS_LIMIT)
             {
-                total = 0.25 * total;
+                total = parameters.MIN_WORDS_PENLTY * total;
             }
 
             StreamWriter sw = null;
