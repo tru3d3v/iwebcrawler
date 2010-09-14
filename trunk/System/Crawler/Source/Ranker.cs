@@ -184,7 +184,8 @@ namespace CrawlerNameSpace
             sw.Close();
             //calculate the min and max of the match levels of the nearby text to the categories.
             CategorizerOptions options = new CategorizerOptions();
-            options.ALPHA = 500;
+            options.ALPHA = 450;
+            options.GAMMA = 120;
             options.MIN_WORDS_LIMIT = 1;
             options.isRank = true;
             List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),options);
@@ -225,6 +226,7 @@ namespace CrawlerNameSpace
             //calculate the min and max of the match levels of the anchor url to the categories.
             CategorizerOptions options = new CategorizerOptions();
             options.ALPHA = 10;
+            options.GAMMA = 150;
             options.MIN_WORDS_LIMIT = 1;
             options.isRank = true;
             List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),options);

@@ -113,6 +113,14 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * sers the anchor of the link.
+         */
+        public void setAnchor(String anchor)
+        {
+            Anchor = anchor;
+        }
+
+        /**
          * returns the anchor of the url
          */
         public String getAnchor()
