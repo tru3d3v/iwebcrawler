@@ -137,6 +137,13 @@ namespace CrawlerNameSpace
             }
         }
 
+        /*
+         * This method is a delagate method that returns true if the given stinrg is spaces or \t ot \n
+         */
+        private bool productnull(String product)
+        {
+            return product.Trim() == "";
+        }
         /**
          * modifies the link-items to contain the anchors, it assumes that
          * the link-items already has been assigned to tag
@@ -146,34 +153,105 @@ namespace CrawlerNameSpace
 
             foreach(LinkItem item in links)
             {
+                String tagsRemoved = removeTags(item.getTag());
+                StringBuilder sb = new StringBuilder("");
+                
+                sb.Append(tagsRemoved.Trim());
+
+                if (sb.ToString() == "")
+                {
+                    String[] seperators = { "</span>", "</a>", ">", "</Span>" };
+                    String[] splitedTags = item.getTag().Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+                    List<String> splitedTagsList = new List<string>(splitedTags);
+                    splitedTagsList.RemoveAll(productnull);
+                    
+                    if (splitedTagsList[splitedTagsList.Count - 1].TrimStart().StartsWith("<img"))
+                    {
+                        if (splitedTagsList[splitedTagsList.Count - 1].Contains("alt="))
+                        {
+                            String[] splitImg = splitedTagsList[splitedTagsList.Count - 1].Split(new String[] { "alt=\"" }, StringSplitOptions.RemoveEmptyEntries);
+                            sb.Append(splitImg[1].Split(new char[] { '\"' }, StringSplitOptions.RemoveEmptyEntries)[0].TrimStart());
+                        }
+                    }
+                }
+                item.setAnchor(sb.ToString());
+                /*
                 if ((item.getTag()==null)||(item.getTag()==""))
                     continue;
-                String[] seperators = {"</span>","<span>","<Span>","</Span>"};
-                String[] splitedTags = item.getTag().Split(seperators, StringSplitOptions.RemoveEmptyEntries);
-                if (splitedTags.Length != 0)
+
+               */ 
+                /*
+                foreach (String entry in splitedTagsList)
                 {
-                    int i=0;
-                    foreach(string splited in splitedTags)
+                    if (entry.Trim() == "")
+                        splitedTagsList.Remove(entry);
+                }
+                 */
+                /*
+                int i = 0;
+                foreach (string splited in splitedTagsList)
+                {
+                    if (splited.TrimStart().StartsWith("<span"))
                     {
-                        if (splited.CompareTo("/span") == 0)
+                        if (!((splitedTagsList[i + 1].StartsWith("<span")) || (splitedTagsList[i + 1].StartsWith("<img"))))
+                            sb.Append(splitedTagsList[i + 1] + " ");
+                    }
+                    i++;
+                }
+
+                    }
+                    else
+                    {
+                        sb.Append(splitedTagsList[splitedTagsList.Count - 1].Trim());
+                    }
+                item.setAnchor(sb.ToString());
+                */
+                /*
+                if (splitedTags.Length > 1)
+                {
+                    i = 0;
+                    foreach (string splited in splitedTags)
+                    {
+                        if (splited.CompareTo("</a>") == 0)
                             item.setAnchor(splitedTags[i - 1]);
                         i++;
                     }
                 }
-                //else //TODO:CONTINUE THIS METHOD
-                /*   
+                else
+                {
+                    String[] seperator = { "</a>", "<a", ">"};
+                    splitedTags = item.getTag().Split(seperator, StringSplitOptions.RemoveEmptyEntries);
+                    int length = splitedTags.Length;
+                    if (!(splitedTags[length - 1].StartsWith("img", true, System.Globalization.CultureInfo.CurrentCulture)))
+                        item.setAnchor(splitedTags[length - 1]);
+                    //int i = 0;
+                    
+                    foreach (string splited in splitedTags)
+                    {
+                        if (splited.CompareTo("/a") == 0)
+                        {
+                            if (!(splitedTags[i - 1].StartsWith("img", true, System.Globalization.CultureInfo.CurrentCulture)))
+                                item.setAnchor(splitedTags[i - 1]);
+                        }
+                        i++;
+                    }
+                    
+                }
+                */   
                 StreamWriter sw = new
                 StreamWriter("DataForExtractor" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine("***************TAG***************");
                 sw.WriteLine(item.getTag());
                 sw.WriteLine("The Splited Strings Are:");
-                foreach (String splited in splitedTags)
-                {
-                    sw.WriteLine(" [" + splited + "]");
-                }
+                //foreach (String splited in splitedTagsList)
+                //{
+                //    sw.WriteLine(" [" + splited + "]");
+                //}
+                sw.WriteLine("The ANCHOR EXTRACTED IS:");
+                sw.WriteLine(item.getAnchor());
                 sw.WriteLine("***************ENDTAG***************");
                 sw.Close();
-                 */
+                 
             }
         }
         /**
