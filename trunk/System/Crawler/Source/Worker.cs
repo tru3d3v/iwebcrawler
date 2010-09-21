@@ -51,7 +51,7 @@ namespace CrawlerNameSpace
 
             // initailizing the processors - will process the downloaded urls
             _processors = new ResourceProcessorManager();
-            HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
+            HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback,new RankerOptions());
             _processors.attachProcessor("PageProc", htmlProcessor);
 
             _checkStatusLimit = 0;

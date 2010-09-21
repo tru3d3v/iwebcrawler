@@ -19,7 +19,7 @@ namespace CrawlerNameSpace.Tests
             ResourceContent resource = new ResourceContent("www.nana10.co.il", ResourceType.HtmlResource, 
                 getFileContent("nana10.txt"), 200, 0);
 
-            HtmlPageCategorizationProcessor processor = new HtmlPageCategorizationProcessor(initializer,queue);
+            HtmlPageCategorizationProcessor processor = new HtmlPageCategorizationProcessor(initializer,queue,new RankerOptions());
             processor.process(resource);
         }
 

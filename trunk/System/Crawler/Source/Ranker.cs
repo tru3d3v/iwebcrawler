@@ -14,15 +14,22 @@ namespace CrawlerNameSpace
     {
         private Categorizer categorizer;
         private  const int defualtRank = 0;
-        private const double MinAndMaxRATIO = 0.7;
-        private const int ConfidenceLevelOfAnchor = 50;
+        private RankerOptions RankParams;
+
+        int sumOfTotalNearbyWords = 0;
+        int NumOfLinks = 0;
+        int sumOfTotalAnchorWords = 0;
+        /*
+        private const double MinAndMaxRATIO = 0.75;
+        private const int ConfidenceLevelOfAnchor = 75;
         private const double ALPHA = 0.5;
-        private const double BETTA = 0.6;
+        private const double BETTA = 0.4;
         private const double GAMMA = 0.2;
-       
-        public Ranker(Categorizer categorizer)
+        */
+        public Ranker(Categorizer categorizer,RankerOptions RankerParameters)
         {
             this.categorizer = categorizer;
+            this.RankParams = RankerParameters;
         }
 
         /**
@@ -41,16 +48,25 @@ namespace CrawlerNameSpace
             int context = 0;
             int inherited = 0;
 
-            StreamWriter sw = new
-            StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" *********HEAD REQUEST *********************************************");
-            sw.WriteLine(" ***** DATA FOR RANKER******************************************** ");
-            sw.WriteLine(" URL : " + item.getLink());
-            sw.WriteLine(" PARENT URL : " + item.getParentUrl());
-            sw.Close();
+            char[] separators = {' ', '\t', '\n'};
+            NumOfLinks++;
+            sumOfTotalNearbyWords += item.getText().Split(separators).Length;
+            sumOfTotalAnchorWords += item.getAnchor().Split(separators, StringSplitOptions.RemoveEmptyEntries).Length;
+
+            StreamWriter sw = null;
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new
+                StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" *********HEAD REQUEST *********************************************");
+                sw.WriteLine(" ***** DATA FOR RANKER******************************************** ");
+                sw.WriteLine(" URL : " + item.getLink());
+                sw.WriteLine(" PARENT URL : " + item.getParentUrl());
+                sw.Close();
+            }
 
             //rank of the whole page
-            //wholePageRank = getRankOfWholeContent(parentResource);
+            wholePageRank = getRankOfWholeContent(parentResource);
 
             //rank of the nearby text
             nearbyTextRank =getRankOfNearbyText(item);
@@ -59,29 +75,45 @@ namespace CrawlerNameSpace
             anchorRank = getRankOfAnchor(item);
 
             //rank of the neighborhood,that includes rank of the anchor and the nearby text
-            if (anchorRank > ConfidenceLevelOfAnchor)
+            if (anchorRank > RankParams.ConfidenceLevelOfAnchor)
                 context = 100;
             else
+            {
+                //nearbyTextRank = getRankOfNearbyText(item);
                 context = nearbyTextRank;
-
-            neighborhood = (int)(BETTA * anchorRank + (1 - BETTA) * context);
+            }
+            neighborhood = (int)(RankParams.BETTA * anchorRank + (1 - RankParams.BETTA) * context);
 
             //rank of the inherited,that includes the rank of the parentUrl and paren content
-            inherited = (int)(ALPHA * rankParentUrl + (1-ALPHA) * wholePageRank);
+            inherited = (int)(RankParams.ALPHA * rankParentUrl + (1-RankParams.ALPHA) * wholePageRank);
 
-            sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" .PARENT RANK: ");
-            sw.WriteLine(rankParentUrl);
-            sw.WriteLine(" .NEIGHBORHOOD: ");
-            sw.WriteLine(neighborhood);
-            sw.WriteLine(" .INHERITED: ");
-            sw.WriteLine(inherited);
-            sw.WriteLine(" .RANK OF THE URL: ");
-            sw.WriteLine((int)(GAMMA * inherited + (1 - GAMMA) * neighborhood));
-           // sw.WriteLine(" * END ****************************************************************** ");
-            sw.Close();
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine("************************DATA CONCLUSION*************************");
+                sw.WriteLine(" .PARENT RANK: ");
+                sw.WriteLine(rankParentUrl);
+                sw.WriteLine(" .RANK OF NEARBY TEXT: ");
+                sw.WriteLine(nearbyTextRank);
+                sw.WriteLine(" .AVG OF NEARBY WORDS");
+                sw.WriteLine((int)(sumOfTotalNearbyWords / NumOfLinks));
+                sw.WriteLine(" .RANK OF ANCHOR: ");
+                sw.WriteLine(anchorRank);
+                sw.WriteLine(" .AVG OF ANCHOR TEXT");
+                sw.WriteLine((int)(sumOfTotalAnchorWords / NumOfLinks));
+                sw.WriteLine(" .NEIGHBORHOOD: ");
+                sw.WriteLine(neighborhood);
+                sw.WriteLine(" .RANK OF WHOLE CONTENT: ");
+                sw.WriteLine(wholePageRank);
+                sw.WriteLine(" .INHERITED: ");
+                sw.WriteLine(inherited);
+                sw.WriteLine(" .RANK OF THE URL: ");
+                sw.WriteLine((int)(RankParams.GAMMA * inherited + (1 - RankParams.GAMMA) * neighborhood));
+                // sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
+            }
 
-            return ((int)(GAMMA * inherited + (1 - GAMMA) * neighborhood));
+            return ((int)(RankParams.GAMMA * inherited + (1 - RankParams.GAMMA) * neighborhood));
         }
 
         /**
@@ -116,9 +148,11 @@ namespace CrawlerNameSpace
             return (sum / N);
         }
         
+        
         /**
          * This method gets a url and parses it and returns the name of the url,without the prefix and suffix.
          */
+        /*
         private String getParsedUrl(String url)
         {
             char[] sperator = {'.'};
@@ -130,6 +164,7 @@ namespace CrawlerNameSpace
             else
                 return firstParse[1];
         }
+        */
 
         /**
          * This method returns a rank for the whole page content.
@@ -141,28 +176,36 @@ namespace CrawlerNameSpace
             int maxMatchLevelForContent = 0;
             int avgMatchLevelForContent = 0;
 
-            StreamWriter sw = new
-            StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" ***** REQUEST FOR WHOLE CONTENT RANK******************************** ");
-            //sw.WriteLine(" URL : " + resource.getResourceUrl());
-            sw.Close();
+            StreamWriter sw = null;
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new
+                StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** REQUEST FOR WHOLE CONTENT RANK******************************** ");
+                //sw.WriteLine(" URL : " + resource.getResourceUrl());
+                sw.Close();
+            }
             //calculate the min and max of the match levels of the whole resource content to the categories.
             CategorizerOptions options = new CategorizerOptions();
+            options.isRank = true;
             List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0),options);
             maxMatchLevelForContent = calculateMax(matchLevelsForContent);
             avgMatchLevelForContent = calculateAvg(matchLevelsForContent);
 
-            sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" .MAX MATCH LEVEL OF WHOLE CONTENT: ");
-            sw.WriteLine(maxMatchLevelForContent);
-            sw.WriteLine(" .AVG MATCH LEVEL OF WHOLE CONTENT: ");
-            sw.WriteLine(avgMatchLevelForContent);
-            sw.WriteLine(" .RANK OF WHOLE CONTENT: ");
-            sw.WriteLine((int)(MinAndMaxRATIO * maxMatchLevelForContent + (1 - MinAndMaxRATIO) * avgMatchLevelForContent));
-           // sw.WriteLine(" * END ****************************************************************** ");
-            sw.Close();
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" .MAX MATCH LEVEL OF WHOLE CONTENT: ");
+                sw.WriteLine(maxMatchLevelForContent);
+                sw.WriteLine(" .AVG MATCH LEVEL OF WHOLE CONTENT: ");
+                sw.WriteLine(avgMatchLevelForContent);
+                //sw.WriteLine(" .RANK OF WHOLE CONTENT: ");
+                //sw.WriteLine((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForContent + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForContent));
+                // sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
+            }
 
-            return ((int)(MinAndMaxRATIO * maxMatchLevelForContent + (1 - MinAndMaxRATIO) * avgMatchLevelForContent));
+            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForContent + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForContent));
         }
 
         /**
@@ -175,34 +218,43 @@ namespace CrawlerNameSpace
             int maxMatchLevelForNearby = 0;
             int avgMatchLevelForNearby = 0;
 
-            StreamWriter sw = new
-            StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" ***** REQUEST FOR NEARBY TEXT RANK************************************ ");
-            sw.WriteLine(" URL : " + item.getLink());
-            sw.WriteLine(" CONTENT OF NEARBY TEXT:");
-            sw.WriteLine(item.getText());
-            sw.Close();
+            StreamWriter sw = null;
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new
+                StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** REQUEST FOR NEARBY TEXT RANK************************************ ");
+                sw.WriteLine(" URL : " + item.getLink());
+                sw.WriteLine(" CONTENT OF NEARBY TEXT:");
+                sw.WriteLine(item.getText());
+                sw.Close();
+            }
+
             //calculate the min and max of the match levels of the nearby text to the categories.
             CategorizerOptions options = new CategorizerOptions();
             options.ALPHA = 450;
             options.GAMMA = 120;
             options.MIN_WORDS_LIMIT = 1;
+            options.NONZERO_MAX_EFFECT = 40;
             options.isRank = true;
             List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),options);
             maxMatchLevelForNearby = calculateMax(matchLevelsForNearby);
             avgMatchLevelForNearby = calculateAvg(matchLevelsForNearby);
 
-            sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" .MAX MATCH LEVEL OF NEARBY TEXT: ");
-            sw.WriteLine(maxMatchLevelForNearby);
-            sw.WriteLine(" .AVG MATCH LEVEL OF NEARBY TEXT: ");
-            sw.WriteLine(avgMatchLevelForNearby);
-            sw.WriteLine(" .RANK OF NEARBY TEXT: ");
-            sw.WriteLine((int)(MinAndMaxRATIO * maxMatchLevelForNearby + (1 - MinAndMaxRATIO) * avgMatchLevelForNearby));
-           // sw.WriteLine(" * END ****************************************************************** ");
-            sw.Close();
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" .MAX MATCH LEVEL OF NEARBY TEXT: ");
+                sw.WriteLine(maxMatchLevelForNearby);
+                sw.WriteLine(" .AVG MATCH LEVEL OF NEARBY TEXT: ");
+                sw.WriteLine(avgMatchLevelForNearby);
+                //sw.WriteLine(" .RANK OF NEARBY TEXT: ");
+                //sw.WriteLine((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForNearby + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForNearby));
+                // sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
+            }
 
-            return ((int)(MinAndMaxRATIO * maxMatchLevelForNearby + (1 - MinAndMaxRATIO) * avgMatchLevelForNearby));
+            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForNearby + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForNearby));
         }
 
         /**
@@ -216,33 +268,44 @@ namespace CrawlerNameSpace
 
             if (item.getAnchor() == null)
                 return 0;
-            StreamWriter sw = new
-            StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" ***** REQUEST FOR ANCHOR URL RANK************************************ ");
-            sw.WriteLine(" URL : " + item.getLink());
-            sw.WriteLine(" CONTENT OF ANCHOR:");
-            sw.WriteLine(item.getAnchor());
-            sw.Close();
+
+            StreamWriter sw = null;
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new
+                StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" ***** REQUEST FOR ANCHOR URL RANK************************************ ");
+                sw.WriteLine(" URL : " + item.getLink());
+                sw.WriteLine(" CONTENT OF ANCHOR:");
+                sw.WriteLine(item.getAnchor());
+                sw.Close();
+            }
+
             //calculate the min and max of the match levels of the anchor url to the categories.
             CategorizerOptions options = new CategorizerOptions();
-            options.ALPHA = 10;
-            options.GAMMA = 150;
+            options.ALPHA = 350;
+            options.GAMMA = 0;
             options.MIN_WORDS_LIMIT = 1;
+            options.NONZERO_MAX_EFFECT = 0;
             options.isRank = true;
             List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),options);
             maxMatchLevelForAnchor = calculateMax(matchLevelsForAnchor);
             avgMatchLevelForAnchor = calculateAvg(matchLevelsForAnchor);
 
-            sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-            sw.WriteLine(" .MAX MATCH LEVEL OF ANCHOR: ");
-            sw.WriteLine(maxMatchLevelForAnchor);
-            sw.WriteLine(" .AVG MATCH LEVEL OF ANCHOR: ");
-            sw.WriteLine(avgMatchLevelForAnchor);
-            sw.WriteLine(" .RANK OF ANCHOR: ");
-            sw.WriteLine((int)(MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - MinAndMaxRATIO) * avgMatchLevelForAnchor));
-            //sw.WriteLine(" * END ****************************************************************** ");
-            sw.Close();
-            return ((int)(MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - MinAndMaxRATIO) * avgMatchLevelForAnchor));
+            if (LogDebuggerControl.getInstance().debugRanker)
+            {
+                sw = new StreamWriter("DataForRank" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" .MAX MATCH LEVEL OF ANCHOR: ");
+                sw.WriteLine(maxMatchLevelForAnchor);
+                sw.WriteLine(" .AVG MATCH LEVEL OF ANCHOR: ");
+                sw.WriteLine(avgMatchLevelForAnchor);
+                //sw.WriteLine(" .RANK OF ANCHOR: ");
+                //sw.WriteLine((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForAnchor));
+                //sw.WriteLine(" * END ****************************************************************** ");
+                sw.Close();
+            }
+
+            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForAnchor));
         }
     }
 }
