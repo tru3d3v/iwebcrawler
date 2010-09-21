@@ -117,6 +117,10 @@ namespace CrawlerNameSpace
             Queue<int> keepAlive = new Queue<int>();
             String currentUser = "5df16977-d18e-4a0a-b81b-0073de3c9a7f", currentTask = "";
 
+            LogDebuggerControl.getInstance().debugCategorization = true;
+            LogDebuggerControl.getInstance().debugCategorizationInRanker = false;
+            LogDebuggerControl.getInstance().debugRanker = true;
+
             while (true)
             {
                 // select which task to invoke

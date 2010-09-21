@@ -6,7 +6,7 @@ namespace CrawlerNameSpace.Utilities
 {
     /**
      * This class holds all the parameters needed for the method 
-     * Category.getMatchLevel(), these categories change the restrictness of the categorizations.
+     * Category.getMatchLevel(), these parameters change the restrictness of the categorizations.
      */
     public class CategorizerOptions
     {

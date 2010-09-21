@@ -175,69 +175,8 @@ namespace CrawlerNameSpace
                     }
                 }
                 item.setAnchor(sb.ToString());
+  
                 /*
-                if ((item.getTag()==null)||(item.getTag()==""))
-                    continue;
-
-               */ 
-                /*
-                foreach (String entry in splitedTagsList)
-                {
-                    if (entry.Trim() == "")
-                        splitedTagsList.Remove(entry);
-                }
-                 */
-                /*
-                int i = 0;
-                foreach (string splited in splitedTagsList)
-                {
-                    if (splited.TrimStart().StartsWith("<span"))
-                    {
-                        if (!((splitedTagsList[i + 1].StartsWith("<span")) || (splitedTagsList[i + 1].StartsWith("<img"))))
-                            sb.Append(splitedTagsList[i + 1] + " ");
-                    }
-                    i++;
-                }
-
-                    }
-                    else
-                    {
-                        sb.Append(splitedTagsList[splitedTagsList.Count - 1].Trim());
-                    }
-                item.setAnchor(sb.ToString());
-                */
-                /*
-                if (splitedTags.Length > 1)
-                {
-                    i = 0;
-                    foreach (string splited in splitedTags)
-                    {
-                        if (splited.CompareTo("</a>") == 0)
-                            item.setAnchor(splitedTags[i - 1]);
-                        i++;
-                    }
-                }
-                else
-                {
-                    String[] seperator = { "</a>", "<a", ">"};
-                    splitedTags = item.getTag().Split(seperator, StringSplitOptions.RemoveEmptyEntries);
-                    int length = splitedTags.Length;
-                    if (!(splitedTags[length - 1].StartsWith("img", true, System.Globalization.CultureInfo.CurrentCulture)))
-                        item.setAnchor(splitedTags[length - 1]);
-                    //int i = 0;
-                    
-                    foreach (string splited in splitedTags)
-                    {
-                        if (splited.CompareTo("/a") == 0)
-                        {
-                            if (!(splitedTags[i - 1].StartsWith("img", true, System.Globalization.CultureInfo.CurrentCulture)))
-                                item.setAnchor(splitedTags[i - 1]);
-                        }
-                        i++;
-                    }
-                    
-                }
-                */   
                 StreamWriter sw = new
                 StreamWriter("DataForExtractor" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
                 sw.WriteLine("***************TAG***************");
@@ -251,7 +190,7 @@ namespace CrawlerNameSpace
                 sw.WriteLine(item.getAnchor());
                 sw.WriteLine("***************ENDTAG***************");
                 sw.Close();
-                 
+                */
             }
         }
         /**

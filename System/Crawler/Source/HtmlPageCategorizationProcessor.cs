@@ -28,11 +28,11 @@ namespace CrawlerNameSpace
         private Queue<Url> queueFronier;
         private string taskId;
 
-        public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier)
+        public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier,RankerOptions rankoptions)
         {
             extractor = new Extractor();
             categorizer = new Categorizer(initializer.getCategoryList());
-            ranker = new Ranker(categorizer);
+            ranker = new Ranker(categorizer,rankoptions);
             filter = new Filter("http://",initializer.getContraints());
             queueFronier = frontier;
             taskId = initializer.getTaskId();

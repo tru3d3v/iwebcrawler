@@ -30,17 +30,24 @@ namespace CrawlerNameSpace
             List<Result> results = new List<Result>();
             foreach (Category category in categoryList)
             {
-                StreamWriter sw = new
-                    StreamWriter("_DEBUG_INFO_CATEGORIZER@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-                sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
-                sw.WriteLine(" URL : " + url);
-                sw.Close();
+                if (LogDebuggerControl.getInstance().debugCategorization)
+                {
+                    StreamWriter sw = new
+                        StreamWriter("_DEBUG_INFO_CATEGORIZER@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                    sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
+                    sw.WriteLine(" URL : " + url);
+                    sw.Close();
+                }
+
                 CategorizerOptions options = new CategorizerOptions();
                 int matchLevel = category.getMatchLevel(resource,options);
+                
+                
                 if (matchLevel > category.getConfidenceLevel())
                 {
                     results.Add(new Result("0", url, category.getCategoryID(), 0, matchLevel));
                 }
+                
             }
             //results.Add(new Result("0", url, "0", 0, 100));
             return results;
