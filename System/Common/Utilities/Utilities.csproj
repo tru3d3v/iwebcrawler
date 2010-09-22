@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0F5042C6-6DE0-4C85-B116-863F069DC858}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -43,7 +43,6 @@
     <Compile Include="Source\Category.cs" />
     <Compile Include="Source\Trie\IPrefixMatcher.cs" />
     <Compile Include="Source\LogDebuggerControl.cs" />
-    <Compile Include="Source\PointingNode.cs" />
     <Compile Include="Source\Trie\PrefixMatcher.cs" />
     <Compile Include="Source\RankerOptions.cs" />
     <Compile Include="Source\Constraints.cs" />
@@ -51,7 +50,6 @@
     <Compile Include="Source\Long.cs" />
     <Compile Include="Source\CategorizerOptions.cs" />
     <Compile Include="Source\Options.cs" />
-    <Compile Include="Source\RankNode.cs" />
     <Compile Include="Source\Record.cs" />
     <Compile Include="Source\RegeneratableRecord.cs" />
     <Compile Include="Source\Result.cs" />
