@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Category.cs" />
+    <Compile Include="Source\Trie\IPrefixMatcher.cs" />
     <Compile Include="Source\LogDebuggerControl.cs" />
+    <Compile Include="Source\Trie\PrefixMatcher.cs" />
     <Compile Include="Source\RankerOptions.cs" />
     <Compile Include="Source\Constraints.cs" />
     <Compile Include="Source\Initializer.cs" />
@@ -55,6 +57,8 @@
     <Compile Include="Source\StatusDisplay.cs" />
     <Compile Include="Source\SyncAccessor.cs" />
     <Compile Include="Source\TaskStatus.cs" />
+    <Compile Include="Source\Trie\Trie.cs" />
+    <Compile Include="Source\Trie\TrieNode.cs" />
     <Compile Include="Source\Url.cs" />
     <Compile Include="Tests\ConstraintsTest.cs" />
     <Compile Include="Tests\CategoryTest.cs" />
