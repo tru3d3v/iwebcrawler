@@ -123,7 +123,7 @@ namespace CrawlerNameSpace
         {
             System.Console.Write("$$$ Start Invoking threads .. ");
             // init the Frontier thread
-            Frontier frontier = new Frontier(_feedBackQueue, _serversQueues);
+            Frontier frontier = new BFSFrontier(_feedBackQueue, _serversQueues);
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
             frontierThread.Start();
             _frontiersPool.Add(frontier);
