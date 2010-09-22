@@ -52,5 +52,5 @@ namespace CrawlerNameSpace.Utilities
             FrontierDesign.FIFO_BFS,
             FrontierDesign.RANK_SSEv0
         };
-    };
+    }
 }

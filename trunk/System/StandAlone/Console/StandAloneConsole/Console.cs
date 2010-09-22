@@ -50,7 +50,10 @@ namespace CrawlerNameSpace
                     break;
                 case "operationMode":
                     if (value.Equals("Auto") == true)
+                    {
                         _operationMode = operationMode_t.Auto;
+                        //StorageSystem.StorageSystem.getInstance().getProperty(
+                    }
                     else if (value.Equals("Manual") == true)
                         _operationMode = operationMode_t.Manual;
                     else
@@ -108,6 +111,20 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * Sets the number of threads,if it is mode of operation is Auto
+         */
+        public static void SetNumberOfThreads(String taskId)
+        {
+            if (_operationMode == operationMode_t.Auto)
+            {
+                String numberOfThreads = StorageSystem.StorageSystem.getInstance().getProperty(taskId, TaskProperty.THREADS.ToString());
+                if ((numberOfThreads != null) && (numberOfThreads != ""))
+                    if (Convert.ToInt16(numberOfThreads)>0)
+                        SetFlag("numThreads", numberOfThreads);
+            }
+        }
+
+        /**
          * Main method of the console application
          */
         public static void Main(String[] args)
@@ -132,6 +149,9 @@ namespace CrawlerNameSpace
                 // init queues
                 InitQueues(currentTask);
 
+                //Set Number of Threads
+                SetNumberOfThreads(currentTask);
+                
                 // initing worker and frontier threads
                 InvokeThreads();
 
