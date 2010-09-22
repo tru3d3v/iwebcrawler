@@ -33,6 +33,9 @@ public partial class SelectTask : System.Web.UI.Page
                 case "results":
                     Label1.Text = "Results";
                     break;
+                case "options":
+                    Label1.Text = "Options";
+                    break;
                 default:
                     Label1.Text = "Edit a Task";
                     break;
@@ -64,6 +67,9 @@ public partial class SelectTask : System.Web.UI.Page
                     break;
                 case "results":
                     Response.Redirect("Results.aspx?TID=" + DropDownList1.SelectedValue);
+                    break;
+                case "options":
+                    Response.Redirect("CrawlerOptions.aspx?TID=" + DropDownList1.SelectedValue);
                     break;
                 default:
                     Response.Redirect("EditTask.aspx?TID=" + DropDownList1.SelectedValue);

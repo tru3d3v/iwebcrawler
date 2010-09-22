@@ -131,7 +131,6 @@ namespace CrawlerNameSpace.StorageSystem
          */
         public String getProperty(String taskId, String property)
         {
-            List<String> seedsList = new List<string>();
             SqlConnection conn = null;
             SqlDataReader rdr = null;
 
@@ -145,13 +144,15 @@ namespace CrawlerNameSpace.StorageSystem
                 rdr = cmd.ExecuteReader();
                 if (rdr.HasRows)
                 {
-                    return rdr["Value"].ToString().Trim();
+                    if (rdr.Read())
+                    {
+                        return rdr["Value"].ToString();
+                    }
                 }
             }
             catch (Exception e)
             {
                 System.Console.WriteLine("Exception Caught: " + e.Message);
-                seedsList = null;
             }
             finally
             {

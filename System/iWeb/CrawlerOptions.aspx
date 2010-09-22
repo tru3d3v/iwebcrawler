@@ -68,61 +68,44 @@
                         <td>
                             <span class="bodytext">Threads:</td>
                         <td>
-                            <asp:TextBox ID="TextBox1" runat="server" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox1" runat="server" Width="73px">4</asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                                ControlToValidate="TextBox1" ErrorMessage="Illegal" 
+                                ValidationExpression="\d(\d)?"></asp:RegularExpressionValidator>
                         </td>
                         <td>
                             <span class="bodytext">Frontier Design:</td>
                         <td>
                             <asp:DropDownList ID="DropDownList1" runat="server" 
-                                onselectedindexchanged="DropDownList1_SelectedIndexChanged">
-                                <asp:ListItem>FIFO - BFS</asp:ListItem>
-                                <asp:ListItem>RANK - SSEv0</asp:ListItem>
+                                onselectedindexchanged="DropDownList1_SelectedIndexChanged" 
+                                AutoPostBack="True">
                             </asp:DropDownList>
                         </td>
                     </tr>
                 </table>
 			</div>
-			<div class="bodytext" style="padding:12px;" align="justify">
+			<div runat="server" id="divCategorizerOptionsText" visible="false" class="bodytext" style="padding:12px;" align="justify">
 				<strong>Categorizer Options</strong><br />
 				
 			</div>
-			<div class="panel" style="height:75px; text-align: center;">
+			<div runat="server" id="divCategorizerOptions" visible="false" class="panel" style="height:75px; text-align: center;">
 			    <table class="style1">
-                    <tr>
-                        <td class="style4">
-                            <span class="bodytext">Mode:</td>
-                        <td class="style4">
-                            <asp:DropDownList ID="DropDownList2" runat="server">
-                                <asp:ListItem>Easy</asp:ListItem>
-                                <asp:ListItem>Medium</asp:ListItem>
-                                <asp:ListItem>Strict</asp:ListItem>
-                                <asp:ListItem>Custom</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style3">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                    </tr>
                     <tr>
                         <td class="style4">
                             <span class="bodytext">Alpha:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox2" runat="server" Enabled="False" Width="60px">2500</asp:TextBox>
+                            <asp:TextBox ID="TextBox2" runat="server" Width="60px" 
+                                ontextchanged="TextBox2_TextChanged">2500</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Beta:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox3" runat="server" Enabled="False" Width="60px">0.1</asp:TextBox>
+                            <asp:TextBox ID="TextBox3" runat="server" Width="60px">0.1</asp:TextBox>
                         </td>
                         <td class="style3">
                             <span class="bodytext">Gamma:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox4" runat="server" Enabled="False" Width="60px">75</asp:TextBox>
+                            <asp:TextBox ID="TextBox4" runat="server" Width="60px">75</asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -130,64 +113,48 @@
                             <span class="bodytext">Min. words: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox5" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox5" runat="server" Width="60px" 
+                                ontextchanged="TextBox5_TextChanged">5000</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Penalty: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox6" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox6" runat="server" Width="60px">0.25</asp:TextBox>
                         </td>
                         <td class="style3">
-                            &nbsp;</td>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
+                                ControlToValidate="TextBox6" ErrorMessage="Illegal" 
+                                ValidationExpression="0[.]\d(\d)?"></asp:RegularExpressionValidator>
+                        </td>
                         <td class="style4">
                             &nbsp;</td>
                     </tr>
                     </table>
 			</div>
 			
-			<div class="bodytext" style="padding:12px;" align="justify">
+			<div runat="server" id="divNearbyOptionsText" visible="false" class="bodytext" style="padding:12px;" align="justify">
 				<strong>Nearby Options</strong><br />
 				
 			</div>
 			
-			<div class="panel" style="height:75px; text-align: center;">
+			<div runat="server" id="divNearbyOptions" visible="false" class="panel" style="height:75px; text-align: center;">
 			    <table class="style1">
-                    <tr>
-                        <td class="style4">
-                            <span class="bodytext">Mode:</td>
-                        <td class="style4">
-                            <asp:DropDownList ID="DropDownList4" runat="server">
-                                <asp:ListItem>Easy</asp:ListItem>
-                                <asp:ListItem>Medium</asp:ListItem>
-                                <asp:ListItem>Strict</asp:ListItem>
-                                <asp:ListItem>Custom</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style3">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                    </tr>
                     <tr>
                         <td class="style4">
                             <span class="bodytext">Alpha:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox12" runat="server" Enabled="False" Width="60px">2500</asp:TextBox>
+                            <asp:TextBox ID="TextBox12" runat="server" Width="60px">450</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Beta:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox13" runat="server" Enabled="False" Width="60px">0.1</asp:TextBox>
+                            <asp:TextBox ID="TextBox13" runat="server" Width="60px">0.125</asp:TextBox>
                         </td>
                         <td class="style3">
                             <span class="bodytext">Gamma:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox14" runat="server" Enabled="False" Width="60px">75</asp:TextBox>
+                            <asp:TextBox ID="TextBox14" runat="server" Width="60px">120</asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -195,64 +162,47 @@
                             <span class="bodytext">Min. words: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox15" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox15" runat="server" Width="60px">1</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Penalty: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox16" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox16" runat="server" Width="60px">0.25</asp:TextBox>
                         </td>
                         <td class="style3">
-                            &nbsp;</td>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
+                                ControlToValidate="TextBox16" ErrorMessage="Illegal" 
+                                ValidationExpression="0[.]\d(\d)?"></asp:RegularExpressionValidator>
+                        </td>
                         <td class="style4">
                             &nbsp;</td>
                     </tr>
                     </table>
 			</div>
 			
-			<div class="bodytext" style="padding:12px;" align="justify">
+			<div runat="server" id="divAnchorOptionsText" visible="false" class="bodytext" style="padding:12px;" align="justify">
 				<strong>Anchor Options</strong><br />
 				
 			</div>
 			
-			<div class="panel" style="height:75px; text-align: center;">
+			<div runat="server" id="divAnchorOptions" visible="false" class="panel" style="height:75px; text-align: center;">
 			    <table class="style1">
-                    <tr>
-                        <td class="style4">
-                            <span class="bodytext">Mode:</td>
-                        <td class="style4">
-                            <asp:DropDownList ID="DropDownList5" runat="server">
-                                <asp:ListItem>Easy</asp:ListItem>
-                                <asp:ListItem>Medium</asp:ListItem>
-                                <asp:ListItem>Strict</asp:ListItem>
-                                <asp:ListItem>Custom</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                        <td class="style3">
-                            &nbsp;</td>
-                        <td class="style4">
-                            &nbsp;</td>
-                    </tr>
                     <tr>
                         <td class="style4">
                             <span class="bodytext">Alpha:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox17" runat="server" Enabled="False" Width="60px">2500</asp:TextBox>
+                            <asp:TextBox ID="TextBox17" runat="server" Width="60px">350</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Beta:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox18" runat="server" Enabled="False" Width="60px">0.1</asp:TextBox>
+                            <asp:TextBox ID="TextBox18" runat="server" Width="60px">0.125</asp:TextBox>
                         </td>
                         <td class="style3">
                             <span class="bodytext">Gamma:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox19" runat="server" Enabled="False" Width="60px">75</asp:TextBox>
+                            <asp:TextBox ID="TextBox19" runat="server" Width="60px">0</asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -260,44 +210,47 @@
                             <span class="bodytext">Min. words: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox20" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox20" runat="server" Width="60px">0</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Penalty: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox21" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox21" runat="server" Width="60px">0.25</asp:TextBox>
                         </td>
                         <td class="style3">
-                            &nbsp;</td>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" 
+                                ControlToValidate="TextBox21" ErrorMessage="Illegal" 
+                                ValidationExpression="0[.]\d(\d)?"></asp:RegularExpressionValidator>
+                        </td>
                         <td class="style4">
                             &nbsp;</td>
                     </tr>
                     </table>
 			</div>
 			
-			<div class="bodytext" style="padding:12px;" align="justify">
+			<div runat="server" id="divRankerOptionsText" visible="false" class="bodytext" style="padding:12px;" align="justify">
 				<strong>Ranker Options</strong><br />
 				
 			</div>
 			
-			<div class="panel" style="height:50px; text-align: center;">
+			<div runat="server" id="divRankerOptions" visible="false" class="panel" style="height:50px; text-align: center;">
 			    <table class="style1">
                     <tr>
                         <td class="style4">
                             <span class="bodytext">Alpha:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox22" runat="server" Enabled="False" Width="60px">2500</asp:TextBox>
+                            <asp:TextBox ID="TextBox22" runat="server" Width="60px">0.5</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Beta:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox23" runat="server" Enabled="False" Width="60px">0.1</asp:TextBox>
+                            <asp:TextBox ID="TextBox23" runat="server" Width="60px">0.4</asp:TextBox>
                         </td>
                         <td class="style3">
                             <span class="bodytext">Gamma:</td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox24" runat="server" Enabled="False" Width="60px">75</asp:TextBox>
+                            <asp:TextBox ID="TextBox24" runat="server" Width="60px">0.2</asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -305,13 +258,13 @@
                             <span class="bodytext">Delta: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox25" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox25" runat="server" Width="60px">75</asp:TextBox>
                         </td>
                         <td class="style4">
                             <span class="bodytext">Nearby Chars: </span>
                             </td>
                         <td class="style4">
-                            <asp:TextBox ID="TextBox26" runat="server" Width="60px"></asp:TextBox>
+                            <asp:TextBox ID="TextBox26" runat="server" Width="60px">800</asp:TextBox>
                         </td>
                         <td class="style3">
                             &nbsp;</td>
@@ -323,7 +276,7 @@
 			
 			<div style="text-align: center">
 			
-			    <asp:Button ID="Button1" runat="server" Text="Save" 
+			    <asp:Button ID="Button1" runat="server" Text="Save" onclick="Button1_Click" 
                      />
                     </div>
 	
