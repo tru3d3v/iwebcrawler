@@ -47,6 +47,7 @@
     <Compile Include="Source\Initializer.cs" />
     <Compile Include="Source\Long.cs" />
     <Compile Include="Source\CategorizerOptions.cs" />
+    <Compile Include="Source\Options.cs" />
     <Compile Include="Source\Record.cs" />
     <Compile Include="Source\RegeneratableRecord.cs" />
     <Compile Include="Source\Result.cs" />
