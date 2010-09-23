@@ -100,7 +100,9 @@ namespace CrawlerNameSpace.Utilities
                      return false;
                  }
              }
-             return true;
+             if (!IsExactMatch())
+                 ResetMatch();
+             return IsExactMatch();
          }
                   
          /**
