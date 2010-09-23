@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Tests;
 using CrawlerNameSpace.Utilities;
-using CrawlerNameSpace.Utilities.Tests;
 using System.Threading;
 using CrawlerNameSpace.StorageSystem;
 
@@ -17,8 +16,6 @@ namespace CrawlerNameSpace
 {
     public class Crawler
     {
-        public enum operationMode_t { Auto, Manual };
-
         protected static int _numWorkers  = 4;
         protected static int _refreshRate = 5;
         protected static List<String> _seedList = new List<string>();
@@ -123,7 +120,8 @@ namespace CrawlerNameSpace
         {
             System.Console.Write("$$$ Start Invoking threads .. ");
             // init the Frontier thread
-            Frontier frontier = new BFSFrontier(_feedBackQueue, _serversQueues);
+            //Frontier frontier = new BFSFrontier(_feedBackQueue, _serversQueues);
+            Frontier frontier = chooseFrontier();
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
             frontierThread.Start();
             _frontiersPool.Add(frontier);
@@ -162,6 +160,29 @@ namespace CrawlerNameSpace
             _workersPool.Clear();
             _frontiersPool.Clear();
             System.Console.WriteLine("SUCCESS");
+        }
+
+        /**
+         * This method chooses the frontier as seen in the data base.
+         */
+        private static Frontier chooseFrontier()
+        {
+            String frontierType = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
+                                    TaskProperty.FRONTIER.ToString());
+
+            String BFS = FrontierDesign.FIFO_BFS.ToString();
+            String SSEv0 = FrontierDesign.RANK_SSEv0.ToString();
+
+            Frontier frontierChoosen =null;
+
+            if (frontierType.Equals(BFS))
+                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
+            else if (frontierType.Equals(SSEv0))
+                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
+            else
+                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
+
+            return frontierChoosen;
         }
     }
 }

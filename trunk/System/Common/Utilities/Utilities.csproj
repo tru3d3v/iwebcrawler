@@ -62,11 +62,13 @@
     <Compile Include="Source\Trie\Trie.cs" />
     <Compile Include="Source\Trie\TrieNode.cs" />
     <Compile Include="Source\Url.cs" />
+    <Compile Include="Source\WorkDetails.cs" />
     <Compile Include="Tests\ConstraintsTest.cs" />
     <Compile Include="Tests\CategoryTest.cs" />
     <Compile Include="Tests\RecordTest.cs" />
     <Compile Include="Tests\ResultTest.cs" />
     <Compile Include="Tests\TaskStatusTest.cs" />
+    <Compile Include="Tests\TrieTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

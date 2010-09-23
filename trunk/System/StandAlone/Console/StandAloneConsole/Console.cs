@@ -52,10 +52,13 @@ namespace CrawlerNameSpace
                     if (value.Equals("Auto") == true)
                     {
                         _operationMode = operationMode_t.Auto;
-                        //StorageSystem.StorageSystem.getInstance().getProperty(
+                        WorkDetails.setOperationMode(operationMode_t.Auto);
                     }
                     else if (value.Equals("Manual") == true)
+                    {
                         _operationMode = operationMode_t.Manual;
+                        WorkDetails.setOperationMode(operationMode_t.Manual);
+                    }
                     else
                     {
                         System.Console.WriteLine("ERROR: Unknown Operation Mode " + value);
@@ -113,11 +116,11 @@ namespace CrawlerNameSpace
         /**
          * Sets the number of threads,if it is mode of operation is Auto
          */
-        public static void SetNumberOfThreads(String taskId)
+        public static void SetNumberOfThreads()
         {
             if (_operationMode == operationMode_t.Auto)
             {
-                String numberOfThreads = StorageSystem.StorageSystem.getInstance().getProperty(taskId, TaskProperty.THREADS.ToString());
+                String numberOfThreads = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), TaskProperty.THREADS.ToString());
                 if ((numberOfThreads != null) && (numberOfThreads != ""))
                     if (Convert.ToInt16(numberOfThreads)>0)
                         SetFlag("numThreads", numberOfThreads);
@@ -143,6 +146,9 @@ namespace CrawlerNameSpace
                 // select which task to invoke
                 SelectTask(ref currentUser, ref currentTask);
 
+                //update the WorkDetails class with the new taskId
+                WorkDetails.setTaskId(currentTask);
+
                 // getting init data
                 SetInitializer(currentTask);
 
@@ -150,7 +156,7 @@ namespace CrawlerNameSpace
                 InitQueues(currentTask);
 
                 //Set Number of Threads
-                SetNumberOfThreads(currentTask);
+                SetNumberOfThreads();
                 
                 // initing worker and frontier threads
                 InvokeThreads();
@@ -183,7 +189,7 @@ namespace CrawlerNameSpace
                 TerminateThreads();
                 needToRestart = false;
                 RuntimeStatistics.resetStatistics();
-            }
+            }    
         }
     }
 }

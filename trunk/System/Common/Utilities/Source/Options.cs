@@ -44,6 +44,9 @@ namespace CrawlerNameSpace.Utilities
         FIFO_BFS,
         RANK_SSEv0
     };
+    //This enumeration is used to specify 
+    public enum operationMode_t { Auto, Manual };
+
     // has the selection of the supported frointer designs in the crawler
     public class supportedFrontierDesigns
     {
