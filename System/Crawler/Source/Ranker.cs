@@ -147,24 +147,6 @@ namespace CrawlerNameSpace
 
             return (sum / N);
         }
-        
-        
-        /**
-         * This method gets a url and parses it and returns the name of the url,without the prefix and suffix.
-         */
-        /*
-        private String getParsedUrl(String url)
-        {
-            char[] sperator = {'.'};
-          
-            String[] firstParse = url.Split(sperator, System.StringSplitOptions.RemoveEmptyEntries);
-
-            if (firstParse.Length != 3)
-                return null;
-            else
-                return firstParse[1];
-        }
-        */
 
         /**
          * This method returns a rank for the whole page content.
@@ -186,7 +168,7 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
             //calculate the min and max of the match levels of the whole resource content to the categories.
-            CategorizerOptions options = new CategorizerOptions();
+            CategorizerOptions options = getOptions("wholeContent");
             options.isRank = true;
             List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0),options);
             maxMatchLevelForContent = calculateMax(matchLevelsForContent);
@@ -231,10 +213,12 @@ namespace CrawlerNameSpace
             }
 
             //calculate the min and max of the match levels of the nearby text to the categories.
-            CategorizerOptions options = new CategorizerOptions();
+            CategorizerOptions options = getOptions("nearby");
+            /*
             options.ALPHA = 450;
             options.GAMMA = 120;
             options.MIN_WORDS_LIMIT = 1;
+             */
             options.NONZERO_MAX_EFFECT = 40;
             options.isRank = true;
             List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),options);
@@ -282,10 +266,12 @@ namespace CrawlerNameSpace
             }
 
             //calculate the min and max of the match levels of the anchor url to the categories.
-            CategorizerOptions options = new CategorizerOptions();
-            options.ALPHA = 350;
+            CategorizerOptions options = getOptions("anchor");
+            
+            /*options.ALPHA = 350;
             options.GAMMA = 0;
             options.MIN_WORDS_LIMIT = 1;
+             */
             options.NONZERO_MAX_EFFECT = 0;
             options.isRank = true;
             List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),options);
@@ -306,6 +292,80 @@ namespace CrawlerNameSpace
             }
 
             return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForAnchor));
+        }
+
+        /**
+         * This method creates Categorizer Options and returns it.
+         * The values of the variables of the new object are brought from the data base.
+         * Note : In case the operation mode is manual the variables will be default ones,
+         *        such is the case when the returns values from the data base are nulls.
+         */
+        private CategorizerOptions getOptions(String optionsType)
+        {
+            CategorizerOptions options = new CategorizerOptions();
+
+            if (WorkDetails.getOperationMode() == operationMode_t.Auto)
+            {
+                String alphaSearch = null,bettaSearch=null,gammaSearch=null,minSearch=null,penaltySearch=null; 
+                switch (optionsType)
+                {
+                    case "anchor":
+                        alphaSearch = TaskProperty.ANC_ALPHA.ToString();
+                        bettaSearch = TaskProperty.ANC_BETA.ToString();
+                        gammaSearch = TaskProperty.ANC_GAMMA.ToString();
+                        minSearch = TaskProperty.ANC_MIN.ToString();
+                        penaltySearch = TaskProperty.ANC_PENLTY.ToString();
+                        break;
+                    case "wholeContent":
+                        alphaSearch = TaskProperty.CAT_ALPHA.ToString();
+                        bettaSearch = TaskProperty.CAT_BETA.ToString();
+                        gammaSearch = TaskProperty.CAT_GAMMA.ToString();
+                        minSearch = TaskProperty.CAT_MIN.ToString();
+                        penaltySearch = TaskProperty.CAT_PENLTY.ToString();
+                        break;
+                    case "nearby":
+                        alphaSearch = TaskProperty.NER_ALPHA.ToString();
+                        bettaSearch = TaskProperty.NER_BETA.ToString();
+                        gammaSearch = TaskProperty.NER_GAMMA.ToString();
+                        minSearch = TaskProperty.NER_MIN.ToString();
+                        penaltySearch = TaskProperty.NER_PENLTY.ToString();
+                        break;
+                    default:
+                        goto case "wholeContent"; 
+                }
+
+                String alpha = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),alphaSearch);
+                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), bettaSearch);
+                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),gammaSearch);
+                String min = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),minSearch);
+                String penalty = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),penaltySearch);
+
+                if (isRealNum(alpha))
+                    options.ALPHA = Convert.ToDouble(alpha);
+                if (isRealNum(betta))
+                    options.BETA = Convert.ToDouble(betta);
+                if (isRealNum(gamma))
+                    options.GAMMA = Convert.ToDouble(gamma);
+                if (isRealNum(min))
+                    options.MIN_WORDS_LIMIT = Convert.ToDouble(min);
+                if (isRealNum(penalty))
+                    options.MIN_WORDS_PENLTY = Convert.ToDouble(penalty);
+            }
+
+            return options;
+        }
+
+        /**
+         * This method check wether the given string is  a real number bigger than 0 
+         * Or not.
+         */
+        private bool isRealNum(String num)
+        {
+            double realNum = Convert.ToDouble(num);
+            if ((num != null) && (num != "") && (!(Convert.IsDBNull(num))) && (realNum >= 0))
+                return true;
+            else
+                return false;
         }
     }
 }
