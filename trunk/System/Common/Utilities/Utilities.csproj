@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Category.cs" />
+    <Compile Include="Source\RankingTrie\RankingTrie.cs" />
+    <Compile Include="Source\RankTableEntry.cs" />
     <Compile Include="Source\Trie\IPrefixMatcher.cs" />
     <Compile Include="Source\LogDebuggerControl.cs" />
     <Compile Include="Source\Trie\PrefixMatcher.cs" />
