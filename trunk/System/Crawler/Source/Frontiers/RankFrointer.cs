@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
@@ -10,18 +10,22 @@ namespace CrawlerNameSpace
      * This class is responsible for ordering the tasks (urls) that the crawler have to 
      * visit in the next steps, so it can order the requests, remove already visited urls
      * and so;
-     * NOTE: This is BFS implementation
+     * NOTE: This is RANK Trie Based implementation
      */
-    public class BFSFrontier : Frontier
+    public class RankFrointer : Frontier
     {
+        static private int MAX_INSERTS_IN_TIME = 100;
+        private RankingTrie _rankingTrie;
+
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
          * and the specified server queue list, so the frontier will schedule it's tasks
          * between the servers
          */
-        public BFSFrontier(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues) 
+        public RankFrointer(Queue<Url> tasksQueue, List<Queue<Url>> serversQueues) 
             : base(tasksQueue, serversQueues)
         {
+            _rankingTrie = new RankingTrie();
         }
 
         /**
@@ -31,23 +35,33 @@ namespace CrawlerNameSpace
          */
         public override void sceduleTasks()
         {
-            Dictionary<String, String> dictionary = new Dictionary<String, String>();
             int serverTurn = 0, iterations = 0;
-            bool getNewRequest = true, needToTerminate = false;;
+            bool getNewRequest = true, needToTerminate = false; ;
             Url request = null;
 
             while (needToTerminate == false)
             {
                 try
                 {
-                    if (getNewRequest)
+                    int inserts = 0;
+                    while (SyncAccessor.queueSize<Url>(_tasksQueue) != 0 && inserts < MAX_INSERTS_IN_TIME)
                     {
                         request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
+                        _rankingTrie.add(request);
+                        inserts++;
+                    }
+
+                    if (getNewRequest)
+                    {
+                        if (_rankingTrie.count() == 0)
+                        {
+                            Thread.Sleep(_timer);
+                            continue;
+                        }
+                        request = _rankingTrie.pop();
                         getNewRequest = false;
                     }
                     getNewRequest = true;
-                    if (dictionary.ContainsKey(request.getUrl())) continue;
-                    dictionary.Add(request.getUrl(), null);
 
                     if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) < _limit)
                     {

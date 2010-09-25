@@ -9,7 +9,7 @@ namespace CrawlerNameSpace.Utilities
      * it has a rank and can be modified anytime, this data structure gets the elements ordered 
      * by thier rank, can insert new requests and update the exist ones
      */
-    class RankingTrie
+    public class RankingTrie
     {
         static public int RANK_LEVELS = 100;
 
