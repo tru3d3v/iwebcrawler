@@ -139,7 +139,7 @@ namespace CrawlerNameSpace
 
             LogDebuggerControl.getInstance().debugCategorization = true;
             LogDebuggerControl.getInstance().debugCategorizationInRanker = false;
-            LogDebuggerControl.getInstance().debugRanker = true;
+            LogDebuggerControl.getInstance().debugRanker = false;
 
             while (true)
             {
