@@ -8,7 +8,7 @@ namespace CrawlerNameSpace.Utilities
      * This class represents a pointing node which points to the rankNode itself
      * and the rankTableEntry which contains it
      */
-    class PointingNode
+    public class PointingNode
     {
         private RankTableEntry _rankTableEntry;
         private LinkedListNode<RankNode> _rankNode;

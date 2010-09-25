@@ -173,16 +173,14 @@ namespace CrawlerNameSpace
             String BFS = FrontierDesign.FIFO_BFS.ToString();
             String SSEv0 = FrontierDesign.RANK_SSEv0.ToString();
 
-            Frontier frontierChoosen =null;
+            if (frontierType == null) return new BFSFrontier(_feedBackQueue, _serversQueues);
 
             if (frontierType.Equals(BFS))
-                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
+                return new BFSFrontier(_feedBackQueue, _serversQueues);
             else if (frontierType.Equals(SSEv0))
-                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
+                return new BFSFrontier(_feedBackQueue, _serversQueues);
             else
-                frontierChoosen = new BFSFrontier(_feedBackQueue, _serversQueues);
-
-            return frontierChoosen;
+                return new BFSFrontier(_feedBackQueue, _serversQueues);
         }
     }
 }
