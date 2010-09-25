@@ -43,6 +43,8 @@ namespace CrawlerNameSpace
          */
         public void process(ResourceContent resource)
         {
+            DateTime startTime = DateTime.Now;
+
             List<LinkItem> listOfLinks;
             //extract all the links in page
             listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent());
@@ -58,17 +60,20 @@ namespace CrawlerNameSpace
                 //If filteredLinks is not empty 
                 if (filteredLinks.Count > 0)
                 {
-                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource,item), 
+                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), 100, //ranker.rankUrl(resource,item), 
                                       item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
                     RuntimeStatistics.addToFeedUrls(1);
                 }
             }
 
+            DateTime catStartTime = DateTime.Now;
             //Ascribe the url to all the categories it is belonged to.
             List<Result> classifiedResults = categorizer.classifyContent(resource.getResourceContent(),
                                                                             resource.getResourceUrl());
             if (classifiedResults.Count != 0) RuntimeStatistics.addToCrawledUrls(1);
+            DateTime catEndTime = DateTime.Now;
+            TimeSpan catTotalRequest = catEndTime - catStartTime;
 
             //Save all the results to Storage
             foreach (Result classifiedResult in classifiedResults)
@@ -77,6 +82,9 @@ namespace CrawlerNameSpace
                             resource.getRankOfUrl(), classifiedResult.getTrustMeter());
                 deployResourceToStorage(result);
             }
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan totalRequest = endTime - startTime;
         }
 
         /**

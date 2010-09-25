@@ -43,6 +43,7 @@ namespace CrawlerNameSpace
             // prepare the web page we will be asking for
             try
             {
+                DateTime startTime = DateTime.Now;
                 if (!(canFetch(url)))
                 {
                     resource = new ResourceContent(url, ResourceType.HtmlResource, null, ERROR_CODE, rankOfUrl);
@@ -83,6 +84,10 @@ namespace CrawlerNameSpace
 
                 // print out page source
                 resource = new ResourceContent(url,ResourceType.HtmlResource, sb.ToString(), VALID_CODE, rankOfUrl);
+
+                DateTime endTime = DateTime.Now;
+                TimeSpan totalRequest = endTime - startTime;
+
                 return resource;
             }
             catch(Exception e)
