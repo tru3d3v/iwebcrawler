@@ -14,7 +14,14 @@ namespace CrawlerNameSpace
     {
         private Categorizer categorizer;
         private  const int defualtRank = 0;
-        private RankerOptions RankParams;
+        //private RankerOptions RankParams;
+
+        private static String lastResourceContent = null;
+        private static int wholePageRank = 0;
+
+        private static CategorizerOptions anchorOptions = null;
+        private static CategorizerOptions nearbyOptions =null;
+        private static CategorizerOptions wholeContentOptions = null;
 
         int sumOfTotalNearbyWords = 0;
         int NumOfLinks = 0;
@@ -26,10 +33,10 @@ namespace CrawlerNameSpace
         private const double BETTA = 0.4;
         private const double GAMMA = 0.2;
         */
-        public Ranker(Categorizer categorizer,RankerOptions RankerParameters)
+        public Ranker(Categorizer categorizer)
         {
             this.categorizer = categorizer;
-            this.RankParams = RankerParameters;
+            //this.RankParams = RankerParameters;
         }
 
         /**
@@ -41,7 +48,7 @@ namespace CrawlerNameSpace
             //anchor match and the parentrank.
             int rankParentUrl = parentResource.getRankOfUrl();
             int anchorRank = 0;
-            int wholePageRank = 0;
+            //int wholePageRank = 0;
             int nearbyTextRank = 0;
 
             int neighborhood = 0;
@@ -66,7 +73,11 @@ namespace CrawlerNameSpace
             }
 
             //rank of the whole page
-            wholePageRank = getRankOfWholeContent(parentResource);
+            if (!((lastResourceContent!=null)&&(lastResourceContent.Equals(parentResource.getResourceContent()))))
+            {
+                lastResourceContent=parentResource.getResourceContent();
+                wholePageRank = getRankOfWholeContent(parentResource);
+            }
 
             //rank of the nearby text
             nearbyTextRank =getRankOfNearbyText(item);
@@ -75,17 +86,17 @@ namespace CrawlerNameSpace
             anchorRank = getRankOfAnchor(item);
 
             //rank of the neighborhood,that includes rank of the anchor and the nearby text
-            if (anchorRank > RankParams.ConfidenceLevelOfAnchor)
+            if (anchorRank > RankerOptions.ConfidenceLevelOfAnchor)
                 context = 100;
             else
             {
                 //nearbyTextRank = getRankOfNearbyText(item);
                 context = nearbyTextRank;
             }
-            neighborhood = (int)(RankParams.BETTA * anchorRank + (1 - RankParams.BETTA) * context);
+            neighborhood = (int)(RankerOptions.BETTA * anchorRank + (1 - RankerOptions.BETTA) * context);
 
             //rank of the inherited,that includes the rank of the parentUrl and paren content
-            inherited = (int)(RankParams.ALPHA * rankParentUrl + (1-RankParams.ALPHA) * wholePageRank);
+            inherited = (int)(RankerOptions.ALPHA * rankParentUrl + (1 - RankerOptions.ALPHA) * wholePageRank);
 
             if (LogDebuggerControl.getInstance().debugRanker)
             {
@@ -108,12 +119,12 @@ namespace CrawlerNameSpace
                 sw.WriteLine(" .INHERITED: ");
                 sw.WriteLine(inherited);
                 sw.WriteLine(" .RANK OF THE URL: ");
-                sw.WriteLine((int)(RankParams.GAMMA * inherited + (1 - RankParams.GAMMA) * neighborhood));
+                sw.WriteLine((int)(RankerOptions.GAMMA * inherited + (1 - RankerOptions.GAMMA) * neighborhood));
                 // sw.WriteLine(" * END ****************************************************************** ");
                 sw.Close();
             }
 
-            return ((int)(RankParams.GAMMA * inherited + (1 - RankParams.GAMMA) * neighborhood));
+            return ((int)(RankerOptions.GAMMA * inherited + (1 - RankerOptions.GAMMA) * neighborhood));
         }
 
         /**
@@ -168,9 +179,12 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
             //calculate the min and max of the match levels of the whole resource content to the categories.
-            CategorizerOptions options = getOptions("wholeContent");
-            options.isRank = true;
-            List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0),options);
+            if (wholeContentOptions == null)
+            {
+                wholeContentOptions = getOptions("wholeContent");
+            }
+
+            List<int> matchLevelsForContent = categorizer.classifyContentToAllCategories(resource.getResourceContent().Substring(0), wholeContentOptions);
             maxMatchLevelForContent = calculateMax(matchLevelsForContent);
             avgMatchLevelForContent = calculateAvg(matchLevelsForContent);
 
@@ -187,7 +201,7 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
 
-            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForContent + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForContent));
+            return ((int)(RankerOptions.MinAndMaxRATIO * maxMatchLevelForContent + (1 - RankerOptions.MinAndMaxRATIO) * avgMatchLevelForContent));
         }
 
         /**
@@ -213,15 +227,12 @@ namespace CrawlerNameSpace
             }
 
             //calculate the min and max of the match levels of the nearby text to the categories.
-            CategorizerOptions options = getOptions("nearby");
-            /*
-            options.ALPHA = 450;
-            options.GAMMA = 120;
-            options.MIN_WORDS_LIMIT = 1;
-             */
-            options.NONZERO_MAX_EFFECT = 40;
-            options.isRank = true;
-            List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(),options);
+            if (nearbyOptions == null)
+            {
+                nearbyOptions = getOptions("nearby");
+            }
+
+            List<int> matchLevelsForNearby = categorizer.classifyContentToAllCategories(item.getText(), nearbyOptions);
             maxMatchLevelForNearby = calculateMax(matchLevelsForNearby);
             avgMatchLevelForNearby = calculateAvg(matchLevelsForNearby);
 
@@ -238,7 +249,7 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
 
-            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForNearby + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForNearby));
+            return ((int)(RankerOptions.MinAndMaxRATIO * maxMatchLevelForNearby + (1 - RankerOptions.MinAndMaxRATIO) * avgMatchLevelForNearby));
         }
 
         /**
@@ -266,15 +277,12 @@ namespace CrawlerNameSpace
             }
 
             //calculate the min and max of the match levels of the anchor url to the categories.
-            CategorizerOptions options = getOptions("anchor");
-            
-            /*options.ALPHA = 350;
-            options.GAMMA = 0;
-            options.MIN_WORDS_LIMIT = 1;
-             */
-            options.NONZERO_MAX_EFFECT = 0;
-            options.isRank = true;
-            List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(),options);
+            if (anchorOptions == null)
+            {
+                anchorOptions = getOptions("anchor");
+            }
+
+            List<int> matchLevelsForAnchor = categorizer.classifyContentToAllCategories(item.getAnchor(), anchorOptions);
             maxMatchLevelForAnchor = calculateMax(matchLevelsForAnchor);
             avgMatchLevelForAnchor = calculateAvg(matchLevelsForAnchor);
 
@@ -291,7 +299,7 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
 
-            return ((int)(RankParams.MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - RankParams.MinAndMaxRATIO) * avgMatchLevelForAnchor));
+            return ((int)(RankerOptions.MinAndMaxRATIO * maxMatchLevelForAnchor + (1 - RankerOptions.MinAndMaxRATIO) * avgMatchLevelForAnchor));
         }
 
         /**
@@ -306,66 +314,46 @@ namespace CrawlerNameSpace
 
             if (WorkDetails.getOperationMode() == operationMode_t.Auto)
             {
-                String alphaSearch = null,bettaSearch=null,gammaSearch=null,minSearch=null,penaltySearch=null; 
+                double alpha= 0,betta=0,gamma=0,min=0,penalty=0; 
                 switch (optionsType)
                 {
                     case "anchor":
-                        alphaSearch = TaskProperty.ANC_ALPHA.ToString();
-                        bettaSearch = TaskProperty.ANC_BETA.ToString();
-                        gammaSearch = TaskProperty.ANC_GAMMA.ToString();
-                        minSearch = TaskProperty.ANC_MIN.ToString();
-                        penaltySearch = TaskProperty.ANC_PENLTY.ToString();
+                        alpha = RankerOptions.ANC_ALPHA;
+                        betta = RankerOptions.ANC_BETA;
+                        gamma = RankerOptions.ANC_GAMMA;
+                        min = RankerOptions.ANC_MIN;
+                        penalty = RankerOptions.ANC_PENLTY;
+                        options.isRank = true;
+                        options.NONZERO_MAX_EFFECT = 0;
                         break;
                     case "wholeContent":
-                        alphaSearch = TaskProperty.CAT_ALPHA.ToString();
-                        bettaSearch = TaskProperty.CAT_BETA.ToString();
-                        gammaSearch = TaskProperty.CAT_GAMMA.ToString();
-                        minSearch = TaskProperty.CAT_MIN.ToString();
-                        penaltySearch = TaskProperty.CAT_PENLTY.ToString();
+                        alpha = RankerOptions.CAT_ALPHA;
+                        betta = RankerOptions.CAT_BETA;
+                        gamma = RankerOptions.CAT_GAMMA;
+                        min = RankerOptions.CAT_MIN;
+                        penalty = RankerOptions.CAT_PENLTY;
+                        wholeContentOptions.isRank = true;
                         break;
                     case "nearby":
-                        alphaSearch = TaskProperty.NER_ALPHA.ToString();
-                        bettaSearch = TaskProperty.NER_BETA.ToString();
-                        gammaSearch = TaskProperty.NER_GAMMA.ToString();
-                        minSearch = TaskProperty.NER_MIN.ToString();
-                        penaltySearch = TaskProperty.NER_PENLTY.ToString();
+                        alpha = RankerOptions.NER_ALPHA;
+                        betta = RankerOptions.NER_BETA;
+                        gamma = RankerOptions.NER_GAMMA;
+                        min = RankerOptions.NER_MIN;
+                        penalty = RankerOptions.NER_PENLTY;
+                        options.NONZERO_MAX_EFFECT = 40;
+                        options.isRank = true;
                         break;
                     default:
                         goto case "wholeContent"; 
                 }
-
-                String alpha = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),alphaSearch);
-                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), bettaSearch);
-                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),gammaSearch);
-                String min = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),minSearch);
-                String penalty = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),penaltySearch);
-
-                if (isRealNum(alpha))
-                    options.ALPHA = Convert.ToDouble(alpha);
-                if (isRealNum(betta))
-                    options.BETA = Convert.ToDouble(betta);
-                if (isRealNum(gamma))
-                    options.GAMMA = Convert.ToDouble(gamma);
-                if (isRealNum(min))
-                    options.MIN_WORDS_LIMIT = Convert.ToDouble(min);
-                if (isRealNum(penalty))
-                    options.MIN_WORDS_PENLTY = Convert.ToDouble(penalty);
+                    options.ALPHA = alpha;
+                    options.BETA = betta;
+                    options.GAMMA = gamma;
+                    options.MIN_WORDS_LIMIT = min;
+                    options.MIN_WORDS_PENLTY = penalty;
             }
 
             return options;
-        }
-
-        /**
-         * This method check wether the given string is  a real number bigger than 0 
-         * Or not.
-         */
-        private bool isRealNum(String num)
-        {
-            double realNum = Convert.ToDouble(num);
-            if ((num != null) && (num != "") && (!(Convert.IsDBNull(num))) && (realNum >= 0))
-                return true;
-            else
-                return false;
         }
     }
 }

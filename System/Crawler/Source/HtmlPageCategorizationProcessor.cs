@@ -28,11 +28,11 @@ namespace CrawlerNameSpace
         private Queue<Url> queueFronier;
         private string taskId;
 
-        public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier,RankerOptions rankoptions)
+        public HtmlPageCategorizationProcessor(Initializer initializer,Queue<Url> frontier)
         {
             extractor = new Extractor();
             categorizer = new Categorizer(initializer.getCategoryList());
-            ranker = new Ranker(categorizer,rankoptions);
+            ranker = new Ranker(categorizer);
             filter = new Filter("http://",initializer.getContraints());
             queueFronier = frontier;
             taskId = initializer.getTaskId();
@@ -60,7 +60,7 @@ namespace CrawlerNameSpace
                 //If filteredLinks is not empty 
                 if (filteredLinks.Count > 0)
                 {
-                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), 100, //ranker.rankUrl(resource,item), 
+                    Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource,item), 
                                       item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
                     RuntimeStatistics.addToFeedUrls(1);

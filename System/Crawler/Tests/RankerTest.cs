@@ -10,7 +10,7 @@ namespace CrawlerNameSpace.Tests
         private ResourceContent resource = new ResourceContent("www.ynet." +
             "co.il", ResourceType.HtmlResource, "This is an example test content of this resource", 200, 0);
 
-        private Ranker testRanker = new Ranker(new Categorizer(new List<Category>()),new RankerOptions());
+        private Ranker testRanker = new Ranker(new Categorizer(new List<Category>()));
 
         public void Test1()
         {

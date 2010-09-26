@@ -51,11 +51,8 @@ namespace CrawlerNameSpace
 
             // initailizing the processors - will process the downloaded urls
             _processors = new ResourceProcessorManager();
-            
-            //setting the parameters for the ranker
-            RankerOptions rankOptions = getRankerOptions();
-
-            HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback,new RankerOptions());
+           
+            HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
             _processors.attachProcessor("PageProc", htmlProcessor);
 
             _checkStatusLimit = 0;
@@ -121,55 +118,6 @@ namespace CrawlerNameSpace
         public void setPollingTimer(int period)
         {
             _timer = period;
-        }
-
-        /**
-         * This method creates a Ranker Options object,and sets the options of the Ranker, and returns
-         * the created object.
-         * It gets the options from the data base.
-         * note:In case the returned values from the data base are nulls or
-         *      the operation mode of the crawler is manual this 
-         *      method will set defualt numbers.
-         */
-        private RankerOptions getRankerOptions()
-        {
-            RankerOptions options = new RankerOptions();
-
-            if (WorkDetails.getOperationMode() == operationMode_t.Auto)
-            {
-                String alpha= StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), 
-                                TaskProperty.RAN_ALPHA.ToString());
-                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), 
-                                TaskProperty.RAN_BETA.ToString());
-                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                                TaskProperty.RAN_GAMMA.ToString());
-                String delta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), 
-                                TaskProperty.RAN_DELTA.ToString());
-
-                if (isRealNumber(alpha))
-                    options.ALPHA = Convert.ToDouble(alpha);
-                if (isRealNumber(betta))
-                    options.BETTA = Convert.ToDouble(betta);
-                if (isRealNumber(gamma))
-                    options.GAMMA = Convert.ToDouble(gamma);
-                if ((delta!=null)&&(delta!="")&&(!Convert.IsDBNull(delta))&&((Convert.ToInt16(delta))>=0))
-                    options.ConfidenceLevelOfAnchor = Convert.ToInt16(delta);
-            }
-
-            return options;
-        }
-
-        /**
-         * This method checks wether the given number(String variable) is not null and
-         * that it is a number between 0 to 1.
-         */
-        private bool isRealNumber(String num)
-        {
-            double realNum= Convert.ToDouble(num);
-            if((num!=null)&&(num!="")&&(!(Convert.IsDBNull(num)))&&(realNum>=0)&&(realNum<=1))
-                return true;
-            else
-                return false;
         }
     }
 }
