@@ -15,6 +15,7 @@ namespace CrawlerNameSpace
         //This is a list containing all the categories that were created
         private List<Category> categoryList;
 
+        private static CategorizerOptions options = null;
 
         public Categorizer(List<Category> list)
         {
@@ -38,8 +39,12 @@ namespace CrawlerNameSpace
                     sw.WriteLine(" URL : " + url);
                     sw.Close();
                 }
-                
-                CategorizerOptions options = getCategorizerOptions();
+
+                if (options == null)
+                {
+                    options = getCategorizerOptions();
+                }
+
                 int matchLevel = category.getMatchLevel(resource,options);
                 
                 
@@ -65,43 +70,13 @@ namespace CrawlerNameSpace
 
             if (WorkDetails.getOperationMode() == operationMode_t.Auto)
             {
-                String alpha = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                TaskProperty.CAT_ALPHA.ToString());
-                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                                TaskProperty.CAT_BETA.ToString());
-                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                                TaskProperty.CAT_GAMMA.ToString());
-                String min = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                                TaskProperty.CAT_MIN.ToString());
-                String penalty = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
-                                TaskProperty.CAT_PENLTY.ToString());
-
-                if (isRealNum(alpha))
-                    options.ALPHA = Convert.ToDouble(alpha);
-                if (isRealNum(betta))
-                    options.BETA = Convert.ToDouble(betta);
-                if (isRealNum(gamma))
-                    options.GAMMA = Convert.ToDouble(gamma);
-                if (isRealNum(min))
-                    options.MIN_WORDS_LIMIT = Convert.ToDouble(min);
-                if (isRealNum(penalty))
-                    options.MIN_WORDS_PENLTY = Convert.ToDouble(penalty);
+                 options.ALPHA =RankerOptions.CAT_ALPHA;
+                 options.BETA = RankerOptions.CAT_BETA;
+                 options.GAMMA = RankerOptions.CAT_GAMMA;
+                 options.MIN_WORDS_LIMIT = RankerOptions.CAT_MIN;
+                 options.MIN_WORDS_PENLTY = RankerOptions.CAT_PENLTY;
             }
-
             return options;
-        }
-
-        /**
-         * This method check wether the given string is  a real number bigger than 0 
-         * Or not.
-         */
-        private bool isRealNum(String num)
-        {
-            double realNum = Convert.ToDouble(num);
-            if ((num != null) && (num != "") && (!(Convert.IsDBNull(num))) && (realNum >= 0))
-                return true;
-            else
-                return false;
         }
 
         /**

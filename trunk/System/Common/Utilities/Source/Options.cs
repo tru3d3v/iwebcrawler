@@ -6,6 +6,7 @@ namespace CrawlerNameSpace.Utilities
 {
     // This enumuration is used to specify the proporties option for the task
     public enum TaskProperty { 
+        SYMMETRIC_LINE,
         // General crawling options
         SEED, 
         RESTRICT, 

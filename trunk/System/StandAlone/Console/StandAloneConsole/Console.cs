@@ -128,6 +128,153 @@ namespace CrawlerNameSpace
         }
 
         /**
+         * This method sets ALL the constants needed for the task.
+         */
+        public static void SetAllConstants()
+        {
+            //sets the number of threads
+            SetNumberOfThreads();
+
+            //get anchor options
+            CategorizerOptions anchorOptions = getOptions("anchor");
+            RankerOptions.ANC_ALPHA = anchorOptions.ALPHA;
+            RankerOptions.ANC_BETA = anchorOptions.BETA;
+            RankerOptions.ANC_GAMMA = anchorOptions.GAMMA;
+            RankerOptions.ANC_MIN = anchorOptions.MIN_WORDS_LIMIT;
+            RankerOptions.ANC_PENLTY = anchorOptions.MIN_WORDS_PENLTY;
+
+            //get nearby options 
+            CategorizerOptions nearbyOptions = getOptions("nearby");
+            RankerOptions.NER_ALPHA = nearbyOptions.ALPHA;
+            RankerOptions.NER_BETA = nearbyOptions.BETA;
+            RankerOptions.NER_GAMMA = nearbyOptions.GAMMA;
+            RankerOptions.NER_MIN = nearbyOptions.MIN_WORDS_LIMIT;
+            RankerOptions.NER_PENLTY = nearbyOptions.MIN_WORDS_PENLTY;
+
+            //get category Options
+            CategorizerOptions categoryOptions = getOptions("Category");
+            RankerOptions.CAT_ALPHA = categoryOptions.ALPHA;
+            RankerOptions.CAT_BETA = categoryOptions.BETA;
+            RankerOptions.CAT_GAMMA = categoryOptions.GAMMA;
+            RankerOptions.CAT_MIN = categoryOptions.MIN_WORDS_LIMIT;
+            RankerOptions.CAT_PENLTY = categoryOptions.MIN_WORDS_PENLTY;
+
+            //get Ranker options
+            getRankerOptions();
+            //set symmitric line
+            String symmetric = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId()
+                                            , TaskProperty.SYMMETRIC_LINE.ToString());
+            //TODO:continue the assigning of symmitric line
+        }
+
+        /**
+         * This method creates Categorizer Options and returns it.
+         * The values of the variables of the new object are brought from the data base.
+         * Note : In case the operation mode is manual the variables will be default ones,
+         *        such is the case when the returns values from the data base are nulls.
+         */
+        private static CategorizerOptions getOptions(String optionsType)
+        {
+            CategorizerOptions options = new CategorizerOptions();
+
+            if (WorkDetails.getOperationMode() == operationMode_t.Auto)
+            {
+                String alphaSearch = null, bettaSearch = null, gammaSearch = null, minSearch = null, penaltySearch = null;
+                switch (optionsType)
+                {
+                    case "anchor":
+                        alphaSearch = TaskProperty.ANC_ALPHA.ToString();
+                        bettaSearch = TaskProperty.ANC_BETA.ToString();
+                        gammaSearch = TaskProperty.ANC_GAMMA.ToString();
+                        minSearch = TaskProperty.ANC_MIN.ToString();
+                        penaltySearch = TaskProperty.ANC_PENLTY.ToString();
+                        break;
+                    case "Category":
+                        alphaSearch = TaskProperty.CAT_ALPHA.ToString();
+                        bettaSearch = TaskProperty.CAT_BETA.ToString();
+                        gammaSearch = TaskProperty.CAT_GAMMA.ToString();
+                        minSearch = TaskProperty.CAT_MIN.ToString();
+                        penaltySearch = TaskProperty.CAT_PENLTY.ToString();
+                        break;
+                    case "nearby":
+                        alphaSearch = TaskProperty.NER_ALPHA.ToString();
+                        bettaSearch = TaskProperty.NER_BETA.ToString();
+                        gammaSearch = TaskProperty.NER_GAMMA.ToString();
+                        minSearch = TaskProperty.NER_MIN.ToString();
+                        penaltySearch = TaskProperty.NER_PENLTY.ToString();
+                        break;
+                    default:
+                        goto case "Category";
+                }
+
+                String alpha = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), alphaSearch);
+                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), bettaSearch);
+                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), gammaSearch);
+                String min = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), minSearch);
+                String penalty = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(), penaltySearch);
+
+                if (isRealNum(alpha))
+                    options.ALPHA = Convert.ToDouble(alpha);
+                if (isRealNum(betta))
+                    options.BETA = Convert.ToDouble(betta);
+                if (isRealNum(gamma))
+                    options.GAMMA = Convert.ToDouble(gamma);
+                if (isRealNum(min))
+                    options.MIN_WORDS_LIMIT = Convert.ToDouble(min);
+                if (isRealNum(penalty))
+                    options.MIN_WORDS_PENLTY = Convert.ToDouble(penalty);
+            }
+
+            return options;
+        }
+
+        /**
+         * This method creates a Ranker Options object,and sets the options of the Ranker, and returns
+         * the created object.
+         * It gets the options from the data base.
+         * note:In case the returned values from the data base are nulls or
+         *      the operation mode of the crawler is manual this 
+         *      method will set defualt numbers.
+         */
+        private static void getRankerOptions()
+        {
+
+            if (WorkDetails.getOperationMode() == operationMode_t.Auto)
+            {
+                String alpha = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
+                                TaskProperty.RAN_ALPHA.ToString());
+                String betta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
+                                TaskProperty.RAN_BETA.ToString());
+                String gamma = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
+                                TaskProperty.RAN_GAMMA.ToString());
+                String delta = StorageSystem.StorageSystem.getInstance().getProperty(WorkDetails.getTaskId(),
+                                TaskProperty.RAN_DELTA.ToString());
+
+                if (isRealNum(alpha))
+                    RankerOptions.ALPHA = Convert.ToDouble(alpha);
+                if (isRealNum(betta))
+                    RankerOptions.BETTA = Convert.ToDouble(betta);
+                if (isRealNum(gamma))
+                    RankerOptions.GAMMA = Convert.ToDouble(gamma);
+                if ((delta != null) && (delta != "") && (!Convert.IsDBNull(delta)) && ((Convert.ToInt16(delta)) >= 0))
+                    RankerOptions.ConfidenceLevelOfAnchor = Convert.ToInt16(delta);
+            }
+        }
+
+        /**
+         * This method check wether the given string is  a real number bigger than 0 
+         * Or not.
+         */
+        private static bool isRealNum(String num)
+        {
+            double realNum = Convert.ToDouble(num);
+            if ((num != null) && (num != "") && (!(Convert.IsDBNull(num))) && (realNum >= 0))
+                return true;
+            else
+                return false;
+        }
+
+        /**
          * Main method of the console application
          */
         public static void Main(String[] args)
@@ -149,14 +296,14 @@ namespace CrawlerNameSpace
                 //update the WorkDetails class with the new taskId
                 WorkDetails.setTaskId(currentTask);
 
+                //Set ALL constants of the task
+                SetAllConstants();
+
                 // getting init data
                 SetInitializer(currentTask);
 
                 // init queues
                 InitQueues(currentTask);
-
-                //Set Number of Threads
-                SetNumberOfThreads();
                 
                 // initing worker and frontier threads
                 InvokeThreads();
