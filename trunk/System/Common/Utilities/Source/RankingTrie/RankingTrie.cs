@@ -11,7 +11,7 @@ namespace CrawlerNameSpace.Utilities
      */
     public class RankingTrie
     {
-        static public int RANK_LEVELS = 100;
+        static public int RANK_LEVELS = 101;
 
         private Trie<PointingNode> _urlTrie;
         private RankTableEntry[] _rankLevels;
@@ -33,7 +33,7 @@ namespace CrawlerNameSpace.Utilities
             }
             _count = 0;
             _maxRank = 0;
-            _minRank = 0;
+            _minRank = 100;
         }
 
         /**

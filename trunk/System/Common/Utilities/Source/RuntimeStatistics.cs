@@ -12,7 +12,7 @@ namespace CrawlerNameSpace.Utilities
     {
         // These variables contains the status of the crawler at each point of time
         private static Long crawledUrls = 0, totalErrors = 0, extractedUrls = 0, feedUrls = 0;
-        private static Long PagesCrawled = 0;
+        private static Long PagesCrawled = 0, fetchedUrls = 0, frontierUrls = 0;
 
         /**
          * resets the counters
@@ -24,6 +24,56 @@ namespace CrawlerNameSpace.Utilities
             extractedUrls = 0;
             feedUrls = 0;
             PagesCrawled = 0;
+            fetchedUrls = 0;
+            frontierUrls = 0;
+        }
+
+        /**
+         * sets the specified amount to the frontier urls counter
+         */
+        public static void setFrontierUrls(Long amount)
+        {
+            lock (frontierUrls)
+            {
+                frontierUrls = amount;
+            }
+        }
+
+        /**
+         * returns the value of the specified counter
+         */
+        public static long getFrontierUrls()
+        {
+            lock (frontierUrls)
+            {
+                return frontierUrls;
+            }
+        }
+
+        /**
+         * adds the specified amount to the fetched urls counter
+         */
+        public static void addToFetchedUrls(Long amount)
+        {
+            lock (fetchedUrls)
+            {
+                fetchedUrls = fetchedUrls + amount;
+            }
+            lock (PagesCrawled)
+            {
+                PagesCrawled = PagesCrawled + amount;
+            }
+        }
+
+        /**
+         * returns the value of the specified counter
+         */
+        public static long getFetchedUrls()
+        {
+            lock (fetchedUrls)
+            {
+                return fetchedUrls;
+            }
         }
 
         /**
@@ -34,10 +84,6 @@ namespace CrawlerNameSpace.Utilities
             lock (crawledUrls)
             {
                 crawledUrls = crawledUrls + amount;
-            }
-            lock (PagesCrawled)
-            {
-                PagesCrawled = PagesCrawled + amount;
             }
         }
 

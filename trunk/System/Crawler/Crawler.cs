@@ -175,9 +175,9 @@ namespace CrawlerNameSpace
 
             if (frontierType == null) return new BFSFrontier(_feedBackQueue, _serversQueues);
 
-            if (frontierType.Equals(BFS))
+            if (frontierType.Trim().Equals(BFS))
                 return new BFSFrontier(_feedBackQueue, _serversQueues);
-            else if (frontierType.Equals(SSEv0))
+            else if (frontierType.Trim().Equals(SSEv0))
                 return new RankFrointer(_feedBackQueue, _serversQueues);
             else
                 return new BFSFrontier(_feedBackQueue, _serversQueues);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CrawlerNameSpace.Utilities;
 
 /**
  * This class is a container for all the fechers (i.e. downloaders) which is responsible
@@ -65,6 +66,7 @@ namespace CrawlerNameSpace
             {
                 if (resourceFetchers[protcolId].canFetch(url) == true)
                 {
+                    RuntimeStatistics.addToFetchedUrls(1);
                     return resourceFetchers[protcolId].fetch(url, timeOut, 0);
                 }
             }
