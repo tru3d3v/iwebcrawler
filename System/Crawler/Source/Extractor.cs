@@ -99,7 +99,11 @@ namespace CrawlerNameSpace
             {
                 if (current != '<' && blockStream == false) newContent += current;
 
-                if (current == '<') blockStream = true;
+                if (current == '<')
+                {
+                    newContent += ' ';
+                    blockStream = true;
+                }
                 else if (current == '>' && blockStream == true) blockStream = false;
             }
 
@@ -167,10 +171,14 @@ namespace CrawlerNameSpace
                     
                     if (splitedTagsList[splitedTagsList.Count - 1].TrimStart().StartsWith("<img"))
                     {
-                        if (splitedTagsList[splitedTagsList.Count - 1].Contains("alt="))
+                        if (splitedTagsList[splitedTagsList.Count - 1].Contains("alt=\""))
                         {
                             String[] splitImg = splitedTagsList[splitedTagsList.Count - 1].Split(new String[] { "alt=\"" }, StringSplitOptions.RemoveEmptyEntries);
-                            sb.Append(splitImg[1].Split(new char[] { '\"' }, StringSplitOptions.RemoveEmptyEntries)[0].TrimStart());
+                            if (splitImg.Length >= 2)
+                            {
+                                string[] output = splitImg[1].Split(new char[] { '\"' }, StringSplitOptions.RemoveEmptyEntries);
+                                if (output != null && output.Length > 0) sb.Append(output[0].Trim());
+                            }
                         }
                     }
                 }
