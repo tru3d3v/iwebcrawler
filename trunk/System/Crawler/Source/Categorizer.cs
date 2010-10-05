@@ -28,6 +28,11 @@ namespace CrawlerNameSpace
          */
         public List<Result> classifyContent(String resource,String url)
         {
+            if (options == null)
+            {
+                options = getCategorizerOptions();
+            }
+
             List<Result> results = new List<Result>();
             foreach (Category category in categoryList)
             {
@@ -38,11 +43,6 @@ namespace CrawlerNameSpace
                     sw.WriteLine(" ***** HEAD REQUEST ************************************************* ");
                     sw.WriteLine(" URL : " + url);
                     sw.Close();
-                }
-
-                if (options == null)
-                {
-                    options = getCategorizerOptions();
                 }
 
                 int matchLevel = category.getMatchLevel(resource,options);
