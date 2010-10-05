@@ -62,7 +62,8 @@ namespace CrawlerNameSpace.Utilities
                 RankNode rankNode = pLinkNode.Value;
                 pNode.getRankTableEntry().removeNode(pLinkNode);
                 pNode.setRankTableEntry(_rankLevels[newRank]);
-                pNode.getRankTableEntry().addFirstNode(rankNode);
+                LinkedListNode<RankNode> newNode = pNode.getRankTableEntry().addFirstNode(rankNode);
+                pNode.setRankNode(newNode);
 
                 if (newRank < _minRank) _minRank = newRank;
                 if (newRank > _maxRank) _maxRank = newRank;
