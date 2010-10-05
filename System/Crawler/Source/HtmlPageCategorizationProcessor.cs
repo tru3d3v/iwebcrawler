@@ -68,6 +68,7 @@ namespace CrawlerNameSpace
             }
 
             DateTime catStartTime = DateTime.Now;
+            TimeSpan rankTotalRequest = catStartTime - startTime;
             //Ascribe the url to all the categories it is belonged to.
             List<Result> classifiedResults = categorizer.classifyContent(resource.getResourceContent(),
                                                                             resource.getResourceUrl());

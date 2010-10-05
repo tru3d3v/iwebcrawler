@@ -314,43 +314,37 @@ namespace CrawlerNameSpace
 
             if (WorkDetails.getOperationMode() == operationMode_t.Auto)
             {
-                double alpha= 0,betta=0,gamma=0,min=0,penalty=0; 
                 switch (optionsType)
                 {
                     case "anchor":
-                        alpha = RankerOptions.ANC_ALPHA;
-                        betta = RankerOptions.ANC_BETA;
-                        gamma = RankerOptions.ANC_GAMMA;
-                        min = RankerOptions.ANC_MIN;
-                        penalty = RankerOptions.ANC_PENLTY;
+                        options.ALPHA = RankerOptions.ANC_ALPHA;
+                        options.BETA = RankerOptions.ANC_BETA;
+                        options.GAMMA = RankerOptions.ANC_GAMMA;
+                        options.MIN_WORDS_LIMIT = RankerOptions.ANC_MIN;
+                        options.MIN_WORDS_PENLTY = RankerOptions.ANC_PENLTY;
                         options.isRank = true;
                         options.NONZERO_MAX_EFFECT = 0;
                         break;
                     case "wholeContent":
-                        alpha = RankerOptions.CAT_ALPHA;
-                        betta = RankerOptions.CAT_BETA;
-                        gamma = RankerOptions.CAT_GAMMA;
-                        min = RankerOptions.CAT_MIN;
-                        penalty = RankerOptions.CAT_PENLTY;
-                        wholeContentOptions.isRank = true;
+                        options.ALPHA = RankerOptions.CAT_ALPHA;
+                        options.BETA = RankerOptions.CAT_BETA;
+                        options.GAMMA = RankerOptions.CAT_GAMMA;
+                        options.MIN_WORDS_LIMIT = RankerOptions.CAT_MIN;
+                        options.MIN_WORDS_PENLTY = RankerOptions.CAT_PENLTY;
+                        options.isRank = true;
                         break;
                     case "nearby":
-                        alpha = RankerOptions.NER_ALPHA;
-                        betta = RankerOptions.NER_BETA;
-                        gamma = RankerOptions.NER_GAMMA;
-                        min = RankerOptions.NER_MIN;
-                        penalty = RankerOptions.NER_PENLTY;
+                        options.ALPHA = RankerOptions.NER_ALPHA;
+                        options.BETA = RankerOptions.NER_BETA;
+                        options.GAMMA = RankerOptions.NER_GAMMA;
+                        options.MIN_WORDS_LIMIT = RankerOptions.NER_MIN;
+                        options.MIN_WORDS_PENLTY = RankerOptions.NER_PENLTY;
                         options.NONZERO_MAX_EFFECT = 40;
                         options.isRank = true;
                         break;
                     default:
                         goto case "wholeContent"; 
                 }
-                    options.ALPHA = alpha;
-                    options.BETA = betta;
-                    options.GAMMA = gamma;
-                    options.MIN_WORDS_LIMIT = min;
-                    options.MIN_WORDS_PENLTY = penalty;
             }
 
             return options;
