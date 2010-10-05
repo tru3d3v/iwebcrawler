@@ -31,7 +31,7 @@ namespace CrawlerNameSpace.Utilities
             lock (feedBackQueue)
             {
                 totalRequests = totalRequests + feedBackQueue.Count;
-                System.Console.WriteLine("  Requests in the frontier\t about ~ {0} ", feedBackQueue.Count);
+                System.Console.WriteLine("  Requests in the feedback Queue\t about ~ {0} ", feedBackQueue.Count);
             }
             for (int queueNum = 0; queueNum < serversQueues.Count; queueNum++)
             {
@@ -47,7 +47,10 @@ namespace CrawlerNameSpace.Utilities
         private static void DisplayEntriesInSystems(long totalRequests)
         {
             System.Console.WriteLine("--- URL ENTRIES ---------------------------------------------------------------");
-            System.Console.WriteLine("  Url to Visit In the Crawler : {0} \t\t\t X ??? Bytes for Entry", totalRequests);
+            long frontierNum = RuntimeStatistics.getFrontierUrls();
+            System.Console.WriteLine("  In Frontier Core Urls     : {0}", frontierNum);
+            System.Console.WriteLine("  Url In the Crawler Queues : {0}", totalRequests);
+            System.Console.WriteLine("  Total Urls In the Crawler : {0}", frontierNum + totalRequests);
         }
 
         private static void DisplayRuntimeStatistics()
@@ -58,13 +61,17 @@ namespace CrawlerNameSpace.Utilities
                 long crawled = RuntimeStatistics.getCrawledUrls(), extracted = RuntimeStatistics.getExtractedUrls();
                 long feedback = RuntimeStatistics.getFeedUrls(), errors = RuntimeStatistics.getTotalErrors();
                 long pages = RuntimeStatistics.getPagesCrawledNum();
+                long visited = RuntimeStatistics.getFetchedUrls();
+                
                 float extarctedPercentage = extracted / crawled;
                 float feedBackPercentage = feedback / crawled;
                 float errorsPercentage = ((float)errors / (float)extracted) * 100;
 
-                System.Console.WriteLine("  Total Crawled   Urls : {0}\t\t (Rate {1} pages per refresh rate)", crawled, pages);
+                System.Console.WriteLine("  Total Crawled   Urls : {0}\t\t (Rate {1} pages per refresh rate)", visited, pages);
+                System.Console.WriteLine("  Total Results   Urls : {0}", crawled);
                 System.Console.WriteLine("  Total Extracted Urls : {0}\t\t [{1}X]", extracted, extarctedPercentage);
                 System.Console.WriteLine("  Total FeedBack  Urls : {0}\t\t [{1}X]", feedback, feedBackPercentage);
+                
                 System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine("  Total Errors Occured : {0}\t\t [{1}%]", errors, errorsPercentage);
                 System.Console.ForegroundColor = ConsoleColor.White;

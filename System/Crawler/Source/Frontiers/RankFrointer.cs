@@ -53,6 +53,7 @@ namespace CrawlerNameSpace
 
                     if (getNewRequest)
                     {
+                        RuntimeStatistics.setFrontierUrls(_rankingTrie.count());
                         if (_rankingTrie.count() == 0)
                         {
                             Thread.Sleep(_timer);
