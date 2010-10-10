@@ -14,6 +14,9 @@ namespace CrawlerNameSpace
      */
     public class BFSFrontier : Frontier
     {
+        // how many retries to put the request in specific queue while it's full
+        public const int MAX_RETRY_COUNTER = 1;
+
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
          * and the specified server queue list, so the frontier will schedule it's tasks
@@ -32,42 +35,52 @@ namespace CrawlerNameSpace
         public override void sceduleTasks()
         {
             Dictionary<String, String> dictionary = new Dictionary<String, String>();
-            int serverTurn = 0, iterations = 0;
-            bool getNewRequest = true, needToTerminate = false;;
+            int serverTurn = 0;
             Url request = null;
 
-            while (needToTerminate == false)
+            while (true)
             {
                 try
                 {
-                    if (getNewRequest)
-                    {
-                        request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
-                        getNewRequest = false;
-                    }
-                    getNewRequest = true;
-                    if (dictionary.ContainsKey(request.getUrl())) continue;
-                    dictionary.Add(request.getUrl(), null);
+                    // get new request
+                    request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
 
-                    if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) < _limit)
+                    // handle the request
+                    if (dictionary.ContainsKey(request.getUrl()))
                     {
-                        SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
+                        // if it already exists need to pick another one
+                        continue;
                     }
                     else
                     {
-                        getNewRequest = false;
+                        // if not just mark it as old and continue
+                        dictionary.Add(request.getUrl(), null);
                     }
-                    serverTurn = (serverTurn + 1) % _serversQueues.Count;
-                    iterations++;
-                    if (iterations >= _checkStatusLimit)
+
+                    // now there's a new request we should put it in the server queues
+                    bool needToPutRequest = true;
+                    int retryCount = 0;
+                    while (needToPutRequest)
                     {
-                        iterations = 0;
-                        if (_shouldStop)
+                        if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) < _limit)
                         {
-                            //System.Console.WriteLine("Frontier Thread recieved should stop");
-                            needToTerminate = true;
+                            needToPutRequest = false;
+                            SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
+                        }
+                        else
+                        {
+                            retryCount++;
+                            if (retryCount > MAX_RETRY_COUNTER)
+                            {
+                                serverTurn = (serverTurn + 1) % _serversQueues.Count;
+                            }
+                            else
+                            {
+                                Thread.Sleep(_timer * 3);
+                            }
                         }
                     }
+                    serverTurn = (serverTurn + 1) % _serversQueues.Count;
                 }
                 catch (Exception e)
                 {

@@ -47,7 +47,8 @@ namespace CrawlerNameSpace.Utilities
             while (true)
             {
                 T elemnt;
-                if (toSleep) Thread.Sleep(time);
+                Random randomizer = new Random();
+                if (toSleep) Thread.Sleep(time + randomizer.Next(time / 2));
                 toSleep = false;
 
                 lock (queue)
