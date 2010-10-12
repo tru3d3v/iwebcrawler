@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
+using System.IO;
 
 namespace CrawlerNameSpace.Tests
 {
@@ -145,6 +146,102 @@ namespace CrawlerNameSpace.Tests
             {
                 if ((k % 100) == 0)
                     Console.WriteLine("The new maximum url is :" + pop.getUrl());
+                pop = testTrie.pop();
+                k++;
+            }
+        }
+
+        public void test6()
+        {
+            Random rand = new Random();
+            for (int i = 0; i < 100000; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    int randNum = rand.Next(0, 100);
+                    testTrie.add(new Url(i.ToString(), i, randNum, i.ToString(), 600000 - i));
+                }
+                //Url pope = testTrie.pop();
+            }
+
+            Url pop = testTrie.pop();
+            int k = 0;
+            int urlsNum = 1;
+            while (pop != null)
+            {
+                    StreamWriter sw = new
+                    StreamWriter("RankingTrieDebuuger.txt", true);
+                    sw.WriteLine("******************************************************");
+                    sw.WriteLine("URL DEQUEUED: ");
+                    sw.WriteLine(pop.getUrl());
+                    sw.WriteLine("RANK OF URL");
+                    sw.WriteLine(pop.getRank());
+                    sw.WriteLine("NumberOfUrls");
+                    sw.WriteLine(urlsNum++);
+                    sw.Close();
+                    //Console.WriteLine("The new maximum url is :" + pop.getUrl());
+                pop = testTrie.pop();
+                k++;
+            }
+        }
+
+        public void test7()
+        {
+            //Random rand = new Random();
+            for (int i = 0; i < 100000; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    testTrie.add(new Url(i.ToString(), i, i%100 , i.ToString(), 600000 - i));
+                }
+            }
+
+            Url pop = testTrie.pop();
+            int k = 0;
+            int urlsNum = 1;
+            while (pop != null)
+            {
+                StreamWriter sw = new
+                StreamWriter("RankingTrieDebuuger1.txt", true);
+                sw.WriteLine("******************************************************");
+                sw.WriteLine("URL DEQUEUED: ");
+                sw.WriteLine(pop.getUrl());
+                sw.WriteLine("RANK OF URL");
+                sw.WriteLine(pop.getRank());
+                sw.WriteLine("NumberOfUrls");
+                sw.WriteLine(urlsNum++);
+                sw.Close();
+                //Console.WriteLine("The new maximum url is :" + pop.getUrl());
+                pop = testTrie.pop();
+                k++;
+            }
+        }
+
+        public void test8()
+        {
+            Random rand = new Random();
+            for (int i = 0; i < 1000000; i++)
+            {
+                int randNum = rand.Next(0, 100);
+                testTrie.add(new Url(i.ToString(), i, randNum, i.ToString(), 1000000 - i)); 
+            }
+
+            Url pop = testTrie.pop();
+            int k = 0;
+            int urlsNum = 1;
+            while (pop != null)
+            {
+                StreamWriter sw = new
+                StreamWriter("RankingTrieDebuuger.txt", true);
+                sw.WriteLine("******************************************************");
+                sw.WriteLine("URL DEQUEUED: ");
+                sw.WriteLine(pop.getUrl());
+                sw.WriteLine("RANK OF URL");
+                sw.WriteLine(pop.getRank());
+                sw.WriteLine("NumberOfUrls");
+                sw.WriteLine(urlsNum++);
+                sw.Close();
+                //Console.WriteLine("The new maximum url is :" + pop.getUrl());
                 pop = testTrie.pop();
                 k++;
             }

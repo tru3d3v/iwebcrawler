@@ -65,8 +65,9 @@ namespace CrawlerNameSpace.Utilities
                 LinkedListNode<RankNode> newNode = pNode.getRankTableEntry().addFirstNode(rankNode);
                 pNode.setRankNode(newNode);
 
-                if (newRank < _minRank) _minRank = newRank;
-                if (newRank > _maxRank) _maxRank = newRank;
+                //if (newRank < _minRank) _minRank = newRank;
+                //if (newRank > _maxRank) _maxRank = newRank;
+                update();
             }
         }
 
