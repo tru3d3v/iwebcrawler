@@ -86,6 +86,7 @@
     <Compile Include="Tests\HttpPageCategorizationProcessorTest.cs" />
     <Compile Include="Tests\HttpResourceFetcherTest.cs" />
     <Compile Include="Tests\RankerTest.cs" />
+    <Compile Include="Tests\RankFrontierTest.cs" />
     <Compile Include="Tests\RankingTrieTest.cs" />
     <Compile Include="Tests\ResourceContentTest.cs" />
   </ItemGroup>
