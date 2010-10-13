@@ -46,6 +46,49 @@ namespace CrawlerNameSpace.Tests
             }
         }
 
+        public void test2()
+        {
+            Constraints constraintObj = new Constraints(4, true, "co.il gov uk", "com ");
+            Filter testFilter = new Filter("http", constraintObj);
+            char[] delimiters = { ' ' };
+            List<String> links = new List<string>("http://www.facebook.com http://www.sun.com http://www.ynet.co.il ".Split(delimiters));
+            links.Add("http://www.facebook.com");
+            links.Add("http://www.facebook.com");
+            links.Add("http://www.facebook.com");
+            links.Add("http://www.sun.com");
+            links.Add("http://www.sun.com");
+            links.Add("http://www.sun.com");
+            links.Add("http://www.sun.com");
+            links.Add("http://www.ynet.co.il");
+            links.Add("http://www.ynet.co.il");
+            links.Add("http://www.ynet.co.il");
+            links.Add("http://www.ynet.co.il");
+            links.Add("http://www.ynet.co.il");
+
+            List<String> links2 = new List<string>();
+            links2.Add("http://www.facebook.com");
+            links2.Add("http://www.facebook.com");
+            links2.Add("http://www.adamshob.com");
+            links2.Add("http://www.sex.co.il");
+            links2.Add("http://www.sex.com");
+            links2.Add("http://www.facebook.com/");
+            links2.Add("http://www.gmail.com/");
+
+            List<String> filteredLinks = testFilter.filterLinks(links);
+            foreach (string link in filteredLinks)
+            {
+                Console.WriteLine("The link is imazingly : " + link);
+            }
+
+            //testFilter.resetDictionary();
+            List<String> filteredLinks2 = testFilter.filterLinks(links2);
+            foreach (string link in filteredLinks2)
+            {
+                Console.WriteLine("The link is : " + link);
+            }
+
+        }
+
         /**
          * This method is the main test that gathers all the tests.
          */
