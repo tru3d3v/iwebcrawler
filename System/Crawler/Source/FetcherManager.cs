@@ -23,7 +23,7 @@ namespace CrawlerNameSpace
         public FetcherManager()
         {
             resourceFetchers = new Dictionary<string, ResourceFetcher>();
-            timeOut = 3000;
+            timeOut = 10000;
         }
 
         /**

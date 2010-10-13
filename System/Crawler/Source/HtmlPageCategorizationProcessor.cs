@@ -50,6 +50,11 @@ namespace CrawlerNameSpace
             listOfLinks = extractor.extractLinks(resource.getResourceUrl(), resource.getResourceContent());
             RuntimeStatistics.addToExtractedUrls(listOfLinks.Count);
 
+            DateTime extEndTime = DateTime.Now;
+            
+            /*** 1. Extracting the link from the request ***/ 
+            TimeSpan extRequest = extEndTime - startTime;
+
             foreach(LinkItem item in listOfLinks )
             {
                 //Filter the links and return only links that can be crawled
@@ -60,20 +65,27 @@ namespace CrawlerNameSpace
                 //If filteredLinks is not empty 
                 if (filteredLinks.Count > 0)
                 {
+ 
                     Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource,item), 
                                       item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
                     RuntimeStatistics.addToFeedUrls(1);
+                    
                 }
             }
 
             DateTime catStartTime = DateTime.Now;
-            TimeSpan rankTotalRequest = catStartTime - startTime;
+
+            /*** 2. Ranking and deployment to the frontier ***/ 
+            TimeSpan rankTotalRequest = catStartTime - extEndTime;
+
             //Ascribe the url to all the categories it is belonged to.
             List<Result> classifiedResults = categorizer.classifyContent(resource.getResourceContent(),
                                                                             resource.getResourceUrl());
             if (classifiedResults.Count != 0) RuntimeStatistics.addToCrawledUrls(1);
             DateTime catEndTime = DateTime.Now;
+
+            /*** 3. Classification of the current request ***/ 
             TimeSpan catTotalRequest = catEndTime - catStartTime;
 
             //Save all the results to Storage
@@ -85,6 +97,10 @@ namespace CrawlerNameSpace
             }
 
             DateTime endTime = DateTime.Now;
+            /*** 4. deployment to the database (result) ***/ 
+            TimeSpan deployRequest = endTime - catEndTime;
+
+            /*** $. Total processing time ***/ 
             TimeSpan totalRequest = endTime - startTime;
         }
 

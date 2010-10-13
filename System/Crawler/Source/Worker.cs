@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CrawlerNameSpace.Utilities;
 using System.Threading;
+using System.IO;
 
 namespace CrawlerNameSpace
 {
@@ -22,9 +23,6 @@ namespace CrawlerNameSpace
         // number of iterations to do while checking the status
         private int _checkStatusLimit;
 
-        // needed in order to keep alive status of the current worker thread
-        private volatile bool _shouldStop;
-
         // managers of the protocols
         FetcherManager _fetchers;
         ResourceProcessorManager _processors;
@@ -41,8 +39,6 @@ namespace CrawlerNameSpace
 
             // sets default timer
             _timer    = 1000;
-
-            _shouldStop = false;
 
             // initailizing the fetcher - page downloaders
             _fetchers = new FetcherManager();
@@ -63,37 +59,39 @@ namespace CrawlerNameSpace
          */ 
         public void run()
         {
-            int iterations = 0;
+            int requestNum = 0, timeoutCounter = 0;
             bool needToTerminate = false;
+            TimeSpan totalProcessTime;
             while (needToTerminate == false)
             {
+                DateTime startTime = DateTime.Now;
                 try
                 {
                     //System.Console.WriteLine("-<>--------------------------------------------------------------------------");
                     Url task = SyncAccessor.getFromQueue<Url>(_tasks, _timer);
+                    
                     //System.Console.WriteLine(" Start Working on : " + task.getUrl() + " ...");
                     ResourceContent content = _fetchers.fetchResource(task.getUrl());
+                    
                     if (content.isValid() != true)
                     {
+                        timeoutCounter++;
                         //System.Console.WriteLine(" Fetch Failed Ignoring ... ");
                         continue;
                     }
+                    
                     //System.Console.WriteLine(" Fetched Successfully ... ");
                     
                     ResourceContent modifiedContent = new ResourceContent(content.getResourceUrl(), content.getResourceType()
                         , content.getResourceContent(), content.getReturnCode(), task.getRank());
+
+                    DateTime startProcess = DateTime.Now;
                     _processors.processResource(modifiedContent);
+                    DateTime endProcess = DateTime.Now;
+                    totalProcessTime = endProcess - startProcess;
                     //System.Console.WriteLine(" URL Processed Successfully ... ");
-                    iterations++;
-                    if (iterations >= _checkStatusLimit)
-                    {
-                        iterations = 0;
-                        if (_shouldStop)
-                        {
-                            System.Console.WriteLine(" Recieved should Stop in worker thread");
-                            needToTerminate = true;
-                        }
-                    }
+                    
+                    System.Console.WriteLine(" URL Processed Successfully ... ");
                 }
                 catch (Exception e)
                 {
@@ -101,15 +99,15 @@ namespace CrawlerNameSpace
                     RuntimeStatistics.addToErrors(1);
                     continue;
                 }
-            }
-        }
+                DateTime endTime = DateTime.Now;
+                TimeSpan totalRequestTime = endTime - startTime;
 
-        /**
-         * can be called in order to stop work on the worker
-         */
-        public void RequestStop()
-        {
-            _shouldStop = true;
+                // write request time to timing log file
+                StreamWriter sw = new
+                        StreamWriter("_DEBUG_INFO_TIMING@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" TIMING FOR REQ - " + requestNum++ + " takes about " + totalRequestTime.TotalSeconds + " s, Processed At " + totalProcessTime.TotalSeconds + " s");
+                sw.Close();
+            }
         }
 
         /**

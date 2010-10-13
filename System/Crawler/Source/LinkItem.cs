@@ -13,12 +13,14 @@ namespace CrawlerNameSpace
         // These attributes saves the link item status, it maintains the tag, link, 
         // parent-url and text.
         private String Parent, Tag, Link, Text, domainUrl,Anchor;
+        private int Index;
 
         /**
          * Constructs a new LinkItem
          */ 
         public LinkItem()
         {
+            Index = 0;
         }
 
         /**
@@ -39,6 +41,22 @@ namespace CrawlerNameSpace
             rootUrl = "http://" + rootUrl;
             if (rootUrl.EndsWith("/")) Parent = rootUrl;
             else Parent = rootUrl + '/';
+        }
+
+        /**
+         * sets the link index of the <a> tag
+         */
+        public void setIndex(int index)
+        {
+            Index = index;
+        }
+
+        /**
+         * returns the link index of <a> tag
+         */
+        public int getIndex()
+        {
+            return Index;
         }
 
         /**
