@@ -35,7 +35,7 @@ namespace CrawlerNameSpace
          */
         public override void sceduleTasks()
         {
-            int serverTurn = 0, iterations = 0;
+            int serverTurn = 0;
             bool getNewRequest = true, needToTerminate = false; ;
             Url request = null;
 
@@ -73,16 +73,6 @@ namespace CrawlerNameSpace
                         getNewRequest = false;
                     }
                     serverTurn = (serverTurn + 1) % _serversQueues.Count;
-                    iterations++;
-                    if (iterations >= _checkStatusLimit)
-                    {
-                        iterations = 0;
-                        if (_shouldStop)
-                        {
-                            //System.Console.WriteLine("Frontier Thread recieved should stop");
-                            needToTerminate = true;
-                        }
-                    }
                 }
                 catch (Exception e)
                 {

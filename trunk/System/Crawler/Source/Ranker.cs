@@ -44,6 +44,7 @@ namespace CrawlerNameSpace
          */
         public int rankUrl(ResourceContent parentResource,LinkItem item)
         {
+            DateTime startRankTime = DateTime.Now;
             //These variables will contain the ranks for the whole content match and nearby text match and 
             //anchor match and the parentrank.
             int rankParentUrl = parentResource.getRankOfUrl();
@@ -71,6 +72,7 @@ namespace CrawlerNameSpace
                 sw.WriteLine(" PARENT URL : " + item.getParentUrl());
                 sw.Close();
             }
+            DateTime wholePageStartTime = DateTime.Now;
 
             //rank of the whole page
             if (!((lastResourceContent!=null)&&(lastResourceContent.Equals(parentResource.getResourceContent()))))
@@ -79,12 +81,27 @@ namespace CrawlerNameSpace
                 wholePageRank = getRankOfWholeContent(parentResource);
             }
 
+            DateTime wholePageEndTime = DateTime.Now;
+
+            /****Time of Whole Contet inlize****/
+            TimeSpan totalWholePageTime = wholePageEndTime - wholePageStartTime;
+            double c = totalWholePageTime.TotalSeconds;
             //rank of the nearby text
             nearbyTextRank =getRankOfNearbyText(item);
 
+            DateTime endTimeOfNearby = DateTime.Now;
+
+            /**** time of nearby text *****/
+            TimeSpan totalNearby = endTimeOfNearby - wholePageEndTime;
+            double b = totalNearby.TotalSeconds;
             //rank of the anchor url
             anchorRank = getRankOfAnchor(item);
 
+            DateTime endTimeOfAnchor = DateTime.Now;
+ 
+            /*** total time of anchor ****/
+            TimeSpan totalAnchorTime = endTimeOfAnchor - endTimeOfNearby;
+            double a = totalAnchorTime.TotalSeconds;
             //rank of the neighborhood,that includes rank of the anchor and the nearby text
             if (anchorRank > RankerOptions.ConfidenceLevelOfAnchor)
                 context = 100;
@@ -124,6 +141,10 @@ namespace CrawlerNameSpace
                 sw.Close();
             }
 
+            DateTime endTimeOfRanking = DateTime.Now;
+            /*** End time of ranking url ****/
+            TimeSpan totalRankingTime = endTimeOfRanking - startRankTime;
+            Console.WriteLine(totalRankingTime.TotalSeconds);
             return ((int)(RankerOptions.GAMMA * inherited + (1 - RankerOptions.GAMMA) * neighborhood));
         }
 

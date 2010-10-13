@@ -22,9 +22,6 @@ namespace CrawlerNameSpace
         // number of iterations to do while checking the status
         protected int _checkStatusLimit;
 
-        // needed in order to keep alive status of the frontier thread
-        protected volatile bool _shouldStop;
-
         /**
          * constructs a new fronier instance which will be linked to the tasks queue 
          * and the specified server queue list, so the frontier will schedule it's tasks
@@ -37,21 +34,12 @@ namespace CrawlerNameSpace
             _timer = 250;
             _limit = 10;
             _checkStatusLimit = 0;
-            _shouldStop = false;
         }
 
         /**
          * this method should be responsible about scehduling tasks for the workers
          */
         public abstract void sceduleTasks();
-
-        /**
-         * can be called in order to stop work on the frontier
-         */
-        public void RequestStop()
-        {
-            _shouldStop = true;
-        }
 
         /**
          * sets the polling timeout for the queries on the queues in ms

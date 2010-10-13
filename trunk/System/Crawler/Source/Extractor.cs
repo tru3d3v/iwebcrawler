@@ -22,6 +22,9 @@ namespace CrawlerNameSpace
         {
             List<LinkItem> list = new List<LinkItem>();
 
+            /*** 1. start extractor ***/
+            DateTime startTime = DateTime.Now;
+
             // Find all matches in file.
             MatchCollection reg = Regex.Matches(page, @"(<[aA][ \t\n].*?>.*?</[aA]>)", 
                 RegexOptions.Singleline);
@@ -35,13 +38,34 @@ namespace CrawlerNameSpace
                 item.setTag(tagValue);
                 if(tagValue.Contains(LINK_ATTR) == true)
                     list.Add(item);
+
+                item.setIndex(match.Index);
             }
+
+            /*** 2. getting all the link matches ***/
+            DateTime matchTime = DateTime.Now;
+            TimeSpan totalMatchTime = matchTime - startTime;
+
             // gets the text near each link
             getText(list, page);
+
+            /*** 3. get the nearby text ***/
+            DateTime getNearbyTime = DateTime.Now;
+            TimeSpan totalNearbyTime = getNearbyTime - matchTime;
+
             // gets the links
             getLinks(list);
+
+            /*** 4. get the links from the tags */
+            DateTime getLinksTime = DateTime.Now;
+            TimeSpan totalLinksTime = getLinksTime - getNearbyTime;
+
             //gets the anchor of each link
             getAnchors(list);
+
+            /*** 5. get the anchors of the links ***/
+            DateTime getAnchorsTime = DateTime.Now;
+            TimeSpan totalAnchorsTime = getAnchorsTime - getLinksTime;
 
             return list;
         }
@@ -52,39 +76,23 @@ namespace CrawlerNameSpace
          */ 
         private void getText(List<LinkItem> links, String page)
         {
-            /*
-            String pageWithoutTags= removeTags(page);
-            char[] separators = {' ', '\t', '\n'};
-            string[] pageWordList = page.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
-             */
-            char[] separators = {' ', '\t', '\n','{','}','[',']','|'};
             foreach (LinkItem item in links)
             {
-                int index = page.IndexOf(item.getTag());
-
+                int index = item.getIndex();//page.IndexOf(item.getTag());
+                index = SEMETRIC_LINE + 1;
                 if (index != -1)
                 {
                     int lower = Math.Max(index - SEMETRIC_LINE, 0);
                     int higher = Math.Min(index + item.getTag().Length + SEMETRIC_LINE, page.Length - 1);
 
                     String subString = page.Substring(lower, higher - lower);
-                    subString = removeTags(subString);
-                    String[] subStringSplited = subString.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
-                    //subString = subStringSplited.ToString();
-                    StringBuilder nearbyText=new StringBuilder("");
-                    foreach (String substring in subStringSplited)
-                    {
-                        if ((substring.Trim() != " ") && (substring.Trim() != "\t") && (substring.Trim() != "\n"))
-                            nearbyText.Append(substring.Trim() + " ");
-                    }
-                    item.setText(nearbyText.ToString().Trim());
+                    item.setText(removeTags(subString));
                 }
                 else
                 {
                     item.setText("");
                 }
             }
-            
         }
 
         /**
@@ -93,21 +101,21 @@ namespace CrawlerNameSpace
         private String removeTags(String content)
         {
             bool blockStream = false;
-            String newContent = "";
+            StringBuilder newContent = new StringBuilder("");
 
             foreach (char current in content)
             {
-                if (current != '<' && blockStream == false) newContent += current;
+                if (current != '<' && blockStream == false) newContent.Append(current);
 
                 if (current == '<')
                 {
-                    newContent += ' ';
+                    newContent.Append(' ');
                     blockStream = true;
                 }
                 else if (current == '>' && blockStream == true) blockStream = false;
             }
 
-            return newContent;
+            return newContent.ToString();
         }
 
         /**
