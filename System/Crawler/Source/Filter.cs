@@ -16,6 +16,8 @@ namespace CrawlerNameSpace
         private String prefix;
         // this attribute saves all the constrains options
         private Constraints constraints;
+        // This variable contains all the urls in the page fetched,in order to check for repeating of same urls.
+        private Dictionary<string, bool> urlsInPage = new Dictionary<string, bool>();
 
         /**
          * Constructs a new Filter class with the specified options and prefix
@@ -35,12 +37,20 @@ namespace CrawlerNameSpace
         public List<String> filterLinks(List<String> links)
         {
             List<String> filtedLinks = new List<string>();
+            
             foreach(String link in links)
             {
                 String canonizedLink = canonize(link);
-                if (canonizedLink.ToLower().StartsWith(prefix.ToLower()))
-                    if(constraints.isUrlValid(canonizedLink) == true && filtedLinks.Contains(canonizedLink) == false)
-                        filtedLinks.Add(canonizedLink);
+
+                if (urlsInPage.ContainsKey(canonizedLink))
+                    continue;
+                else
+                {
+                    urlsInPage.Add(canonizedLink, true);
+                    if (canonizedLink.ToLower().StartsWith(prefix.ToLower()))
+                        if (constraints.isUrlValid(canonizedLink) == true)
+                            filtedLinks.Add(canonizedLink);
+                }
             }
             return filtedLinks;
         }
@@ -57,7 +67,20 @@ namespace CrawlerNameSpace
             {
                 modifiedLink = prefix + "://" + modifiedLink;
             }
+
+            if (modifiedLink[modifiedLink.Length - 1] == '/')
+                modifiedLink = modifiedLink.Remove(modifiedLink.Length - 1);
+
             return modifiedLink;
+        }
+
+        /*
+         * This method resets the dictionary variable.
+         * This method must be called whenever the page from which the urls are extracted is changed.
+         */
+        public void resetDictionary()
+        {
+            urlsInPage.Clear();
         }
     }
 }

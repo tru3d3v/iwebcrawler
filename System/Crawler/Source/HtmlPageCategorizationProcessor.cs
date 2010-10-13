@@ -55,6 +55,8 @@ namespace CrawlerNameSpace
             /*** 1. Extracting the link from the request ***/ 
             TimeSpan extRequest = extEndTime - startTime;
 
+            //reset the dictionary in filter that contains the urls from the same page
+            filter.resetDictionary();
             foreach(LinkItem item in listOfLinks )
             {
                 //Filter the links and return only links that can be crawled
