@@ -103,11 +103,14 @@ namespace CrawlerNameSpace
                 DateTime endTime = DateTime.Now;
                 TimeSpan totalRequestTime = endTime - startTime;
 
-                // write request time to timing log file
-                StreamWriter sw = new
-                        StreamWriter("_DEBUG_INFO_TIMING@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
-                sw.WriteLine(" TIMING FOR REQ - " + requestNum++ + " takes about " + totalRequestTime.TotalSeconds + " s, Processed At " + totalProcessTime.TotalSeconds + " s");
-                sw.Close();
+                if (LogDebuggerControl.getInstance().enableTiming)
+                {
+                    // write request time to timing log file
+                    StreamWriter sw = new
+                            StreamWriter("_DEBUG_INFO_TIMING@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                    sw.WriteLine(" TIMING FOR REQ - " + requestNum++ + " takes about " + totalRequestTime.TotalSeconds + " s, Processed At " + totalProcessTime.TotalSeconds + " s");
+                    sw.Close();
+                }
             }
         }
 
