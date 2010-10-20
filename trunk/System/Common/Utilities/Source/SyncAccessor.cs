@@ -12,6 +12,18 @@ namespace CrawlerNameSpace.Utilities
      */
     public class SyncAccessor
     {
+        private static Random randomizer = new Random();
+
+        static public void getSlot(int dim, int id)
+        {
+            id = id % dim;
+            int second = DateTime.Now.Second;
+            int milisec = DateTime.Now.Millisecond % 1000;
+            if (id == (second % dim)) return;
+            int time = id - (second % dim);
+            Thread.Sleep(Math.Max(time * 1000 - milisec, 0));
+        }
+
         /**
          * puts the elemnt in the queue, this method is thread safe so it can be invoked 
          *  via more than one thread which want access to the shared resource
@@ -47,7 +59,6 @@ namespace CrawlerNameSpace.Utilities
             while (true)
             {
                 T elemnt;
-                Random randomizer = new Random();
                 if (toSleep) Thread.Sleep(time + randomizer.Next(time / 2));
                 toSleep = false;
 
@@ -59,7 +70,7 @@ namespace CrawlerNameSpace.Utilities
                         continue;
                     }
                     elemnt = queue.Dequeue();
-                }
+                }            
                 return elemnt;
             }
         }

@@ -43,6 +43,7 @@ namespace CrawlerNameSpace
                 try
                 {
                     // get new request
+                    SyncAccessor.getSlot(2, 0);
                     request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
 
                     // handle the request
@@ -62,9 +63,11 @@ namespace CrawlerNameSpace
                     int retryCount = 0;
                     while (needToPutRequest)
                     {
+                        SyncAccessor.getSlot(2, 0);
                         if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) < _limit)
                         {
                             needToPutRequest = false;
+                            SyncAccessor.getSlot(2, 0);
                             SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
                         }
                         else

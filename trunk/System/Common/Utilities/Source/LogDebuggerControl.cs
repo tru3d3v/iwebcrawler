@@ -15,12 +15,14 @@ namespace CrawlerNameSpace.Utilities
         public bool debugCategorization;
         public bool debugRanker;
         public bool debugCategorizationInRanker;
+        public bool enableTiming;
 
         private LogDebuggerControl()
         {
             debugCategorization = true;
             debugRanker = true;
             debugCategorizationInRanker = false;
+            enableTiming = false;
         }
 
         public static LogDebuggerControl getInstance()
