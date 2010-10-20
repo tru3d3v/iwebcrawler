@@ -20,6 +20,7 @@ namespace CrawlerNameSpace
          * is valid or not.
          */
         private const int VALID_CODE = 200;
+        public int ThreadsDim = 2, ThreadID = 1;
 
         private Extractor extractor;
         private Categorizer categorizer;
@@ -57,6 +58,7 @@ namespace CrawlerNameSpace
 
             //reset the dictionary in filter that contains the urls from the same page
             filter.resetDictionary();
+            int filteredUrlsCount = 0;
             foreach(LinkItem item in listOfLinks )
             {
                 //Filter the links and return only links that can be crawled
@@ -67,7 +69,7 @@ namespace CrawlerNameSpace
                 //If filteredLinks is not empty 
                 if (filteredLinks.Count > 0)
                 {
- 
+                    filteredUrlsCount++;
                     Url url = new Url(filteredLinks[0], hashUrl(filteredLinks[0]), ranker.rankUrl(resource,item), 
                                       item.getDomainUrl(), hashUrl(item.getDomainUrl()));
                     deployLinksToFrontier(url);
@@ -104,6 +106,20 @@ namespace CrawlerNameSpace
 
             /*** $. Total processing time ***/ 
             TimeSpan totalRequest = endTime - startTime;
+
+            // write request time to timing log file
+            if (LogDebuggerControl.getInstance().enableTiming)
+            {
+                StreamWriter sw = new
+                        StreamWriter("_DEBUG_INFO_PROCESSOR_TIMING@" + System.Threading.Thread.CurrentThread.ManagedThreadId + ".txt", true);
+                sw.WriteLine(" TIMING FOR REQ - [] ");
+                sw.WriteLine(" - Extractor Time " + extRequest.TotalSeconds + " seconds ");
+                sw.WriteLine(" - Ranker    Time " + extRequest.TotalSeconds + " seconds ");
+                sw.WriteLine(" - Categori. Time " + catTotalRequest.TotalSeconds + " seconds ");
+                sw.WriteLine(" - Deploy    Time " + deployRequest.TotalSeconds + " seconds ");
+                sw.WriteLine(" - Total Timing " + totalRequest.TotalSeconds + " seconds ");
+                sw.Close();
+            }
         }
 
         /**
@@ -146,6 +162,7 @@ namespace CrawlerNameSpace
             sw.WriteLine(temp);
             sw.Close();
             */
+            SyncAccessor.getSlot(ThreadsDim, ThreadID);
             SyncAccessor.putInQueue<Url>(queueFronier, urlProcessed);
         }
 

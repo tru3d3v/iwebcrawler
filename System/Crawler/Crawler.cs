@@ -122,6 +122,7 @@ namespace CrawlerNameSpace
             // init the Frontier thread
             //Frontier frontier = new BFSFrontier(_feedBackQueue, _serversQueues);
             Frontier frontier = chooseFrontier();
+            frontier.ThreadsDim = _numWorkers;
             Thread frontierThread = new Thread(new ThreadStart(frontier.sceduleTasks));
             frontierThread.Start();
             _frontiersPool.Add(frontier);
@@ -129,7 +130,7 @@ namespace CrawlerNameSpace
 
             for (int threadNum = 0; threadNum < _numWorkers; threadNum++)
             {
-                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue);
+                Worker worker = new Worker(_initializer, _serversQueues[threadNum], _feedBackQueue, _numWorkers + 1, threadNum + 1);
                 Thread workerThread = new Thread(new ThreadStart(worker.run));
                 workerThread.Start();
                 _threadsPool.Add(workerThread);

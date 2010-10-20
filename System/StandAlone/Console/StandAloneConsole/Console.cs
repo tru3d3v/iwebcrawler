@@ -279,6 +279,7 @@ namespace CrawlerNameSpace
          */
         public static void Main(String[] args)
         {
+            
             bool toContinue = ParseArguements(args), needToRestart = false;
             if (toContinue == false) return;
             Queue<int> keepAlive = new Queue<int>();
@@ -336,7 +337,11 @@ namespace CrawlerNameSpace
                 TerminateThreads();
                 needToRestart = false;
                 RuntimeStatistics.resetStatistics();
-            }    
+            }
+            
+            //RankerTest test = new RankerTest();
+            //test.Test2();
         }
+
     }
 }

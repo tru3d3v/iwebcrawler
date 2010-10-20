@@ -12,6 +12,8 @@ namespace CrawlerNameSpace
      */
     public abstract class Frontier
     {
+        public int ThreadsDim = 1;
+
         protected Queue<Url> _tasksQueue;
         protected List<Queue<Url>> _serversQueues;
 

@@ -22,6 +22,8 @@ namespace CrawlerNameSpace
         {
             List<LinkItem> list = new List<LinkItem>();
 
+            if (page == null)
+                return list;
             /*** 1. start extractor ***/
             DateTime startTime = DateTime.Now;
 

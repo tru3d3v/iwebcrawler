@@ -36,18 +36,20 @@ namespace CrawlerNameSpace
         public override void sceduleTasks()
         {
             int serverTurn = 0;
-            bool getNewRequest = true, needToTerminate = false; ;
+            bool getNewRequest = true;
             Url request = null;
+            Url request2 = null;
 
-            while (needToTerminate == false)
+            while (true)
             {
                 try
                 {
                     int inserts = 0;
+                    SyncAccessor.getSlot(ThreadsDim + 1, 0);
                     while (SyncAccessor.queueSize<Url>(_tasksQueue) != 0 && inserts < MAX_INSERTS_IN_TIME)
                     {
-                        request = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
-                        _rankingTrie.add(request);
+                        request2 = SyncAccessor.getFromQueue<Url>(_tasksQueue, _timer);
+                        _rankingTrie.add(request2);
                         inserts++;
                     }
 
@@ -62,11 +64,13 @@ namespace CrawlerNameSpace
                         request = _rankingTrie.pop();
                         getNewRequest = false;
                     }
-                    getNewRequest = true;
-
+                    
+                    SyncAccessor.getSlot(2, 0);
                     if (SyncAccessor.queueSize<Url>(_serversQueues[serverTurn]) < _limit)
                     {
+                        SyncAccessor.getSlot(2, 0);
                         SyncAccessor.putInQueue<Url>(_serversQueues[serverTurn], request);
+                        getNewRequest = true;
                     }
                     else
                     {

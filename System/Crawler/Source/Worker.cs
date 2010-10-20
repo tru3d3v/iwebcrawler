@@ -20,8 +20,6 @@ namespace CrawlerNameSpace
 
         // queue query timer 
         int _timer;
-        // number of iterations to do while checking the status
-        private int _checkStatusLimit;
 
         // managers of the protocols
         FetcherManager _fetchers;
@@ -32,7 +30,7 @@ namespace CrawlerNameSpace
          *  and return the feed to the feedback, note it won't create new queues it will use
          *  the passed arguments - and they may need to be thread safe
          */
-        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback)
+        public Worker(Initializer initialData, Queue<Url> tasks, Queue<Url> feedback, int workersDim, int workerID)
         {
             _tasks    = tasks;
             _feedback = feedback;
@@ -49,9 +47,10 @@ namespace CrawlerNameSpace
             _processors = new ResourceProcessorManager();
            
             HtmlPageCategorizationProcessor htmlProcessor = new HtmlPageCategorizationProcessor(initialData, feedback);
+            htmlProcessor.ThreadID = workerID;
+            htmlProcessor.ThreadsDim = workersDim;
             _processors.attachProcessor("PageProc", htmlProcessor);
 
-            _checkStatusLimit = 0;
         }
         
         /**
@@ -62,12 +61,14 @@ namespace CrawlerNameSpace
             int requestNum = 0, timeoutCounter = 0;
             bool needToTerminate = false;
             TimeSpan totalProcessTime;
+            Thread.Sleep(10000);
             while (needToTerminate == false)
             {
                 DateTime startTime = DateTime.Now;
                 try
                 {
                     //System.Console.WriteLine("-<>--------------------------------------------------------------------------");
+                    SyncAccessor.getSlot(2, 1);
                     Url task = SyncAccessor.getFromQueue<Url>(_tasks, _timer);
                     
                     //System.Console.WriteLine(" Start Working on : " + task.getUrl() + " ...");
