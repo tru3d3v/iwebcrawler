@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65A5FF89-CBB2-460B-872D-5DE47F1FAFAB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CrawlerNameSpace</RootNamespace>
+    <AssemblyName>Crawler</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Dump\Crawler\Debug\bin\</OutputPath>
+    <IntermediateOutputPath>..\Dump\Crawler\Debug\obj\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Dump\Crawler\Release\bin\</OutputPath>
+    <IntermediateOutputPath>..\Dump\Crawler\Release\obj\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="Crawler.cs" />
+    <Compile Include="Source\Categorizer.cs" />
+    <Compile Include="Source\Extractor.cs" />
+    <Compile Include="Source\FetcherManager.cs" />
+    <Compile Include="Source\Filter.cs" />
+    <Compile Include="Source\Frontiers\BFSFrontier.cs" />
+    <Compile Include="Source\Frontiers\Frontier.cs" />
+    <Compile Include="Source\Frontiers\RankFrointer.cs" />
+    <Compile Include="Source\HtmlPageCategorizationProcessor.cs" />
+    <Compile Include="Source\HttpResourceFetcher.cs" />
+    <Compile Include="Source\LinkItem.cs" />
+    <Compile Include="Source\Ranker.cs" />
+    <Compile Include="Source\ResourceContent.cs" />
+    <Compile Include="Source\ResourceFetcher.cs" />
+    <Compile Include="Source\ResourceProcessor.cs" />
+    <Compile Include="Source\ResourceProcessorManager.cs" />
+    <Compile Include="Source\Worker.cs" />
+    <Compile Include="Tests\CategorizerTest.cs" />
+    <Compile Include="Tests\ExtractorTest.cs" />
+    <Compile Include="Tests\FilterTest.cs" />
+    <Compile Include="Tests\HttpPageCategorizationProcessorTest.cs" />
+    <Compile Include="Tests\HttpResourceFetcherTest.cs" />
+    <Compile Include="Tests\RankerTest.cs" />
+    <Compile Include="Tests\RankFrontierTest.cs" />
+    <Compile Include="Tests\RankingTrieTest.cs" />
+    <Compile Include="Tests\ResourceContentTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Utilities\Utilities.csproj">
+      <Project>{0F5042C6-6DE0-4C85-B116-863F069DC858}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StorageSystem\StorageSystem.csproj">
+      <Project>{39B7CF49-9FD7-4915-9A0D-6881901D710C}</Project>
+      <Name>StorageSystem</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
