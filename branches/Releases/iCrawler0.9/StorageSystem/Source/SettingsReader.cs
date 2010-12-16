@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.IO;
+using System.Reflection;
 
 namespace CrawlerNameSpace.StorageSystem
 {
@@ -12,9 +14,12 @@ namespace CrawlerNameSpace.StorageSystem
         
         public static String getConnectionString()
         {
+            string baseURI = "";
             try
             {
-                XmlTextReader reader = new XmlTextReader("../../../../Common/Settings.config");
+                string dllPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(SettingsReader)).CodeBase);
+                XmlTextReader reader = new XmlTextReader(dllPath + "\\Settings.config");
+                baseURI = reader.BaseURI;
                 bool b_configuration = false, b_connectionString = false;
                 while (reader.Read())
                 {
@@ -39,6 +44,13 @@ namespace CrawlerNameSpace.StorageSystem
             }
             catch (Exception e)
             {
+                StreamWriter stream = new
+                StreamWriter("LOGGER.ERR", true);
+                stream.WriteLine(" EXCEPT WHILE TRYING TO REACH DATABASE SETTINGS FILE AT: ");
+                stream.WriteLine(baseURI + "\n");
+                stream.WriteLine(" USING THE DEAFAULT DATABASE ADDRESS: C:\\Users\\netproject\\Documents\\CrawlerDB.mdf\n");
+                stream.Close();
+
                 return defaultConnection;
             }
             return defaultConnection;
